@@ -1,0 +1,104 @@
+video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+video::-webkit-media-controls {
+  display:none !important;
+}
+
+.form-select {
+    width: 40%;
+}
+
+.video {
+    width: 10em;
+    height: 10em;
+    margin: 1em;
+    background: black;
+}
+
+body {
+    height: 100vh;
+}
+
+.custom-btn-1 {
+    width: 2em;
+    height: 2em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #cccccc;
+    border-radius: 50%;
+    font-size: 1.5em;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.custom-btn-1:hover {
+    background: #b3b3b3;
+}
+
+.overlay-control {
+    position: absolute;
+    z-index: 10;
+    bottom: 2em;
+    margin: 0 auto;
+    width: 20%;
+    justify-content: space-around;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.overlay-chat {
+    width: 30%;
+    height: 80vh;
+    position: absolute;
+    right: 1em;
+    bottom: 2em;
+    -webkit-box-shadow: -7px 10px 21px -4px rgba(0,0,0,0.75);
+    -moz-box-shadow: -7px 10px 21px -4px rgba(0,0,0,0.75);
+    box-shadow: -7px 10px 21px -4px rgba(0,0,0,0.75);
+    border-radius: 20px;
+    background: #f1f1f1;
+}
+
+.messages {
+    width: 100%;
+    height: 90%;
+    padding: 1em;
+}
+
+.custom-input {
+    display: flex;
+    justify-content: center;
+    position: relative;
+    background: #f1f1f1;
+}
+
+.custom-input > input {
+    width: 90%;
+    border-radius: 20px;
+    border: 2px solid black;
+    padding-left: 1em;
+    padding-right: 2em;
+    background: #f1f1f1;
+}
+
+.custom-input > svg {
+    position: absolute;
+    right: 2em;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+.screen-share-block {
+    width: 80%;
+    height: 20em;
+    background: black;
+    margin-top: 1em;
+}
