@@ -1,7 +1,7 @@
 # VideoConferenceWebRTC
 Lib for quickly creating a web video chat with using [RTCMultiConnection](https://github.com/muaz-khan/RTCMultiConnection "RTCMultiConnection") lib.
 
-[![Generic badge](https://img.shields.io/badge/release-v1.0.0-blue.svg)](https://shields.io/) [![Generic badge](https://img.shields.io/badge/size-58.9 kB-green.svg)](https://shields.io/)
+[![Generic badge](https://img.shields.io/badge/release-v1.0.0-blue.svg)](https://shields.io/) [![Generic badge](https://img.shields.io/badge/size-58.9kB-green.svg)](https://shields.io/)
 
 
 ## Installation
