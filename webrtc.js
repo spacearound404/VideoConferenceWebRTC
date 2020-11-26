@@ -489,12 +489,3 @@ class AdminVC {
         };
     }
 }
-
-{
-  "schemaVersion": 1,
-  "label": "release",
-  "message": "v1.0.0",
-  "color": "blue"
-}
-
-https://img.shields.io/endpoint?url=...&style=...
