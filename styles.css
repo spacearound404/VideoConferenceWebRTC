@@ -13,8 +13,8 @@ video::-webkit-media-controls {
 }
 
 .video {
-    width: 10em;
-    height: 10em;
+    width: 84vw;
+    height: 38vh;
     margin: 1em;
     background: black;
 }
@@ -41,7 +41,7 @@ body {
 }
 
 .overlay-control {
-    position: absolute;
+    position: fixed;
     z-index: 10;
     bottom: 2em;
     margin: 0 auto;
@@ -56,7 +56,7 @@ body {
 .overlay-chat {
     width: 30%;
     height: 80vh;
-    position: absolute;
+    position: fixed;
     right: 1em;
     bottom: 2em;
     -webkit-box-shadow: -7px 10px 21px -4px rgba(0,0,0,0.75);
@@ -101,4 +101,19 @@ body {
     height: 20em;
     background: black;
     margin-top: 1em;
+}
+
+@media screen and (max-width:720px) {
+    .overlay-control {
+        width: 93vw !important;
+    }
+
+    .screen-share-block {
+        width: 100%;
+    }
+
+    .overlay-chat {
+        width: 90%;
+        bottom: 7em;
+    }
 }
