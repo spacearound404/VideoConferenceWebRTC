@@ -255,20 +255,6 @@ class GuestVC {
             alert( 'onMediaError:\n' + JSON.stringify(error) );
         };
     }
-
-    onTest() {
-        connection.beforeAddingStream = function(stream, peer) {
-            console.log(777);
-            if(stream.id == 'any-streamid') return; // skip
-            if(stream.isScreen) return; // skip
-            if(stream.inactive) return; // skip
-
-            // var remoteUserId = peer.userid;
-            // var remoteUserExtra = connection.peers[remoteUserId].extra;
-
-            return stream; // otherwise allow RTCMultiConnection to share this stream with remote users
-        };
-    }
 }
 
 class AdminVC {
