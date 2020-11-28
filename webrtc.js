@@ -48,6 +48,7 @@ class GuestVC {
     connect() {
 
         let thisGuestVC = this.getInstance();
+        thisGuestVC.connection.extra.guest = this.user;
 
         // join to room
         this.connection.join(this.roomID, function(isRoomJoined, roomid, error) {
@@ -73,10 +74,6 @@ class GuestVC {
             thisGuestVC.user.statusConnection = true;
 
         });
-
-        thisGuestVC.connection.extra.guest = this.user;
-
-        thisGuestVC.connection.updateExtraData();
     }
 
     // disconnect from room
@@ -86,13 +83,18 @@ class GuestVC {
         this.user.statusConnection = false;
 
         // check and clear contaner of HTML elem for remote web-camera
-        if(this.videoContainer.remoteCamera.children.length > 0) {
-            this.videoContainer.remoteCamera.innerHTML = "";
+        if(this.videoContainerRemote.camera.elementHTML.children.length > 0) {
+            this.videoContainerRemote.camera.elementHTML.innerHTML = "";
         }
 
         // check and clear contaner of HTML elem for remote screen
-        if(this.videoContainer.remoteScreen.children.length > 0) {
-            this.videoContainer.remoteScreen.innerHTML = "";
+        if(this.videoContainerRemote.screen.elementHTML.children.length > 0) {
+            this.videoContainerRemote.screen.elementHTML.innerHTML = "";
+        }
+
+        // check and clear contaner of HTML elem for local web-camera
+        if(this.videoContainerLocal.elementHTML.children.length > 0) {
+            this.videoContainerLocal.elementHTML.innerHTML = "";
         }
 
         // disable all streamsq
@@ -141,7 +143,7 @@ class GuestVC {
     }
 
     // set user status connection (value is true or false)
-    setUserSatusConnection(statusConnectionParam) {
+    setUserStatusConnection(statusConnectionParam) {
         this.user.statusConnection = statusConnectionParam;
     }
 
@@ -164,8 +166,6 @@ class GuestVC {
     setConnectBtnUI(connectCallbackParam, disconnectCallbackParam) {
         this.connectBtn.connectCallback = connectCallbackParam;
         this.connectBtn.disconnectCallback = disconnectCallbackParam;
-
-        console.log(this.connectBtn);
     }
 
     getInstance() {
@@ -211,9 +211,6 @@ class GuestVC {
 
         this.connection.onstream = function(event) {
 
-            console.log(1234);
-
-
             switch(event.type) {
                 case "local": {
                     // set a video stream in an HTML container
@@ -222,7 +219,8 @@ class GuestVC {
                     break;
                 }
                 case "remote": {
-                    if(Object.keys(event.extra).indexOf("guest") != -1 ) {
+                    // Object.keys(event.extra).indexOf("Admin") == -1
+                    if(event.extra.user2 == undefined) {
                         if(thisGuestVC.guestAudibility)
                             event.mediaElement.muted = true;
                         delete event.mediaElement;
@@ -296,6 +294,11 @@ class AdminVC {
         };
         this.guestMaxCount = 4; // maximum number of guests per room
         this.connection.maxParticipantsAllowed = this.guestMaxCount;
+        this.RMCMediaTrack = {
+            cameraStream: null,
+            cameraTrack: null,
+            screen: null
+        };
     }
 
     // ---Methods---
@@ -330,7 +333,7 @@ class AdminVC {
     }
 
     // set user status connection (value is true or false)
-    setUserSatusConnection(statusConnectionParam) {
+    setUserStatusConnection(statusConnectionParam) {
         this.user.statusConnection = statusConnectionParam;
     }
 
@@ -367,7 +370,6 @@ class AdminVC {
     // enable screen sharing
     screenShareOn() {
 
-
         let thisAdminVC = this.getInstance();
 
         this.connection.addStream({
@@ -375,16 +377,26 @@ class AdminVC {
             oneway: true,
             data: true,
             streamCallback: function(stream) {
+
+                for (let i = 0; i < thisAdminVC.connection.attachStreams.length; i++) {
+                    if (thisAdminVC.connection.attachStreams[i].idInstance.indexOf("isScreen") != -1) {
+
+                        let tmpStreamID = thisAdminVC.connection.attachStreams[i].id,
+                        tmpStream = thisAdminVC.connection.streamEvents[tmpStreamID].stream;
+
+                        thisAdminVC.connection.addStream(tmpStream);
+
+                        thisAdminVC.connection.renegotiate();
+                    }
+                }
+
                 thisAdminVC.connection.extra.streamID = stream.id;
 
                 thisAdminVC.connection.updateExtraData();
-                thisAdminVC.videoContainerLocal.screen.elementHTML.appendChild(stream);
+                thisAdminVC.videoContainerLocal.screen.elementHTML.appendChild(tmpStream);
             }
         });
-        // this.connection.resetTrack();
         this.connection.renegotiate();
-
-        this.connection.resetTrack();
     }
 
     // disable screen sharing
@@ -410,24 +422,30 @@ class AdminVC {
     // disconnect from room
     disconnect() {
 
+        // display connect btn status UI
         this.connectBtn.connectCallback();
 
+        // clear all remote HTML elems
         for(let i = 0; i < this.videoContainerRemote.length; i++) {
             if (this.videoContainerRemote[i].elementHTML.children.length != 0)
-                this.videoContainerRemote[i].elementHTML = "";
+                this.videoContainerRemote[i].elementHTML.innerHTML = "";
         }
 
+        // clear own local web-camera HTML elem
         if (this.videoContainerLocal.camera.elementHTML.children.length != 0)
-            this.videoContainerLocal.camera.elementHTML = "";
+            this.videoContainerLocal.camera.elementHTML.innerHTML = "";
 
+        // clear own local screen HTML elem
         if (this.videoContainerLocal.screen.elementHTML.children.length != 0)
-            this.videoContainerLocal.screen.elementHTML = "";
+            this.videoContainerLocal.screen.elementHTML.innerHTML = "";
 
+        // clear connection.attachStreams array and close stream
         this.connection.attachStreams.forEach(function(stream) {
             stream.getTracks().forEach(track => track.stop());
             stream.getTracks().forEach(track => stream.removeTrack(track));
         });
 
+        // close socket
         this.connection.closeSocket();
     }
 
@@ -435,17 +453,26 @@ class AdminVC {
     connect() {
         // change button status connect/disconnect to disconnect
 
+        // save data to extra to send guest in order to could distinguish other guests from the owner/admin
+        this.connection.extra = {
+            user2: "Admin"
+        };
+
         // create room with defined room id
         this.connection.open(this.roomID);
+
+        // auto close room when admin leave
         this.connection.autoCloseEntireSession = true;
 
+        // updte extra data
+        this.connection.updateExtraData();
+
+        // display disconnect status UI
         this.connectBtn.disconnectCallback();
 
-        this.connection.extra.user2 = "Admin";
-
-        this.connection.updateExtraData();
     }
 
+    // get instance
     getInstance() {
         return this;
     }
@@ -473,7 +500,6 @@ class AdminVC {
 
                     }
 
-                    console.log(thisAdminVC.videoContainerRemote);
                 }
 
             }
@@ -515,8 +541,6 @@ class AdminVC {
                         }
 
                     }
-
-                    console.log(thisAdminVC.videoContainerRemote);
 
                     break;
                 }

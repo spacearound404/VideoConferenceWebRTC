@@ -4,6 +4,12 @@ Lib for quickly creating a web video chat with using [RTCMultiConnection](https:
 [![Generic badge](https://img.shields.io/badge/release-v1.0.0-blue.svg)](https://shields.io/) [![Generic badge](https://img.shields.io/badge/size-58.9kB-green.svg)](https://shields.io/)
 
 ## Latest update
+28.11.2020
+- Fixed bug with restart screen sharing
+- Added IOS/OS X UI (prefix styles)
+- Fixed bug with the display of guests at the guest
+- Fixed bug with disconnection
+- Edit example code
 27.11.2020
 - Fixed bug with callback button status UI
 - Add mobile version UI

@@ -1,6 +1,6 @@
 let teacher = new AdminVC(), // AdminVC instance
     roomIDElem = document.getElementById('validationTooltip01'), // input with room ID
-    maxGuestCount = 4; // max guest count
+    maxGuestCount = 5; // max guest count
 
 // ussing default button control state (definition below)
 defaultControlState();
@@ -36,13 +36,14 @@ document.getElementById('connect').onclick = function() {
         // if disconnect
         let roomID = roomIDElem.value;
         teacher.setRoomID(roomID);
-        // teacher.setMaxGuestCount(maxGuestCount);
+        teacher.setMaxGuestCount(maxGuestCount);
         teacher.connect();
+        teacher.setUserStatusConnection(true);
     } else {
         // if connect
+        teacher.setUserStatusConnection(false);
         teacher.disconnect();
     }
-
 }
 
 // set default handler for webrtc class

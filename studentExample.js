@@ -18,7 +18,6 @@ student.setConnectBtnUI(function() {
     document.getElementById('connect').classList.add("btn-primary");
     document.getElementById('connect').innerHTML = "Подключиться";
     document.getElementById('connect').classList.remove("btn-danger");
-    console.log("Con");
 },
 function() {
     // disconnection
@@ -26,7 +25,6 @@ function() {
     document.getElementById('connect').classList.remove("btn-primary");
     document.getElementById('connect').innerHTML = "Отключиться";
     document.getElementById('connect').classList.add("btn-danger");
-    console.log("Dis");
 });
 
 // handler button click for connection/diconnectiong
@@ -37,9 +35,11 @@ document.getElementById('connect').onclick = function() {
         let roomID = roomIDElem.value;
         student.setRoomID(roomID);
         student.connect();
+        student.setUserStatusConnection(true);
     } else {
         // if connect
         student.disconnect();
+        student.setUserStatusConnection(false);
     }
 
 }
@@ -49,7 +49,6 @@ student.onUserStatusChanged();
 student.onRoomFull();
 student.onStream();
 student.onMediaError();
-// student.onTest();
 
 // define default button control state
 function defaultControlState() {
