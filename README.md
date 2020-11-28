@@ -10,6 +10,7 @@ Lib for quickly creating a web video chat with using [RTCMultiConnection](https:
 - Fixed bug with the display of guests at the guest
 - Fixed bug with disconnection
 - Edit example code
+
 27.11.2020
 - Fixed bug with callback button status UI
 - Add mobile version UI
