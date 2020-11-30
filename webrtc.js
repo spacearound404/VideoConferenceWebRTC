@@ -255,15 +255,17 @@ class GuestVC {
                 }
                 case "remote": {
                     // Object.keys(event.extra).indexOf("Admin") == -1
+                    console.log(event.extra);
                     if(event.extra.user2 == undefined) {
-                        if(thisGuestVC.guestAudibility)
+                        if(!thisGuestVC.guestAudibility) {
                             event.mediaElement.muted = true;
+                        }
                         delete event.mediaElement;
                         var video = document.createElement('video');
-                        if(thisGuestVC.guestAudibility)
+                        if(!thisGuestVC.guestAudibility) {
                             video.muted = true;
+                        }
                         video.src = URL.createObjectURL(event.stream);
-	                    thisGuestVC.videosContainer.appendChild(video);
                         break;
                     }
 
@@ -291,25 +293,6 @@ class GuestVC {
         this.connection.onMediaError = function(error) {
             // alert( 'onMediaError:\n' + JSON.stringify(error) );
             console.log(error);
-        };
-    }
-
-    onFailed() {
-        connection.onfailed = function(event) {
-            console.log("Failed");
-            console.log(event);
-            event.peer.getConnectionStats(function(result) {
-                // read more here, https://cdn.webrtc-experiment.com/getConnectionStats.js
-                // result.connectionType
-                // result.audio --- for audio tracks
-                // result.video ---- for video tracks
-            });
-            // use `redial` method
-            // it is same as: connection.peers[event.userid].redial();
-            event.peer.redial();
-
-            // you can even use `renegotiate`
-            // event.peer.renegotiate();
         };
     }
 }
@@ -353,11 +336,6 @@ class AdminVC {
         };
         this.guestMaxCount = 4; // maximum number of guests per room
         this.connection.maxParticipantsAllowed = this.guestMaxCount;
-        this.RMCMediaTrack = {
-            cameraStream: null,
-            cameraTrack: null,
-            screen: null
-        };
     }
 
     // ---Methods---
