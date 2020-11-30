@@ -47,6 +47,7 @@ document.getElementById('connect').onclick = function() {
 }
 
 // set default handler for webrtc class
+teacher.detect2g();
 teacher.onUserStatusChanged();
 teacher.onStream();
 teacher.onMediaError();

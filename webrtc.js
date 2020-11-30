@@ -47,6 +47,16 @@ class GuestVC {
     // connecting to room
     connect() {
 
+
+        this.connection.session = {
+            audio: true, // enabling the local microphone
+            video: true // enabling the local web-camera
+        };
+        this.connection.sdpConstraints.mandatory = {
+            OfferToReceiveAudio: true, // offer for receiving data from remote microphone
+            OfferToReceiveVideo: true // offer for receiving data from remote web-camera or screen
+        };
+
         let thisGuestVC = this.getInstance();
         thisGuestVC.connection.extra.guest = this.user;
 
@@ -57,11 +67,16 @@ class GuestVC {
                 thisGuestVC.connectBtn.connectCallback();
                 thisGuestVC.user.statusConnection = false;
 
-                // disable all streams
-                thisGuestVC.connection.attachStreams.forEach(function(stream) {
-                    stream.getTracks().forEach(track => track.stop());
-                    stream.getTracks().forEach(track => stream.removeTrack(track));
-                });
+                if(error === 'Room not available') {
+                    alert('This room does not exist. Please either create it or wait for moderator to enter in the room.');
+                    return;
+                }
+
+                // // disable all streams
+                // thisGuestVC.connection.attachStreams.forEach(function(stream) {
+                //     stream.getTracks().forEach(track => track.stop());
+                //     stream.getTracks().forEach(track => stream.removeTrack(track));
+                // });
 
                 // output error
                 alert(error);
@@ -72,7 +87,6 @@ class GuestVC {
             thisGuestVC.connectBtn.disconnectCallback();
 
             thisGuestVC.user.statusConnection = true;
-
         });
     }
 
@@ -93,17 +107,26 @@ class GuestVC {
         }
 
         // check and clear contaner of HTML elem for local web-camera
-        if(this.videoContainerLocal.elementHTML.children.length > 0) {
-            this.videoContainerLocal.elementHTML.innerHTML = "";
+        // if(this.videoContainerLocal.elementHTML.children.length > 0) {
+        //     this.videoContainerLocal.elementHTML.innerHTML = "";
+        // }
+
+        for (let i = 0; i < this.connection.getAllParticipants().length; i++) {
+            this.connection.disconnectWith(this.connection.getAllParticipants()[i]);
         }
 
-        // disable all streamsq
-        this.connection.attachStreams.forEach(function(stream) {
-            stream.getTracks().forEach(track => track.stop());
-            stream.getTracks().forEach(track => stream.removeTrack(track));
-        });
+        // stop all local cameras
+        // this.connection.attachStreams.forEach(function(localStream) {
+        //     localStream.stop();
+        // });
 
-        // close socket
+        // // disable all streamsq
+        // this.connection.attachStreams.forEach(function(stream) {
+        //     stream.getTracks().forEach(track => track.stop());
+        //     stream.getTracks().forEach(track => stream.removeTrack(track));
+        // });
+
+        // close socket.io connection
         this.connection.closeSocket();
     }
 
@@ -172,6 +195,16 @@ class GuestVC {
         return this;
     }
 
+    // detect 2G
+    detect2g() {
+        if(navigator.connection &&
+            navigator.connection.type === 'cellular' &&
+            navigator.connection.downlinkMax <= 0.115) {
+                alert('2G is not supported. Please use a better internet service.');
+            }
+    }
+
+
     // set whether a guest to hear the other guests in room
     setGuestAudibility(boolParam) {
         this.guestAudibility = boolParam;
@@ -211,6 +244,8 @@ class GuestVC {
 
         this.connection.onstream = function(event) {
 
+            console.log(event);
+
             switch(event.type) {
                 case "local": {
                     // set a video stream in an HTML container
@@ -234,11 +269,15 @@ class GuestVC {
 
 
                     if (event.stream.id == event.extra.streamID) {
+                        thisGuestVC.videoContainerRemote.screen.elementHTML.innerHTML = "";
                         // set a video stream in an HTML container
                         thisGuestVC.videoContainerRemote.screen.elementHTML.appendChild(event.mediaElement);
                     } else {
+                        thisGuestVC.videoContainerRemote.camera.elementHTML.innerHTML = "";
                         // set a video stream in an HTML container
                         thisGuestVC.videoContainerRemote.camera.elementHTML.appendChild(event.mediaElement);
+
+
                     }
 
                     break;
@@ -250,7 +289,27 @@ class GuestVC {
     // error event
     onMediaError() {
         this.connection.onMediaError = function(error) {
-            alert( 'onMediaError:\n' + JSON.stringify(error) );
+            // alert( 'onMediaError:\n' + JSON.stringify(error) );
+            console.log(error);
+        };
+    }
+
+    onFailed() {
+        connection.onfailed = function(event) {
+            console.log("Failed");
+            console.log(event);
+            event.peer.getConnectionStats(function(result) {
+                // read more here, https://cdn.webrtc-experiment.com/getConnectionStats.js
+                // result.connectionType
+                // result.audio --- for audio tracks
+                // result.video ---- for video tracks
+            });
+            // use `redial` method
+            // it is same as: connection.peers[event.userid].redial();
+            event.peer.redial();
+
+            // you can even use `renegotiate`
+            // event.peer.renegotiate();
         };
     }
 }
@@ -439,14 +498,26 @@ class AdminVC {
         if (this.videoContainerLocal.screen.elementHTML.children.length != 0)
             this.videoContainerLocal.screen.elementHTML.innerHTML = "";
 
-        // clear connection.attachStreams array and close stream
-        this.connection.attachStreams.forEach(function(stream) {
-            stream.getTracks().forEach(track => track.stop());
-            stream.getTracks().forEach(track => stream.removeTrack(track));
+        this.connection.getAllParticipants().forEach(function(pid) {
+            this.connection.disconnectWith(pid);
         });
 
-        // close socket
+        // stop all local cameras
+        this.connection.attachStreams.forEach(function(localStream) {
+            localStream.stop();
+        });
+
+        // close socket.io connection
         this.connection.closeSocket();
+
+        // clear connection.attachStreams array and close stream
+        // this.connection.attachStreams.forEach(function(stream) {
+        //     stream.getTracks().forEach(track => track.stop());
+        //     stream.getTracks().forEach(track => stream.removeTrack(track));
+        // });
+
+        // close socket
+        // this.connection.closeSocket();
     }
 
     // create room
@@ -469,7 +540,15 @@ class AdminVC {
 
         // display disconnect status UI
         this.connectBtn.disconnectCallback();
+    }
 
+    // detect 2G
+    detect2g() {
+        if(navigator.connection &&
+            navigator.connection.type === 'cellular' &&
+            navigator.connection.downlinkMax <= 0.115) {
+                alert('2G is not supported. Please use a better internet service.');
+            }
     }
 
     // get instance
@@ -565,7 +644,8 @@ class AdminVC {
     // error event
     onMediaError() {
         this.connection.onMediaError = function(error) {
-            alert( 'onMediaError:\n' + JSON.stringify(error) );
+            // alert( 'onMediaError:\n' + JSON.stringify(error) );
+            console.log(error);
         };
     }
 }

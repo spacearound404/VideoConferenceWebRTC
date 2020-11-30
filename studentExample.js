@@ -45,6 +45,7 @@ document.getElementById('connect').onclick = function() {
 }
 
 // set default handler for webrtc class
+student.detect2g();
 student.onUserStatusChanged();
 student.onRoomFull();
 student.onStream();
