@@ -65,7 +65,8 @@
 
 | Type | Param | Return |
 | :--- | :--- | :--- |
-| **method** | **string** | - |
+| **method** | **`string`** | - |
+|  | **`int`** |  |
 
 ### **`setRoomID`**
 
@@ -73,7 +74,8 @@
 
 | Type | Param | Return |
 | :--- | :--- | :--- |
-| **method** | **string** | - |
+| **method** | **`string`** | - |
+|  | **`int`** |  |
 
 ### **`setUserSatusConnection`**
 
@@ -81,7 +83,7 @@
 
 | Type | Param | Return |
 | :--- | :--- | :--- |
-| **method** | **bool** | - |
+| **method** | **`bool`** | - |
 
 ### **`getUserStatusConnection`**
 
@@ -89,7 +91,7 @@
 
 | Type | Param | Return |
 | :--- | :--- | :--- |
-| **method** | - | **bool** |
+| **method** | - | **`bool`** |
 
 ### **`setElementHTMLVideoContainerRemote`**
 
@@ -97,8 +99,8 @@
 
 | Type | Param | Return |
 | :--- | :--- | :--- |
-| **method** | HTML elem for display remote screen | - |
-|  | HTML elem for display remote camera |  |
+| **method** | **HTML elem** for display remote screen | - |
+|  | **HTML elem** for display remote camera |  |
 
 ### **`setElementHTMLVideoContainerLocal`**
 
@@ -106,7 +108,7 @@
 
 | Type | Param | Return |
 | :--- | :--- | :--- |
-| **method** | HTML elems for display local camera | - |
+| **method** | **HTML elem** for display local camera | - |
 
 ### **`setConnectBtnUI`**
 
@@ -114,16 +116,16 @@
 
 | Type | Param | Return |
 | :--- | :--- | :--- |
-| **method** | Callback for displaying the connection | - |
-|  | Callback for displaying the disconnection |  |
+| **method** | **Callback** for displaying the connection | - |
+|  | **Callback** for displaying the disconnection |  |
 
 ### **`getInstance`**
 
-**Desc:** Get instance of class `GuestVC`
+**Desc:** Get instance of class **`GuestVC`**
 
 | Type | Param | Return |
 | :--- | :--- | :--- |
-| **method** | - | `GuestVC` |
+| **method** | - | **`GuestVC`** |
 
 ### **`setGuestAudibility`**
 
@@ -189,7 +191,7 @@
 
 | Type | Param | Return |
 | :--- | :--- | :--- |
-| **method** | HTML elems for display remote camera \(the number of elements must be exactly max guest count\) | - |
+| **method** | **HTML elems** for display remote camera \(the number of elements must be exactly max guest count\) | - |
 
 ### **`setElementsHTMLVideoContainerLocal`**
 
@@ -197,8 +199,8 @@
 
 | Type | Param | Return |
 | :--- | :--- | :--- |
-| **method** | HTML elem for display local camera | - |
-|  | HTML elem for display screen |  |
+| **method** | **HTML elem** for display local camera | - |
+|  | **HTML elem** for display screen |  |
 
 ### **`setConnectBtnUI`**
 
@@ -206,8 +208,8 @@
 
 | Type | Param | Return |
 | :--- | :--- | :--- |
-| **method** | Callback for displaying the connection | - |
-|  | Callback for displaying the disconnection |  |
+| **method** | **Callback** for displaying the connection | - |
+|  | **Callback** for displaying the disconnection |  |
 
 ### **`setUserSatusConnection`**
 
@@ -215,7 +217,7 @@
 
 | Type | Param | Return |
 | :--- | :--- | :--- |
-| **method** | **bool** | - |
+| **method** | **`bool`** | - |
 
 ### **`getUserStatusConnection`**
 
@@ -223,7 +225,7 @@
 
 | Type | Param | Return |
 | :--- | :--- | :--- |
-| **method** | - | **bool** |
+| **method** | - | **`bool`** |
 
 ### **`setRoomID`**
 
@@ -231,7 +233,8 @@
 
 | Type | Param | Return |
 | :--- | :--- | :--- |
-| **method** | **string** | - |
+| **method** | **`string`** | - |
+|  | **`int`** |  |
 
 ### **`setUserID`**
 
@@ -239,7 +242,8 @@
 
 | Type | Param | Return |
 | :--- | :--- | :--- |
-| **method** | **string** | - |
+| **method** | **`string`** | - |
+|  | **`int`** |  |
 
 ### **`setUserName`**
 
@@ -247,7 +251,8 @@
 
 | Type | Param | Return |
 | :--- | :--- | :--- |
-| **method** | **string** | - |
+| **method** | **`string`** | - |
+|  | **`int`** |  |
 
 ### **`microOff`**
 
@@ -315,11 +320,11 @@
 
 ### **`getInstance`**
 
-**Desc:** Get instance of class `AdminVC`
+**Desc:** Get instance of class **`AdminVC`**
 
 | Type | Param | Return |
 | :--- | :--- | :--- |
-| **method** | - | `AdminVC` |
+| **method** | - | **`AdminVC`** |
 
 ### **`onUserStatusChanged`**
 
