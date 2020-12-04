@@ -259,6 +259,15 @@ class GuestVC {
         this.designer.instance.appendTo(this.designer.elementHTML);
     }
 
+    designerAddSyncListener() {
+        let thisGuestVC = this.getInstance();
+
+        this.designer.instance.addSyncListener(function(data) {
+            thisGuestVC.connection.send(data);
+        });
+    }
+
+
     // ---Events---
 
     // event changing the user connection status
@@ -337,14 +346,6 @@ class GuestVC {
         this.connection.onMediaError = function(error) {
             console.log(error);
         };
-    }
-
-    designerAddSyncListener() {
-        let thisGuestVC = this.getInstance();
-
-        this.designer.instance.addSyncListener(function(data) {
-            thisGuestVC.connection.send(data);
-        });
     }
 
     // message handler
@@ -789,6 +790,7 @@ class AdminVC {
 
     }
 
+    // send some data to guests for display it in content view
     sendDataToContentView(dataParam) {
 
         let data = {
@@ -892,6 +894,8 @@ class AdminVC {
         };
     }
 
+
+    // message event
     onMessage(callback) {
         let thisAdminVC = this.getInstance();
 
