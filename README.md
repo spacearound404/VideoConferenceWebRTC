@@ -4,8 +4,6 @@ description: Lib for quickly creating a web video chat with using RTCMultiConnec
 
 # VideoConferenceWebRTC
 
-## ![](.gitbook/assets/logo2.png) 
-
 ## [![Generic badge](https://img.shields.io/badge/release-v1.0.0-blue.svg)](https://shields.io/) [![Generic badge](https://img.shields.io/badge/size-58.9kB-green.svg)](https://shields.io/)
 
 ### Latest update
