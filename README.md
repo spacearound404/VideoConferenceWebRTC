@@ -1,4 +1,30 @@
-# Get Started
+# Get Stared
+
+## 
+
+## ![](.gitbook/assets/logo%20%281%29.png) VideoConferenceWebRTC
+
+[![Generic badge](https://img.shields.io/badge/release-v1.0.0-blue.svg)](https://shields.io/) [![Generic badge](https://img.shields.io/badge/size-58.9kB-green.svg)](https://shields.io/)
+
+Lib for quickly creating a web video chat with using [RTCMultiConnection](https://github.com/muaz-khan/RTCMultiConnection) lib.
+
+### Latest update
+
+28.11.2020
+
+* Fixed bug with restart screen sharing
+* Added IOS/OS X UI \(prefix styles\)
+* Fixed bug with the display of guests at the guest
+* Fixed bug with disconnection
+* Edit example code
+
+27.11.2020
+
+* Fixed bug with callback button status UI
+* Add mobile version UI
+* Added a setting to change the audibility of other participants in the room
+* Fixed a bug with visual container overflow
+* Added the ability to change the audibility of room guests for the guests themselves \(whether the guest will hear other guests\)
 
 ### Installation
 
