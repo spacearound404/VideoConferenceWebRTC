@@ -421,5 +421,9 @@
 
 ### `onMessage`
 
-**Desc:**
+**Desc:** Event handler for massage from guests
+
+| Type | Param | Return |
+| :--- | :--- | :--- |
+| **event** | **`callback`** | - |
 
