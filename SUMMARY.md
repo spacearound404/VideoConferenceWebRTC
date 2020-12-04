@@ -1,5 +1,5 @@
 # Table of contents
 
-* [VideoConferenceWebRTC](README.md)
+* [Video Conference WebRTC](README.md)
 * [Documentation](documentation.md)
 
