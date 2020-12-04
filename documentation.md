@@ -56,7 +56,8 @@
 
 | Type | Param | Return |
 | :--- | :--- | :--- |
-| **method** | **string** | - |
+| **method** | **`string`** | - |
+|  | **`int`** |  |
 
 ### **`setUserID`**
 
@@ -118,11 +119,11 @@
 
 ### **`getInstance`**
 
-**Desc:** Get instance of class GuestVC
+**Desc:** Get instance of class `GuestVC`
 
 | Type | Param | Return |
 | :--- | :--- | :--- |
-| **method** | - | GuestVC |
+| **method** | - | `GuestVC` |
 
 ### **`setGuestAudibility`**
 
@@ -130,7 +131,7 @@
 
 | Type | Param | Return |
 | :--- | :--- | :--- |
-| **method** | **bool** | - |
+| **method** | **`bool`** | - |
 
 ### **`getGuestAudibility`**
 
@@ -138,7 +139,7 @@
 
 | Type | Param | Return |
 | :--- | :--- | :--- |
-| **method** | - | **bool** |
+| **method** | - | **`bool`** |
 
 ### **`onUserStatusChanged`**
 
@@ -194,34 +195,10 @@
 
 **Desc:** Set HTML elems for display local camera and screen \(must call before connect\)
 
-<table>
-  <thead>
-    <tr>
-      <th style="text-align:left">Type</th>
-      <th style="text-align:left">Param</th>
-      <th style="text-align:left">Return</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td style="text-align:left"><b>method</b>
-      </td>
-      <td style="text-align:left">
-        <p></p>
-        <p>HTML elem for display local camera</p>
-      </td>
-      <td style="text-align:left">-</td>
-    </tr>
-    <tr>
-      <td style="text-align:left"></td>
-      <td style="text-align:left">
-        <p></p>
-        <p>HTML elem for display screen</p>
-      </td>
-      <td style="text-align:left"></td>
-    </tr>
-  </tbody>
-</table>
+| Type | Param | Return |
+| :--- | :--- | :--- |
+| **method** | HTML elem for display local camera | - |
+|  | HTML elem for display screen |  |
 
 ### **`setConnectBtnUI`**
 
@@ -338,11 +315,11 @@
 
 ### **`getInstance`**
 
-**Desc:** Get instance of class AdminVC
+**Desc:** Get instance of class `AdminVC`
 
 | Type | Param | Return |
 | :--- | :--- | :--- |
-| **method** |  | AdminVC |
+| **method** | - | `AdminVC` |
 
 ### **`onUserStatusChanged`**
 
