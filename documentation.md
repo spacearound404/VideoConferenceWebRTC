@@ -56,7 +56,7 @@
 
 | Type | Param | Return |
 | :--- | :--- | :--- |
-| **method** |  | - |
+| **method** | **string** | - |
 
 ### **`setUserID`**
 
@@ -64,7 +64,7 @@
 
 | Type | Param | Return |
 | :--- | :--- | :--- |
-| **method** |  | - |
+| **method** | **string** | - |
 
 ### **`setRoomID`**
 
@@ -72,7 +72,7 @@
 
 | Type | Param | Return |
 | :--- | :--- | :--- |
-| **method** |  | - |
+| **method** | **string** | - |
 
 ### **`setUserSatusConnection`**
 
@@ -80,7 +80,7 @@
 
 | Type | Param | Return |
 | :--- | :--- | :--- |
-| **method** |  | - |
+| **method** | **bool** | - |
 
 ### **`getUserStatusConnection`**
 
@@ -88,7 +88,7 @@
 
 | Type | Param | Return |
 | :--- | :--- | :--- |
-| **method** | - |  |
+| **method** | - | **bool** |
 
 ### **`setElementHTMLVideoContainerRemote`**
 
@@ -96,7 +96,8 @@
 
 | Type | Param | Return |
 | :--- | :--- | :--- |
-| **method** |  | - |
+| **method** | HTML elem for display remote screen | - |
+|  | HTML elem for display remote camera |  |
 
 ### **`setElementHTMLVideoContainerLocal`**
 
@@ -104,7 +105,7 @@
 
 | Type | Param | Return |
 | :--- | :--- | :--- |
-| **method** |  | - |
+| **method** | HTML elems for display local camera | - |
 
 ### **`setConnectBtnUI`**
 
@@ -112,7 +113,8 @@
 
 | Type | Param | Return |
 | :--- | :--- | :--- |
-| **method** |  | - |
+| **method** | Callback for displaying the connection | - |
+|  | Callback for displaying the disconnection |  |
 
 ### **`getInstance`**
 
@@ -120,7 +122,7 @@
 
 | Type | Param | Return |
 | :--- | :--- | :--- |
-| **method** | - |  |
+| **method** | - | GuestVC |
 
 ### **`setGuestAudibility`**
 
@@ -128,7 +130,7 @@
 
 | Type | Param | Return |
 | :--- | :--- | :--- |
-| **method** |  | - |
+| **method** | **bool** | - |
 
 ### **`getGuestAudibility`**
 
