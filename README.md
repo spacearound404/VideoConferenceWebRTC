@@ -1,6 +1,6 @@
 # Get Stared
 
-## ![](.gitbook/assets/logo%20%281%29.png) VideoConferenceWebRTC
+## ![](.gitbook/assets/logo2.png) VideoConferenceWebRTC
 
 [![Generic badge](https://img.shields.io/badge/release-v1.0.0-blue.svg)](https://shields.io/) [![Generic badge](https://img.shields.io/badge/size-58.9kB-green.svg)](https://shields.io/)
 
