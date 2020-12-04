@@ -117,8 +117,8 @@
 
 | Type | Param | Return |
 | :--- | :--- | :--- |
-| **method** | **Callback** for displaying the connection | - |
-|  | **Callback** for displaying the disconnection |  |
+| **method** | **`callback`** for displaying the connection | - |
+|  | **`callback`** for displaying the disconnection |  |
 
 ### **`getInstance`**
 
@@ -128,6 +128,14 @@
 | :--- | :--- | :--- |
 | **method** | - | **`GuestVC`** |
 
+### `detect2g`
+
+**Desc:** Detect 2G network and alert the user
+
+| Type | Param | Return |
+| :--- | :--- | :--- |
+| **method** | - | - |
+
 ### **`setGuestAudibility`**
 
 **Desc:** Set whether a guest to hear the other guests in room
@@ -136,6 +144,14 @@
 | :--- | :--- | :--- | :--- |
 | **method** | **`bool`** | **`true`**- guest will be hear other guests | - |
 |  |  | **`false`** - guest will not hear other guests |  |
+
+### `onMessage`
+
+**Desc:** Handler for messgae from other peers
+
+| Type | Param | Return |
+| :--- | :--- | :--- |
+| event | **`callback`** | - |
 
 ### **`getGuestAudibility`**
 
@@ -310,6 +326,51 @@
 | :--- | :--- | :--- |
 | **method** | - | - |
 
+### **`detect2g`**
+
+**Desc:** Detect 2G network and alert the user
+
+| Type | Param | Return |
+| :--- | :--- | :--- |
+| **method** | - | - |
+
+### `sendDataToContentView`
+
+**Desc:** send some data to guests for display it in content view
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align:left">Type</th>
+      <th style="text-align:left">Param</th>
+      <th style="text-align:left">Return</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align:left"><b>method</b>
+      </td>
+      <td style="text-align:left"><b><code>structure</code></b>
+      </td>
+      <td style="text-align:left">-</td>
+    </tr>
+    <tr>
+      <td style="text-align:left"></td>
+      <td style="text-align:left">
+        <p><code>{</code>
+        </p>
+        <p><code>    head: &quot;title of custom event&quot;</code>
+        </p>
+        <p><code>    content: &quot;hello world!&quot;</code>
+        </p>
+        <p><code>}</code>
+        </p>
+      </td>
+      <td style="text-align:left">-</td>
+    </tr>
+  </tbody>
+</table>
+
 ### **`disconnect`**
 
 **Desc:** Disabling and deleting a room \(it can be called anywhere in the code, but after defining an instance of this class\)
@@ -357,4 +418,8 @@
 | Type | Param | Return |
 | :--- | :--- | :--- |
 | **event** | - | - |
+
+### `onMessage`
+
+**Desc:**
 
