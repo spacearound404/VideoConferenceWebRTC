@@ -1,6 +1,12 @@
+---
+description: Documentation for the two classes GuestVC and AdminVC with method descriptions
+---
+
 # Documentation
 
 ## Class GuestVC
+
+Class for creating a connection from the guest side
 
 ### **`connect`**
 
@@ -246,6 +252,8 @@ Be sure to add at the end of the code
 | event | **`callback`** | - |
 
 ## Class AdminVC
+
+Class for creating a link on the owner's side
 
 ### **`setMaxGuestCount`**
 
