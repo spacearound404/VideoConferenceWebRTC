@@ -422,7 +422,7 @@ It can be called anywhere in the code, but after defining an instance of this cl
 
 ### `sendDataToContentView`
 
-**Desc:** send some data to guests for display it in content view
+**Desc:** Send some data to guests for display it in content view
 
 <table>
   <thead>
