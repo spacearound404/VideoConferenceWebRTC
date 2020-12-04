@@ -179,14 +179,6 @@ Must call before connect
 |  | **`true`**- guest will be hear other guests |  |
 |  | **`false`** - guest will not hear other guests |  |
 
-### `onMessage`
-
-**Desc:** Handler for messgae from other peers
-
-| Type | Param | Return |
-| :--- | :--- | :--- |
-| event | **`callback`** | - |
-
 ### **`getGuestAudibility`**
 
 **Desc:** Set whether a guest to hear the other guests in room
@@ -244,6 +236,14 @@ Be sure to add at the end of the code
 | Type | Param | Return |
 | :--- | :--- | :--- |
 | **event** | - | - |
+
+### `onMessage`
+
+**Desc:** Handler for messgae from other peers
+
+| Type | Param | Return |
+| :--- | :--- | :--- |
+| event | **`callback`** | - |
 
 ## Class AdminVC
 
