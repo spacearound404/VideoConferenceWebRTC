@@ -6,7 +6,8 @@ class GuestVC {
         this.connection.socketURL = 'https://rtcmulticonnection.herokuapp.com:443/';
         this.connection.session = {
             audio: true, // enabling the local microphone
-            video: true // enabling the local web-camera
+            video: true, // enabling the local web-camera
+            data: true
         };
         this.connection.sdpConstraints.mandatory = {
             OfferToReceiveAudio: true, // offer for receiving data from remote microphone
@@ -40,6 +41,33 @@ class GuestVC {
             disconnectCallback: function(){} // callback to change the status of the connect/disconnect button to disconnect
         };
         this.guestAudibility = false;
+        this.designer = {
+            instance: new CanvasDesigner(),
+            tools: {
+                line: true,
+                arrow: true,
+                pencil: true,
+                marker: true,
+                // dragSingle: true,
+                // dragMultiple: true,
+                eraser: true,
+                // rectangle: true,
+                arc: true,
+                // bezier: true,
+                quadratic: true,
+                text: true,
+                // image: true,
+                // pdf: true,
+                zoom: true,
+                lineWidth: true,
+                colorsPicker: true,
+                // extraOptions: true,
+                // code: true,
+                undo: true
+            },
+            selected: "pencil",
+            elementHTML: 0
+        }
     }
 
     // ---METHODS---
@@ -50,8 +78,10 @@ class GuestVC {
 
         this.connection.session = {
             audio: true, // enabling the local microphone
-            video: true // enabling the local web-camera
+            video: true, // enabling the local web-camera
+            data: true
         };
+
         this.connection.sdpConstraints.mandatory = {
             OfferToReceiveAudio: true, // offer for receiving data from remote microphone
             OfferToReceiveVideo: true // offer for receiving data from remote web-camera or screen
@@ -191,6 +221,7 @@ class GuestVC {
         this.connectBtn.disconnectCallback = disconnectCallbackParam;
     }
 
+    // get instance
     getInstance() {
         return this;
     }
@@ -204,7 +235,6 @@ class GuestVC {
             }
     }
 
-
     // set whether a guest to hear the other guests in room
     setGuestAudibility(boolParam) {
         this.guestAudibility = boolParam;
@@ -213,6 +243,20 @@ class GuestVC {
     // get guest audibility value
     getGuestAudibility() {
         return this.guestAudibility;
+    }
+
+    // enable and setup dashboard
+    dashboard(elementHTMLParam) {
+        this.designer.elementHTML = elementHTMLParam;
+
+        this.designer.instance.widgetHtmlURL = 'https://cdn.webrtc-experiment.com/Canvas-Designer/widget.html';
+        this.designer.instance.widgetJsURL = 'https://cdn.webrtc-experiment.com/Canvas-Designer/widget.js';
+
+        this.designer.instance.setSelected(this.designer.selected);
+
+        this.designer.instance.setTools(this.designer.tools);
+
+        this.designer.instance.appendTo(this.designer.elementHTML);
     }
 
     // ---Events---
@@ -244,8 +288,6 @@ class GuestVC {
 
         this.connection.onstream = function(event) {
 
-            console.log(event);
-
             switch(event.type) {
                 case "local": {
                     // set a video stream in an HTML container
@@ -254,32 +296,34 @@ class GuestVC {
                     break;
                 }
                 case "remote": {
-                    // Object.keys(event.extra).indexOf("Admin") == -1
-                    console.log(event.extra);
                     if(event.extra.user2 == undefined) {
                         if(!thisGuestVC.guestAudibility) {
                             event.mediaElement.muted = true;
                         }
+
                         delete event.mediaElement;
-                        var video = document.createElement('video');
+
+                        let video = document.createElement('video');
+
                         if(!thisGuestVC.guestAudibility) {
                             video.muted = true;
                         }
+
                         video.src = URL.createObjectURL(event.stream);
+
                         break;
                     }
 
-
                     if (event.stream.id == event.extra.streamID) {
                         thisGuestVC.videoContainerRemote.screen.elementHTML.innerHTML = "";
+
                         // set a video stream in an HTML container
                         thisGuestVC.videoContainerRemote.screen.elementHTML.appendChild(event.mediaElement);
                     } else {
                         thisGuestVC.videoContainerRemote.camera.elementHTML.innerHTML = "";
+
                         // set a video stream in an HTML container
                         thisGuestVC.videoContainerRemote.camera.elementHTML.appendChild(event.mediaElement);
-
-
                     }
 
                     break;
@@ -291,8 +335,53 @@ class GuestVC {
     // error event
     onMediaError() {
         this.connection.onMediaError = function(error) {
-            // alert( 'onMediaError:\n' + JSON.stringify(error) );
             console.log(error);
+        };
+    }
+
+    designerAddSyncListener() {
+        let thisGuestVC = this.getInstance();
+
+        this.designer.instance.addSyncListener(function(data) {
+            thisGuestVC.connection.send(data);
+        });
+    }
+
+    // message handler
+    onMessage(callback) {
+        let thisGuestVC = this.getInstance();
+
+        this.connection.onmessage = function(event) {
+
+            if (event.data === 'plz-sync-points') {
+                // sync data for dashboard
+                thisGuestVC.designer.instance.sync();
+                return;
+            }
+            if (event.data.points != undefined) {
+                // sync data for dashboard
+                thisGuestVC.designer.instance.syncData(event.data);
+            }
+
+            // callback for custom messages
+            callback(event.data);
+        };
+    }
+
+    // event that is triggered when a new member is connected
+    onOpen() {
+        let thisGuestVC = this.getInstance();
+
+        this.connection.onopen = function(event) {
+
+            if (thisGuestVC.designer.instance.pointsLength <= 0) {
+
+                // make sure that remote user gets all drawings synced.
+                setTimeout(function() {
+                    // send message for sync dashboard with other guests
+                    thisGuestVC.connection.send('plz-sync-points');
+                }, 1000);
+            }
         };
     }
 }
@@ -304,7 +393,8 @@ class AdminVC {
         this.connection.socketURL = 'https://rtcmulticonnection.herokuapp.com:443/';
         this.connection.session = {
             audio: true, // enabling the local microphone
-            video: true // enabling the local web-camera
+            video: true, // enabling the local web-camera
+            data: true
         };
         this.connection.sdpConstraints.mandatory = {
             OfferToReceiveAudio: true, // offer for receiving data from remote microphone
@@ -336,6 +426,59 @@ class AdminVC {
         };
         this.guestMaxCount = 4; // maximum number of guests per room
         this.connection.maxParticipantsAllowed = this.guestMaxCount;
+        this.videoRecording = {
+            elementHTML: document.createElement('video'),
+            // audio, video, canvas, gif
+            type: "video",
+            // audio/webm
+            // audio/webm;codecs=pcm
+            // video/mp4
+            // video/webm;codecs=vp9
+            // video/webm;codecs=vp8
+            // video/webm;codecs=h264
+            // video/x-matroska;codecs=avc1
+            // video/mpeg -- NOT supported by any browser, yet
+            // audio/wav
+            // audio/ogg  -- ONLY Firefox
+            // demo: simple-demos/isTypeSupported.html
+            mimeType: "video/mp4",
+            resolution: {
+                width: 640,
+                height: 480
+            },
+            frameRate: 30,
+            bitrate: 128000
+        }
+        this.designer = {
+            instance: new CanvasDesigner(),
+            tools: {
+                line: true,
+                arrow: true,
+                pencil: true,
+                marker: true,
+                // dragSingle: true,
+                // dragMultiple: true,
+                eraser: true,
+                // rectangle: true,
+                arc: true,
+                // bezier: true,
+                quadratic: true,
+                text: true,
+                // image: true,
+                // pdf: true,
+                zoom: true,
+                lineWidth: true,
+                colorsPicker: true,
+                // extraOptions: true,
+                // code: true,
+                undo: true
+            },
+            selected: "pencil",
+            elementHTML: 0
+        }
+        this.contentView = {
+            elementHTML: 0
+        };
     }
 
     // ---Methods---
@@ -343,7 +486,7 @@ class AdminVC {
     // set maximum number of guests per room
     setMaxGuestCount(guestCountParam) {
         this.guestMaxCount = guestCountParam;
-        this.connection.maxParticipantsAllowed = this.guestMaxCount;
+        this.connection.maxParticipantsAllowed = this.guestMaxCount + 1;
     }
 
     // set HTML elems for display remote video streams
@@ -487,20 +630,10 @@ class AdminVC {
 
         // close socket.io connection
         this.connection.closeSocket();
-
-        // clear connection.attachStreams array and close stream
-        // this.connection.attachStreams.forEach(function(stream) {
-        //     stream.getTracks().forEach(track => track.stop());
-        //     stream.getTracks().forEach(track => stream.removeTrack(track));
-        // });
-
-        // close socket
-        // this.connection.closeSocket();
     }
 
     // create room
     connect() {
-        // change button status connect/disconnect to disconnect
 
         // save data to extra to send guest in order to could distinguish other guests from the owner/admin
         this.connection.extra = {
@@ -532,6 +665,140 @@ class AdminVC {
     // get instance
     getInstance() {
         return this;
+    }
+
+    invokeGetDisplayMedia(success, error) {
+        let displaymediastreamconstraints = {
+            video: {
+                displaySurface: 'monitor', // monitor, window, application, browser
+                logicalSurface: true,
+                cursor: 'always' // never, always, motion
+            }
+        };
+
+        // above constraints are NOT supported YET
+        // that's why overriding them
+        displaymediastreamconstraints = {
+            video: true
+        };
+
+        if(navigator.mediaDevices.getDisplayMedia) {
+            navigator.mediaDevices.getDisplayMedia(displaymediastreamconstraints).then(success).catch(error);
+        }
+        else {
+            navigator.getDisplayMedia(displaymediastreamconstraints).then(success).catch(error);
+        }
+    }
+
+    addStreamStopListener(stream, callback) {
+        stream.addEventListener('ended', function() {
+            callback();
+            callback = function() {};
+        }, false);
+        stream.addEventListener('inactive', function() {
+            callback();
+            callback = function() {};
+        }, false);
+        stream.getTracks().forEach(function(track) {
+            track.addEventListener('ended', function() {
+                callback();
+                callback = function() {};
+            }, false);
+            track.addEventListener('inactive', function() {
+                callback();
+                callback = function() {};
+            }, false);
+        });
+    }
+
+    captureScreen(callback) {
+
+        let thisAdminVC = this.getInstance();
+
+        this.invokeGetDisplayMedia(function(screen) {
+            thisAdminVC.addStreamStopListener(screen, function() {
+                // document.getElementById('btn-stop-recording').click();
+            });
+            callback(screen);
+        }, function(error) {
+            console.error(error);
+            alert('Unable to capture your screen. Please check console logs.\n' + error);
+        });
+    }
+
+    // enable screen recording
+    screenRecordingOn() {
+        if(!navigator.getDisplayMedia && !navigator.mediaDevices.getDisplayMedia) {
+            let error = 'Your browser does NOT support the getDisplayMedia API.';
+            alert(error);
+
+            throw new Error(error);
+        }
+
+        let thisAdminVC = this.getInstance();
+
+        this.captureScreen(function(screen) {
+            thisAdminVC.videoRecording.elementHTML.srcObject = screen;
+
+
+            thisAdminVC.recorder = new RecordRTC(screen, {
+                type: thisAdminVC.videoRecording.type,
+                mimeType: thisAdminVC.videoRecording.mimeType,
+                canvas: thisAdminVC.videoRecording.resolution,
+                frameRate: thisAdminVC.videoRecording.frameRate,
+                bitrate: thisAdminVC.videoRecording.bitrate,
+            });
+
+            thisAdminVC.recorder.startRecording();
+
+            // release screen on stopRecording
+            thisAdminVC.recorder.screen = screen;
+        });
+    }
+
+    // disable and save screen recording
+    screenRecordingOff(callback) {
+        let thisAdminVC = this.getInstance();
+
+        this.recorder.stopRecording(function() {
+            thisAdminVC.videoRecording.elementHTML.src = thisAdminVC.videoRecording.srcObject = null;
+            thisAdminVC.videoRecording.elementHTML.src = URL.createObjectURL(thisAdminVC.recorder.getBlob());
+
+            callback(thisAdminVC.recorder.getBlob());
+
+            thisAdminVC.recorder.screen.stop();
+            thisAdminVC.recorder.destroy();
+            thisAdminVC.recorder = null;
+        });
+    }
+
+    dashboard(elementHTMLParam) {
+        this.designer.elementHTML = elementHTMLParam;
+
+        this.designer.instance.widgetHtmlURL = 'https://cdn.webrtc-experiment.com/Canvas-Designer/widget.html';
+        this.designer.instance.widgetJsURL = 'https://cdn.webrtc-experiment.com/Canvas-Designer/widget.js'
+
+        this.designer.instance.setTools(this.designer.tools);
+
+        this.designer.instance.setSelected(this.designer.selected);
+
+        this.designer.instance.appendTo(this.designer.elementHTML);
+    }
+
+    setContentViewContainer(elementHTML) {
+
+    }
+
+    sendDataToContentView(dataParam) {
+
+        let data = {
+            head: "",
+            content: ""
+        };
+
+        data = dataParam;
+
+        this.connection.send(data);
     }
 
     // ---Events---
@@ -614,7 +881,6 @@ class AdminVC {
 
                     break;
                 }
-
             }
         }
     }
@@ -622,8 +888,45 @@ class AdminVC {
     // error event
     onMediaError() {
         this.connection.onMediaError = function(error) {
-            // alert( 'onMediaError:\n' + JSON.stringify(error) );
             console.log(error);
         };
+    }
+
+    onMessage(callback) {
+        let thisAdminVC = this.getInstance();
+
+        this.connection.onmessage = function(event) {
+
+            if (event.data === 'plz-sync-points') {
+                thisAdminVC.designer.instance.sync();
+                return;
+            }
+
+            thisAdminVC.designer.instance.syncData(event.data);
+
+            callback(event.data);
+        };
+    }
+
+    onOpen() {
+        let thisAdminVC = this.getInstance();
+
+        this.connection.onopen = function(event) {
+            if (thisAdminVC.designer.instance.pointsLength <= 0) {
+
+                // make sure that remote user gets all drawings synced.
+                setTimeout(function() {
+                    thisAdminVC.connection.send('plz-sync-points');
+                }, 1000);
+            }
+        };
+    }
+
+    designerAddSyncListener() {
+        let thisAdminVC = this.getInstance();
+
+        this.designer.instance.addSyncListener(function(data) {
+            thisAdminVC.connection.send(data);
+        });
     }
 }
