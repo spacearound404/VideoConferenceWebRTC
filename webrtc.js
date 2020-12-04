@@ -839,6 +839,8 @@ class AdminVC {
 
         this.connection.onstream = function(event) {
 
+            console.log(event);
+
             switch(event.type) {
                 // this case for handling incoming remote connections
                 case "remote": {

@@ -6,6 +6,28 @@ Lib for quickly creating a web video chat with using RTCMultiConnection lib.
 
 ### Latest update
 
+2.12.2020
+* Add screen recorder
+* Add share content
+
+01.12.2020
+* Fixed bugs with count guest in room
+* Add screen recording
+
+30.11.2020
+* Fixed bugs with reconnection on IOS and OS X
+* Fixed bug with audibilaty guest
+* Add error handler for guest function connect
+* Add 2g detection
+
+28.11.2020
+
+* Fixed bug with restart screen sharing
+* Added IOS/OS X UI \(prefix styles\)
+* Fixed bug with the display of guests at the guest
+* Fixed bug with disconnection
+* Edit example code
+
 28.11.2020
 
 * Fixed bug with restart screen sharing
@@ -41,4 +63,3 @@ Lib for quickly creating a web video chat with using RTCMultiConnection lib.
 * teacher.html - admin/owner interface
 * studentExample.js - example using a class for a guest
 * teacherExample.js - example using a class for a admin/owner
-

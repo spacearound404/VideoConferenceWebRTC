@@ -63,8 +63,7 @@ teacher.onMediaError();
 //example how to send some data to guests
 document.querySelector('#example-send-data-btn').onclick = function(e){
 
-    let elementHTML = document.querySelector('#example-send-data-btn'),
-        eventHead = "create_button",
+    let eventHead = "create_button",
         data = {
             head: eventHead,
             content: '<button id="example-send-data-btn" class="btn btn-primary w-25" type="button" aria-disabled="false" autocomplete="off">Send</button>'
