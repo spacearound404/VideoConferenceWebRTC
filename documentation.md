@@ -12,7 +12,11 @@
 
 ### **`disconnect`**
 
-**Desc:** Leave the room \(it can be called anywhere in the code, but after defining an instance of this class\)
+**Desc:** Leave the room
+
+{% hint style="info" %}
+It can be called anywhere in the code, but after defining an instance of this class
+{% endhint %}
 
 | Type | Param | Return |
 | :--- | :--- | :--- |
@@ -20,7 +24,11 @@
 
 ### **`microOff`**
 
-**Desc:** Disable micro \(it can be called anywhere in the code, but after defining an instance of this class\)
+**Desc:** Disable micro
+
+{% hint style="info" %}
+It can be called anywhere in the code, but after defining an instance of this class
+{% endhint %}
 
 | Type | Param | Return |
 | :--- | :--- | :--- |
@@ -28,7 +36,11 @@
 
 ### **`microOn`**
 
-**Desc:** Enable micro \(it can be called anywhere in the code, but after defining an instance of this class\)
+**Desc:** Enable micro
+
+{% hint style="info" %}
+It can be called anywhere in the code, but after defining an instance of this class
+{% endhint %}
 
 | Type | Param | Return |
 | :--- | :--- | :--- |
@@ -36,7 +48,11 @@
 
 ### **`localCameraOff`**
 
-**Desc:** Disable local camera \(it can be called anywhere in the code, but after defining an instance of this class\)
+**Desc:** Disable local camera
+
+{% hint style="info" %}
+It can be called anywhere in the code, but after defining an instance of this class
+{% endhint %}
 
 | Type | Param | Return |
 | :--- | :--- | :--- |
@@ -44,7 +60,11 @@
 
 ### **`localCameraOn`**
 
-**Desc:** Enable local camera \(it can be called anywhere in the code, but after defining an instance of this class\)
+**Desc:** Enable local camera
+
+{% hint style="info" %}
+It can be called anywhere in the code, but after defining an instance of this class
+{% endhint %}
 
 | Type | Param | Return |
 | :--- | :--- | :--- |
@@ -89,14 +109,19 @@
 
 **Desc:** Get current user connection status
 
-| Type | Param | Return | Returned value |
-| :--- | :--- | :--- | :--- |
-| **method** | - | **`bool`** | **`true`** - connected |
-|  |  |  | **`false`** - disconnected |
+| Type | Param | Return |
+| :--- | :--- | :--- |
+| **method** | - | **`bool`** |
+|  |  | **`true`** - connected |
+|  |  | **`false`** - disconnected |
 
 ### **`setElementHTMLVideoContainerRemote`**
 
-**Desc:** Set HTML elems for display remote video streams \(must call before connect\)
+**Desc:** Set HTML elems for display remote video streams
+
+{% hint style="info" %}
+Must call before connect
+{% endhint %}
 
 | Type | Param | Return |
 | :--- | :--- | :--- |
@@ -105,7 +130,11 @@
 
 ### **`setElementHTMLVideoContainerLocal`**
 
-**Desc:** Set HTML elem for display local camera \(must call before connect\)
+**Desc:** Set HTML elem for display local camera
+
+{% hint style="info" %}
+Must call before connect
+{% endhint %}
 
 | Type | Param | Return |
 | :--- | :--- | :--- |
@@ -113,7 +142,11 @@
 
 ### **`setConnectBtnUI`**
 
-**Desc:** Set callbacks for changing button state \(must call before connect\)
+**Desc:** Set callbacks for changing button state
+
+{% hint style="info" %}
+Must call before connect
+{% endhint %}
 
 | Type | Param | Return |
 | :--- | :--- | :--- |
@@ -140,10 +173,11 @@
 
 **Desc:** Set whether a guest to hear the other guests in room
 
-| Type | Param | Param value | Return |
-| :--- | :--- | :--- | :--- |
-| **method** | **`bool`** | **`true`**- guest will be hear other guests | - |
-|  |  | **`false`** - guest will not hear other guests |  |
+| Type | Param | Return |
+| :--- | :--- | :--- |
+| **method** | **`bool`** | - |
+|  | **`true`**- guest will be hear other guests |  |
+|  | **`false`** - guest will not hear other guests |  |
 
 ### `onMessage`
 
@@ -165,7 +199,11 @@
 
 ### **`onUserStatusChanged`**
 
-**Desc:** Event that is triggered when the status of the room owner changes. \(be sure to add at the end of the code\)
+**Desc:** Event that is triggered when the status of the room owner changes
+
+{% hint style="info" %}
+Be sure to add at the end of the code
+{% endhint %}
 
 | Type | Param | Return |
 | :--- | :--- | :--- |
@@ -173,7 +211,11 @@
 
 ### **`onRoomFull`**
 
-**Desc:** Event that is called when connecting if the room is full \(be sure to add at the end of the code\)
+**Desc:** Event that is called when connecting if the room is full
+
+{% hint style="info" %}
+Be sure to add at the end of the code
+{% endhint %}
 
 | Type | Param | Return |
 | :--- | :--- | :--- |
@@ -181,7 +223,11 @@
 
 ### **`onStream`**
 
-**Desc:** Event that handle stream \(be sure to add at the end of the code\)
+**Desc:** Event that handle stream
+
+{% hint style="info" %}
+Be sure to add at the end of the code
+{% endhint %}
 
 | Type | Param | Return |
 | :--- | :--- | :--- |
@@ -189,7 +235,11 @@
 
 ### **`onMediaError`**
 
-**Desc:** Event that handle stream error \(be sure to add at the end of the code\)
+**Desc:** Event that handle stream error
+
+{% hint style="info" %}
+Be sure to add at the end of the code
+{% endhint %}
 
 | Type | Param | Return |
 | :--- | :--- | :--- |
@@ -207,7 +257,11 @@
 
 ### **`setElementsHTMLVideoContainerRemote`**
 
-**Desc:** Set HTML elems for display remote video streams \(must call before connect\)
+**Desc:** Set HTML elems for display remote video streams
+
+{% hint style="info" %}
+Must call before connect
+{% endhint %}
 
 | Type | Param | Return |
 | :--- | :--- | :--- |
@@ -215,7 +269,11 @@
 
 ### **`setElementsHTMLVideoContainerLocal`**
 
-**Desc:** Set HTML elems for display local camera and screen \(must call before connect\)
+**Desc:** Set HTML elems for display local camera and screen
+
+{% hint style="info" %}
+Must call before connect
+{% endhint %}
 
 | Type | Param | Return |
 | :--- | :--- | :--- |
@@ -224,12 +282,16 @@
 
 ### **`setConnectBtnUI`**
 
-**Desc:** Set callbacks for changing button state \(must call before connect\)
+**Desc:** Set callbacks for changing button state
+
+{% hint style="info" %}
+Must call before connect
+{% endhint %}
 
 | Type | Param | Return |
 | :--- | :--- | :--- |
-| **method** | **`Callback`** for displaying the connection | - |
-|  | **`Callback`** for displaying the disconnection |  |
+| **method** | **`сallback`** for displaying the connection | - |
+|  | **`сallback`** for displaying the disconnection |  |
 
 ### **`setUserSatusConnection`**
 
@@ -280,7 +342,11 @@
 
 ### **`microOff`**
 
-**Desc:** Disable micro \(it can be called anywhere in the code, but after defining an instance of this class\)
+**Desc:** Disable micro
+
+{% hint style="info" %}
+It can be called anywhere in the code, but after defining an instance of this class
+{% endhint %}
 
 | Type | Param | Return |
 | :--- | :--- | :--- |
@@ -288,7 +354,11 @@
 
 ### **`microOn`**
 
-**Desc:** Enable micro \(it can be called anywhere in the code, but after defining an instance of this class\)
+**Desc:** Enable micro
+
+{% hint style="info" %}
+It can be called anywhere in the code, but after defining an instance of this class
+{% endhint %}
 
 | Type | Param | Return |
 | :--- | :--- | :--- |
@@ -296,7 +366,11 @@
 
 ### **`screenShareOn`**
 
-**Desc:** Enable screen sharing \(it can be called anywhere in the code, but after defining an instance of this class\)
+**Desc:** Enable screen sharing
+
+{% hint style="info" %}
+It can be called anywhere in the code, but after defining an instance of this class
+{% endhint %}
 
 | Type | Param | Return |
 | :--- | :--- | :--- |
@@ -304,7 +378,11 @@
 
 ### **`screenShareOff`**
 
-**Desc:** Disable screen sharing \(it can be called anywhere in the code, but after defining an instance of this class\)
+**Desc:** Disable screen sharing
+
+{% hint style="info" %}
+It can be called anywhere in the code, but after defining an instance of this class
+{% endhint %}
 
 | Type | Param | Return |
 | :--- | :--- | :--- |
@@ -312,7 +390,11 @@
 
 ### **`localCameraOff`**
 
-**Desc:** Disable local camera \(it can be called anywhere in the code, but after defining an instance of this class\)
+**Desc:** Disable local camera
+
+{% hint style="info" %}
+It can be called anywhere in the code, but after defining an instance of this class
+{% endhint %}
 
 | Type | Param | Return |
 | :--- | :--- | :--- |
@@ -320,7 +402,11 @@
 
 ### **`localCameraOn`**
 
-**Desc:** Enable local camera \(it can be called anywhere in the code, but after defining an instance of this class\)
+**Desc:** Enable local camera
+
+{% hint style="info" %}
+It can be called anywhere in the code, but after defining an instance of this class
+{% endhint %}
 
 | Type | Param | Return |
 | :--- | :--- | :--- |
@@ -373,7 +459,11 @@
 
 ### **`disconnect`**
 
-**Desc:** Disabling and deleting a room \(it can be called anywhere in the code, but after defining an instance of this class\)
+**Desc:** Disabling and deleting a room
+
+{% hint style="info" %}
+It can be called anywhere in the code, but after defining an instance of this class
+{% endhint %}
 
 | Type | Param | Return |
 | :--- | :--- | :--- |
@@ -397,7 +487,11 @@
 
 ### **`onUserStatusChanged`**
 
-**Desc:** Event that is triggered when the status of the room owner changes. \(be sure to add at the end of the code\)
+**Desc:** Event that is triggered when the status of the room owner changes
+
+{% hint style="info" %}
+Be sure to add at the end of the code
+{% endhint %}
 
 | Type | Param | Return |
 | :--- | :--- | :--- |
@@ -405,7 +499,11 @@
 
 ### **`onStream`**
 
-**Desc:** Event that handle stream \(be sure to add at the end of the code\)
+**Desc:** Event that handle stream
+
+{% hint style="info" %}
+Be sure to add at the end of the code
+{% endhint %}
 
 | Type | Param | Return |
 | :--- | :--- | :--- |
@@ -413,7 +511,11 @@
 
 ### **`onMediaError`**
 
-**Desc:** Event that handle stream error \(be sure to add at the end of the code\)
+**Desc:** Event that handle stream error
+
+{% hint style="info" %}
+Be sure to add at the end of the code
+{% endhint %}
 
 | Type | Param | Return |
 | :--- | :--- | :--- |
@@ -422,6 +524,10 @@
 ### `onMessage`
 
 **Desc:** Event handler for massage from guests
+
+{% hint style="info" %}
+Be sure to add at the end of the code
+{% endhint %}
 
 | Type | Param | Return |
 | :--- | :--- | :--- |
