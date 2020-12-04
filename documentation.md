@@ -89,9 +89,10 @@
 
 **Desc:** Get current user connection status
 
-| Type | Param | Return |
-| :--- | :--- | :--- |
-| **method** | - | **`bool`** |
+| Type | Param | Return | Returned value |
+| :--- | :--- | :--- | :--- |
+| **method** | - | **`bool`** | **`true`** - connected |
+|  |  |  | **`false`** - disconnected |
 
 ### **`setElementHTMLVideoContainerRemote`**
 
@@ -131,9 +132,10 @@
 
 **Desc:** Set whether a guest to hear the other guests in room
 
-| Type | Param | Return |
-| :--- | :--- | :--- |
-| **method** | **`bool`** | - |
+| Type | Param | Param value | Return |
+| :--- | :--- | :--- | :--- |
+| **method** | **`bool`** | **`true`**- guest will be hear other guests | - |
+|  |  | **`false`** - guest will not hear other guests |  |
 
 ### **`getGuestAudibility`**
 
@@ -142,6 +144,8 @@
 | Type | Param | Return |
 | :--- | :--- | :--- |
 | **method** | - | **`bool`** |
+|  |  | **`true`** - guest will be hear other guests |
+|  |  | **`false`** - guest will not hear other guests |
 
 ### **`onUserStatusChanged`**
 
@@ -183,7 +187,7 @@
 
 | Type | Param | Return |
 | :--- | :--- | :--- |
-| **method** | **int** | - |
+| **method** | **`int`** | - |
 
 ### **`setElementsHTMLVideoContainerRemote`**
 
@@ -191,7 +195,7 @@
 
 | Type | Param | Return |
 | :--- | :--- | :--- |
-| **method** | **HTML elems** for display remote camera \(the number of elements must be exactly max guest count\) | - |
+| **method** | **`HTML elems`** for display remote camera \(the number of elements must be exactly max guest count\) | - |
 
 ### **`setElementsHTMLVideoContainerLocal`**
 
@@ -199,8 +203,8 @@
 
 | Type | Param | Return |
 | :--- | :--- | :--- |
-| **method** | **HTML elem** for display local camera | - |
-|  | **HTML elem** for display screen |  |
+| **method** | **`HTML elem`** for display local camera | - |
+|  | **`HTML elem`** for display screen |  |
 
 ### **`setConnectBtnUI`**
 
@@ -208,8 +212,8 @@
 
 | Type | Param | Return |
 | :--- | :--- | :--- |
-| **method** | **Callback** for displaying the connection | - |
-|  | **Callback** for displaying the disconnection |  |
+| **method** | **`Callback`** for displaying the connection | - |
+|  | **`Callback`** for displaying the disconnection |  |
 
 ### **`setUserSatusConnection`**
 
@@ -218,6 +222,8 @@
 | Type | Param | Return |
 | :--- | :--- | :--- |
 | **method** | **`bool`** | - |
+|  | **`true`** - connected |  |
+|  | **`false`** - disconnected |  |
 
 ### **`getUserStatusConnection`**
 
@@ -226,6 +232,8 @@
 | Type | Param | Return |
 | :--- | :--- | :--- |
 | **method** | - | **`bool`** |
+|  |  | **`true`** - connected |
+|  |  | **`false`**- disconnected |
 
 ### **`setRoomID`**
 
