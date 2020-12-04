@@ -209,7 +209,7 @@ Be sure to add at the end of the code
 
 ### **`onRoomFull`**
 
-**Desc:** Event that is called when connecting if the room is full
+**Desc:** Event handler that is called when connecting if the room is full
 
 {% hint style="info" %}
 Be sure to add at the end of the code
@@ -221,7 +221,7 @@ Be sure to add at the end of the code
 
 ### **`onStream`**
 
-**Desc:** Event that handle stream
+**Desc:** Event handler that handle stream
 
 {% hint style="info" %}
 Be sure to add at the end of the code
@@ -233,7 +233,7 @@ Be sure to add at the end of the code
 
 ### **`onMediaError`**
 
-**Desc:** Event that handle stream error
+**Desc:** Event handler that handle stream error
 
 {% hint style="info" %}
 Be sure to add at the end of the code
@@ -245,7 +245,7 @@ Be sure to add at the end of the code
 
 ### `onMessage`
 
-**Desc:** Handler for messgae from other peers
+**Desc:** Event handler for messgae from other peers
 
 | Type | Param | Return |
 | :--- | :--- | :--- |
@@ -495,7 +495,7 @@ It can be called anywhere in the code, but after defining an instance of this cl
 
 ### **`onUserStatusChanged`**
 
-**Desc:** Event that is triggered when the status of the room owner changes
+**Desc:** Event handler that is triggered when the status of the room owner changes
 
 {% hint style="info" %}
 Be sure to add at the end of the code
@@ -507,7 +507,7 @@ Be sure to add at the end of the code
 
 ### **`onStream`**
 
-**Desc:** Event that handle stream
+**Desc:** Event handler that handle stream
 
 {% hint style="info" %}
 Be sure to add at the end of the code
@@ -519,7 +519,7 @@ Be sure to add at the end of the code
 
 ### **`onMediaError`**
 
-**Desc:** Event that handle stream error
+**Desc:** Event handler that handle stream error
 
 {% hint style="info" %}
 Be sure to add at the end of the code
