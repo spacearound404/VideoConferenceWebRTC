@@ -1,5 +1,5 @@
 # Table of contents
 
-* [Get Stared](README.md)
+* [VideoConferenceWebRTC](README.md)
 * [Documentation](documentation.md)
 
