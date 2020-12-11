@@ -40,34 +40,7 @@ class GuestVC {
             connectCallback: function() {}, // callback to change the status of the connect/disconnect button to connect
             disconnectCallback: function(){} // callback to change the status of the connect/disconnect button to disconnect
         };
-        this.guestAudibility = false;
-        this.designer = {
-            instance: new CanvasDesigner(),
-            tools: {
-                line: true,
-                arrow: true,
-                pencil: true,
-                marker: true,
-                // dragSingle: true,
-                // dragMultiple: true,
-                eraser: true,
-                // rectangle: true,
-                arc: true,
-                // bezier: true,
-                quadratic: true,
-                text: true,
-                // image: true,
-                // pdf: true,
-                zoom: true,
-                lineWidth: true,
-                colorsPicker: true,
-                // extraOptions: true,
-                // code: true,
-                undo: true
-            },
-            selected: "pencil",
-            elementHTML: 0
-        }
+        this.guestAudibility = false;        
     }
 
     // ---METHODS---
@@ -168,16 +141,30 @@ class GuestVC {
     // enable/unmute microphone
     microOn() {
         this.connection.streamEvents[this.connection.attachStreams[0].streamid].stream.unmute("audio");
+        this.videoContainerLocal.elementHTML.children[0].muted = true;
     }
 
     // disable/mute web-camera
     localCameraOff() {
-        this.connection.streamEvents[this.connection.attachStreams[0].streamid].stream.mute("video");
+        // this.connection.streamEvents[this.connection.attachStreams[0].streamid].stream.mute("video");
+        let data = {
+            action: "mute_video",
+            streamID: this.connection.attachStreams[0].streamid,
+        };
+        this.connection.send(data);
+        document.getElementById(this.connection.attachStreams[0].streamid).style.display = "none";
+
     }
 
     // enable/unmute web-camera
     localCameraOn() {
-        this.connection.streamEvents[this.connection.attachStreams[0].streamid].stream.unmute("video");
+        // this.connection.streamEvents[this.connection.attachStreams[0].streamid].stream.unmute("video");
+        let data = {
+            action: "unmute_video",
+            streamID: this.connection.attachStreams[0].streamid,
+        };
+        this.connection.send(data);
+        document.getElementById(this.connection.attachStreams[0].streamid).style.display = "block";
     }
 
     // set user name
@@ -245,28 +232,6 @@ class GuestVC {
         return this.guestAudibility;
     }
 
-    // enable and setup dashboard
-    dashboard(elementHTMLParam) {
-        this.designer.elementHTML = elementHTMLParam;
-
-        this.designer.instance.widgetHtmlURL = 'https://cdn.webrtc-experiment.com/Canvas-Designer/widget.html';
-        this.designer.instance.widgetJsURL = 'https://cdn.webrtc-experiment.com/Canvas-Designer/widget.js';
-
-        this.designer.instance.setSelected(this.designer.selected);
-
-        this.designer.instance.setTools(this.designer.tools);
-
-        this.designer.instance.appendTo(this.designer.elementHTML);
-    }
-
-    designerAddSyncListener() {
-        let thisGuestVC = this.getInstance();
-
-        this.designer.instance.addSyncListener(function(data) {
-            thisGuestVC.connection.send(data);
-        });
-    }
-
 
     // ---Events---
 
@@ -301,7 +266,7 @@ class GuestVC {
                 case "local": {
                     // set a video stream in an HTML container
                     thisGuestVC.videoContainerLocal.elementHTML.appendChild(event.mediaElement);
-
+                    thisGuestVC.videoContainerLocal.elementHTML.children[0].muted = true;
                     break;
                 }
                 case "remote": {
@@ -354,16 +319,6 @@ class GuestVC {
 
         this.connection.onmessage = function(event) {
 
-            if (event.data === 'plz-sync-points') {
-                // sync data for dashboard
-                thisGuestVC.designer.instance.sync();
-                return;
-            }
-            if (event.data.points != undefined) {
-                // sync data for dashboard
-                thisGuestVC.designer.instance.syncData(event.data);
-            }
-
             // callback for custom messages
             callback(event.data);
         };
@@ -375,14 +330,6 @@ class GuestVC {
 
         this.connection.onopen = function(event) {
 
-            if (thisGuestVC.designer.instance.pointsLength <= 0) {
-
-                // make sure that remote user gets all drawings synced.
-                setTimeout(function() {
-                    // send message for sync dashboard with other guests
-                    thisGuestVC.connection.send('plz-sync-points');
-                }, 1000);
-            }
         };
     }
 }
@@ -449,34 +396,7 @@ class AdminVC {
             },
             frameRate: 30,
             bitrate: 128000
-        }
-        this.designer = {
-            instance: new CanvasDesigner(),
-            tools: {
-                line: true,
-                arrow: true,
-                pencil: true,
-                marker: true,
-                // dragSingle: true,
-                // dragMultiple: true,
-                eraser: true,
-                // rectangle: true,
-                arc: true,
-                // bezier: true,
-                quadratic: true,
-                text: true,
-                // image: true,
-                // pdf: true,
-                zoom: true,
-                lineWidth: true,
-                colorsPicker: true,
-                // extraOptions: true,
-                // code: true,
-                undo: true
-            },
-            selected: "pencil",
-            elementHTML: 0
-        }
+        };
         this.contentView = {
             elementHTML: 0
         };
@@ -546,6 +466,7 @@ class AdminVC {
     // enable/unmute microphone
     microOn() {
         this.connection.streamEvents[this.connection.attachStreams[0].streamid].stream.unmute("audio");
+        this.videoContainerLocal.camera.elementHTML.children[0].muted = true;
     }
 
     // enable screen sharing
@@ -773,19 +694,6 @@ class AdminVC {
         });
     }
 
-    dashboard(elementHTMLParam) {
-        this.designer.elementHTML = elementHTMLParam;
-
-        this.designer.instance.widgetHtmlURL = 'https://cdn.webrtc-experiment.com/Canvas-Designer/widget.html';
-        this.designer.instance.widgetJsURL = 'https://cdn.webrtc-experiment.com/Canvas-Designer/widget.js'
-
-        this.designer.instance.setTools(this.designer.tools);
-
-        this.designer.instance.setSelected(this.designer.selected);
-
-        this.designer.instance.appendTo(this.designer.elementHTML);
-    }
-
     setContentViewContainer(elementHTML) {
 
     }
@@ -838,8 +746,6 @@ class AdminVC {
         let thisAdminVC = this.getInstance();
 
         this.connection.onstream = function(event) {
-
-            console.log(event);
 
             switch(event.type) {
                 // this case for handling incoming remote connections
@@ -902,13 +808,20 @@ class AdminVC {
         let thisAdminVC = this.getInstance();
 
         this.connection.onmessage = function(event) {
+            // console.log(event);
+            switch(event.data.action) {
+                case 'mute_video': {
+                    document.getElementById(event.data.streamID).style.display = "none";
 
-            if (event.data === 'plz-sync-points') {
-                thisAdminVC.designer.instance.sync();
-                return;
+                    break;
+                }
+                case 'unmute_video': {
+                    document.getElementById(event.data.streamID).style.display = "block";
+                    break;
+                }
             }
 
-            thisAdminVC.designer.instance.syncData(event.data);
+
 
             callback(event.data);
         };
@@ -918,21 +831,7 @@ class AdminVC {
         let thisAdminVC = this.getInstance();
 
         this.connection.onopen = function(event) {
-            if (thisAdminVC.designer.instance.pointsLength <= 0) {
 
-                // make sure that remote user gets all drawings synced.
-                setTimeout(function() {
-                    thisAdminVC.connection.send('plz-sync-points');
-                }, 1000);
-            }
         };
-    }
-
-    designerAddSyncListener() {
-        let thisAdminVC = this.getInstance();
-
-        this.designer.instance.addSyncListener(function(data) {
-            thisAdminVC.connection.send(data);
-        });
     }
 }

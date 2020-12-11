@@ -6,6 +6,10 @@ Lib for quickly creating a web video chat with using RTCMultiConnection lib.
 
 ### Latest update
 
+11.12.2020
+* Fixed bugs with mute/unmute video
+* Fixed bugs with echo 
+
 2.12.2020
 * Add screen recorder
 * Add share content

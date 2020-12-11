@@ -44,11 +44,6 @@ document.getElementById('connect').onclick = function() {
 
 }
 
-
-// enable dashboard
-student.dashboard(document.querySelector('.overlay-dashboard'));
-student.designerAddSyncListener();
-
 // set default handler for webrtc class
 
 // handler for all messages
@@ -68,6 +63,8 @@ student.onUserStatusChanged();
 student.onRoomFull();
 student.onStream();
 student.onMediaError();
+// student.onMute();
+// student.onUnmute();
 
 // define default button control state
 function defaultControlState() {
@@ -103,6 +100,7 @@ let micro = false,
 // handler button for micro
 document.querySelector('.micro').onclick = function(e){
     micro = !micro;
+
     if (micro) {
 
         // disable

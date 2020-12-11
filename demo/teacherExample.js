@@ -46,10 +46,6 @@ document.getElementById('connect').onclick = function() {
     }
 }
 
-// set dashboard
-teacher.dashboard(document.querySelector('.overlay-dashboard'));
-teacher.designerAddSyncListener();
-
 // set default handler for webrtc class
 
 // handler for all messages
@@ -59,6 +55,8 @@ teacher.detect2g();
 teacher.onUserStatusChanged();
 teacher.onStream();
 teacher.onMediaError();
+// teacher.onMute();
+// teacher.onUnmute();
 
 //example how to send some data to guests
 document.querySelector('#example-send-data-btn').onclick = function(e){
