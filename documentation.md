@@ -94,6 +94,24 @@ It can be called anywhere in the code, but after defining an instance of this cl
 | **method** | **`string`** | - |
 |  | **`int`** |  |
 
+### **`getUserID`**
+
+**Desc:** Get user ID
+
+| Type | Param | Return |
+| :--- | :--- | :--- |
+| **method** | - | **`string`** |
+|  | - | **`int`** |
+
+### **`getUsersList`**
+
+**Desc:** Get users ID in room
+
+| Type | Param | Return |
+| :--- | :--- | :--- |
+| **method** | - | **`string array`** |
+|  | - |  |
+
 ### **`setRoomID`**
 
 **Desc:** Set room ID for connection
@@ -120,6 +138,18 @@ It can be called anywhere in the code, but after defining an instance of this cl
 | **method** | - | **`bool`** |
 |  |  | **`true`** - connected |
 |  |  | **`false`** - disconnected |
+
+### **`setContentViewContainer`**
+
+**Desc:** Set HTML elems for display some content in content view
+
+{% hint style="info" %}
+Must call before connect
+{% endhint %}
+
+| Type | Param | Return |
+| :--- | :--- | :--- |
+| **method** | **`HTML elem`** for ome content in content view | - |
 
 ### **`setElementHTMLVideoContainerRemote`**
 
@@ -288,6 +318,18 @@ Must call before connect
 | **method** | **`HTML elem`** for display local camera | - |
 |  | **`HTML elem`** for display screen |  |
 
+### **`setContentViewContainer`**
+
+**Desc:** Set HTML elems for display some content in content view
+
+{% hint style="info" %}
+Must call before connect
+{% endhint %}
+
+| Type | Param | Return |
+| :--- | :--- | :--- |
+| **method** | **`HTML elem`** for ome content in content view | - |
+
 ### **`setConnectBtnUI`**
 
 **Desc:** Set callbacks for changing button state
@@ -300,6 +342,54 @@ Must call before connect
 | :--- | :--- | :--- |
 | **method** | **`сallback`** for displaying the connection | - |
 |  | **`сallback`** for displaying the disconnection |  |
+
+### **`setVideoRecordingConfig`**
+
+**Desc:** Set config for screen recorder
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align:left">Type</th>
+      <th style="text-align:left">Param</th>
+      <th style="text-align:left">Return</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align:left"><b>method</b>
+      </td>
+      <td style="text-align:left">
+        <p><code>{</code>
+        </p>
+        <p><code>    type: &quot;video&quot;,</code>
+        </p>
+        <p><code>    mimeType: &quot;video/webm&quot;,</code>
+        </p>
+        <p><code>    resolution: { </code>
+        </p>
+        <p><code>        width: 1280,</code>
+        </p>
+        <p><code>        height: 720 </code>
+        </p>
+        <p><code>    },</code>
+        </p>
+        <p><code>    frameRate: 30,</code>
+        </p>
+        <p><code>    bitrate: 128000,</code>
+        </p>
+        <p><code>}</code>
+        </p>
+      </td>
+      <td style="text-align:left">-</td>
+    </tr>
+    <tr>
+      <td style="text-align:left"></td>
+      <td style="text-align:left"></td>
+      <td style="text-align:left"></td>
+    </tr>
+  </tbody>
+</table>
 
 ### **`setUserSatusConnection`**
 
@@ -330,6 +420,15 @@ Must call before connect
 | **method** | **`string`** | - |
 |  | **`int`** |  |
 
+### **`getUserID`**
+
+**Desc:** Get user ID
+
+| Type | Param | Return |
+| :--- | :--- | :--- |
+| **method** | - | **`string`** |
+|  | - | **`int`** |
+
 ### **`setUserID`**
 
 **Desc:** Set user ID
@@ -339,6 +438,15 @@ Must call before connect
 | **method** | **`string`** | - |
 |  | **`int`** |  |
 
+### **`getUsersList`**
+
+**Desc:** Get users ID in room
+
+| Type | Param | Return |
+| :--- | :--- | :--- |
+| **method** | - | **`string array`** |
+|  | - |  |
+
 ### **`setUserName`**
 
 **Desc:** Set user name
@@ -347,6 +455,34 @@ Must call before connect
 | :--- | :--- | :--- |
 | **method** | **`string`** | - |
 |  | **`int`** |  |
+
+### **`screenRecordingOn`**
+
+**Desc:** turn on screen recorder
+
+{% hint style="info" %}
+It can be called anywhere in the code, but after defining an instance of this class
+{% endhint %}
+
+| Type | Param | Return |
+| :--- | :--- | :--- |
+| **method** | - | **`bool`** |
+|  |  | **`true`** - if success start |
+|  |  | **`false`** - if error |
+
+### **`screenRecordingOff`**
+
+**Desc:** turn on screen recorder
+
+{% hint style="info" %}
+It can be called anywhere in the code, but after defining an instance of this class
+{% endhint %}
+
+| Type | Param | Return |
+| :--- | :--- | :--- |
+| **method** | **`callback(blob)`** | **`bool`** |
+|  |  | **`true`** - if success end |
+|  |  | **`false`** - if error |
 
 ### **`microOff`**
 
