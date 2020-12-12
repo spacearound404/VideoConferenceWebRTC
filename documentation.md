@@ -108,7 +108,6 @@ It can be called anywhere in the code, but after defining an instance of this cl
 | Type | Param | Return |
 | :--- | :--- | :--- |
 | **method** | - | **`string array`** |
-|  | - |  |
 
 ### **`setRoomID`**
 
@@ -136,18 +135,6 @@ It can be called anywhere in the code, but after defining an instance of this cl
 | **method** | - | **`bool`** |
 |  |  | **`true`** - connected |
 |  |  | **`false`** - disconnected |
-
-### **`setContentViewContainer`**
-
-**Desc:** Set HTML elems for display some content in content view
-
-{% hint style="info" %}
-Must call before connect
-{% endhint %}
-
-| Type | Param | Return |
-| :--- | :--- | :--- |
-| **method** | **`HTML elem`** for ome content in content view | - |
 
 ### **`setElementHTMLVideoContainerRemote`**
 
@@ -318,7 +305,7 @@ Must call before connect
 
 ### **`setContentViewContainer`**
 
-**Desc:** Set HTML elems for display some content in content view
+**Desc:** Set HTML elems for copy children
 
 {% hint style="info" %}
 Must call before connect
@@ -326,7 +313,7 @@ Must call before connect
 
 | Type | Param | Return |
 | :--- | :--- | :--- |
-| **method** | **`HTML elem`** for ome content in content view | - |
+| **method** | **`HTML elem`**  | - |
 
 ### **`setConnectBtnUI`**
 
@@ -441,7 +428,6 @@ Must call before connect
 | Type | Param | Return |
 | :--- | :--- | :--- |
 | **method** | - | **`string array`** |
-|  | - |  |
 
 ### **`setUserName`**
 
