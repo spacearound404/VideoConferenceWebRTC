@@ -92,7 +92,6 @@ It can be called anywhere in the code, but after defining an instance of this cl
 | Type | Param | Return |
 | :--- | :--- | :--- |
 | **method** | **`string`** | - |
-|  | **`int`** |  |
 
 ### **`getUserID`**
 
@@ -101,7 +100,6 @@ It can be called anywhere in the code, but after defining an instance of this cl
 | Type | Param | Return |
 | :--- | :--- | :--- |
 | **method** | - | **`string`** |
-|  | - | **`int`** |
 
 ### **`getUsersList`**
 
@@ -427,7 +425,6 @@ Must call before connect
 | Type | Param | Return |
 | :--- | :--- | :--- |
 | **method** | - | **`string`** |
-|  | - | **`int`** |
 
 ### **`setUserID`**
 
@@ -436,7 +433,6 @@ Must call before connect
 | Type | Param | Return |
 | :--- | :--- | :--- |
 | **method** | **`string`** | - |
-|  | **`int`** |  |
 
 ### **`getUsersList`**
 
