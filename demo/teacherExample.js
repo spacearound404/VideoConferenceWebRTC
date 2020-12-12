@@ -191,24 +191,45 @@ document.querySelector('.screen-share').onclick = function(e){
 document.querySelector('.screen-recording').onclick = function(e){
     if (screen_record) {
         // disable
-        document.querySelector('.screen-recording > svg:nth-child(2)').style.display = "block";
-        document.querySelector('.screen-recording > svg:nth-child(1)').style.display = "none";
+        let result = teacher.screenRecordingOff(function(blobParam) {
+            zip.workerScriptsPath = "../libs/";
 
-        teacher.screenRecordingOff(function(blobParam) {
-            // let link = document.createElement('a');
-            // link.download = 'test_video.mpeg';
-            // link.href = thisAdminVC.videoRecording.elementHTML.src;
-            // link.click();
-            // URL.revokeObjectURL(link.href);
+            function zipBlob(filename, blob, callback) {
+                // use a zip.BlobWriter object to write zipped data into a Blob object
+                zip.createWriter(new zip.BlobWriter("application/zip"), function(zipWriter) {
+                    // use a BlobReader object to read the data stored into blob variable
+                    zipWriter.add(filename, new zip.BlobReader(blob), function() {
+                        // close the writer and calls callback function
+                        zipWriter.close(callback);
+                    });
+                }, onerror);
+            }
+            // create zip file
+            zipBlob('video.webm', blobParam, (zippedBlob) => {
+
+                // download zip for test
+                let link = document.createElement('a');
+                link.download = 'archive.zip';
+                link.href = URL.createObjectURL(zippedBlob);
+                link.click();
+                URL.revokeObjectURL(link.href);
+            });
         });
+
+        if(result != false) {
+            document.querySelector('.screen-recording > svg:nth-child(2)').style.display = "block";
+            document.querySelector('.screen-recording > svg:nth-child(1)').style.display = "none";
+            screen_record = !screen_record;
+        }
     } else {
         // enable
-        document.querySelector('.screen-recording > svg:nth-child(2)').style.display = "none";
-        document.querySelector('.screen-recording > svg:nth-child(1)').style.display = "block";
-
-        teacher.screenRecordingOn();
+        let result = teacher.screenRecordingOn();
+        if (result != false) {
+            document.querySelector('.screen-recording > svg:nth-child(2)').style.display = "none";
+            document.querySelector('.screen-recording > svg:nth-child(1)').style.display = "block";
+            screen_record = !screen_record;
+        }
     }
-    screen_record = !screen_record;
 }
 
 // handler button for dashboard

@@ -63,8 +63,6 @@ student.onUserStatusChanged();
 student.onRoomFull();
 student.onStream();
 student.onMediaError();
-// student.onMute();
-// student.onUnmute();
 
 // define default button control state
 function defaultControlState() {
