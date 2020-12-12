@@ -232,6 +232,10 @@
             this.videoContainerLocal.elementHTML = localCameraContainerParam;
         }
 
+        setContentViewContainer(elementHTML) {
+            this.contentView.elementHTML = elementHTML;
+        }
+
         // set callbacks for changing button state
         setConnectBtnUI(connectCallbackParam, disconnectCallbackParam) {
             this.connectBtn.connectCallback = connectCallbackParam;
@@ -426,14 +430,16 @@
                     screen: 0,
                 },
                 isActive: false,
-                type: "video",
-                mimeType: "video/webm",
-                resolution: {
-                    width: 1280,
-                    height: 720
-                },
-                frameRate: 30,
-                bitrate: 128000
+                config: {
+                    type: "video",
+                    mimeType: "video/webm",
+                    resolution: {
+                        width: 1280,
+                        height: 720
+                    },
+                    frameRate: 30,
+                    bitrate: 128000,
+                }
             };
             this.contentView = {
                 elementHTML: 0
@@ -479,6 +485,10 @@
         // get user status connection (value is true or false)
         getUserStatusConnection() {
             return this.user.statusConnection;
+        }
+
+        setVideoRecordingConfig(param) {
+            this.videoRecording.config = param;
         }
 
         // set room ID
@@ -774,11 +784,11 @@
                     thisAdminVC.videoRecording.stream.audio = streamMicro;
 
                     var config = {
-                        type: thisAdminVC.videoRecording.type,
-                        mimeType: thisAdminVC.videoRecording.mimeType,
-                        frameRate: thisAdminVC.videoRecording.frameRate,
-                        bitrate: thisAdminVC.videoRecording.bitrate,
-                        video: thisAdminVC.videoRecording.resolution
+                        type: thisAdminVC.videoRecording.config.type,
+                        mimeType: thisAdminVC.videoRecording.config.mimeType,
+                        frameRate: thisAdminVC.videoRecording.config.frameRate,
+                        bitrate: thisAdminVC.videoRecording.config.bitrate,
+                        video: thisAdminVC.videoRecording.config.resolution
                     }
 
                     thisAdminVC.recorder = new MultiStreamRecorder([streamMicro, screen], config);
@@ -825,7 +835,7 @@
         }
 
         setContentViewContainer(elementHTML) {
-
+            this.contentView.elementHTML = elementHTML;
         }
 
         // send some data to guests for display it in content view
