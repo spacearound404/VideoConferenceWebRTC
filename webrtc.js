@@ -201,15 +201,21 @@
         // get users list in room
         getUsersList() {
             let users = [],
-                usersLength = this.connection.attachStreams.length,
+                usersLength = Object.keys(this.connection.streamEvents).length,
                 tmpUserID = "",
                 tmpStreamID = "";
 
             for (let i = 0; i < usersLength; i++) {
-                tmpStreamID = this.connection.attachStreams[i].streamid;
-                tmpUserID = this.connection.streamEvents[tmpStreamID].userid
-                users.push(tmpUserID);
+                let tmpKey = Object.keys(this.connection.streamEvents)[i];
+
+                if ((tmpKey.indexOf("selectFirst") == -1) && (tmpKey.indexOf("selectAll") == -1)) {
+
+                    tmpUserID = this.connection.streamEvents[tmpKey].userid;
+                    users.push(tmpUserID);
+                }
             }
+
+            return users;
         }
 
         // set user status connection (value is true or false)
@@ -510,15 +516,21 @@
         // get users list in room
         getUsersList() {
             let users = [],
-                usersLength = this.connection.attachStreams.length,
+                usersLength = Object.keys(this.connection.streamEvents).length,
                 tmpUserID = "",
                 tmpStreamID = "";
 
             for (let i = 0; i < usersLength; i++) {
-                tmpStreamID = this.connection.attachStreams[i].streamid;
-                tmpUserID = this.connection.streamEvents[tmpStreamID].userid
-                users.push(tmpUserID);
+                let tmpKey = Object.keys(this.connection.streamEvents)[i];
+
+                if ((tmpKey.indexOf("selectFirst") == -1) && (tmpKey.indexOf("selectAll") == -1)) {
+
+                    tmpUserID = this.connection.streamEvents[tmpKey].userid;
+                    users.push(tmpUserID);
+                }
             }
+
+            return users;
         }
 
         // set user name
