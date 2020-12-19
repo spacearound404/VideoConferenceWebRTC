@@ -160,11 +160,17 @@
             this.connection.closeSocket();
         }
 
+        // set elem HTML for display chat
         setElementHTMLMessages(elementHTMLParam) {
             this.chat.elementHTML = elementHTMLParam;
         }
 
+        // set chat mode
+        setChatMode(configParam) {
+            this.chat.mode = configParam;
+        }
 
+        // send message for chat
         sendMsg(msgParam, userToParam = "") {
             let data = {
                     userFrom: this.user.id,
@@ -203,6 +209,7 @@
             }
         }
 
+        // set classes for styling messages in chat
         setClassStyleMsg(configParam) {
             this.chat.classStyle = configParam;
         }
@@ -629,6 +636,7 @@
             this.chat.mode = configParam;
         }
 
+        // send message for chat
         sendMsg(msgParam, userToParam = "") {
             let data = {
                     userFrom: this.user.id,
@@ -667,10 +675,12 @@
             }
         }
 
+        // set classes for styling message in chat
         setClassStyleMsg(configParam) {
             this.chat.classStyle = configParam;
         }
 
+        // set elem HTML for display messages
         setElementHTMLMessages(elementHTMLParam) {
             this.chat.elementHTML = elementHTMLParam;
         }
