@@ -46,6 +46,20 @@ document.getElementById('connect').onclick = function() {
     }
 }
 
+// own: "",
+// fromGuestToMe: "",
+// fromMeToGuest: "",
+// guests: "",
+
+teacher.setElementHTMLMessages(document.querySelector(".messages"));
+teacher.setClassStyleMsg({
+    own: "own-message",
+    fromGuestToMe: "guest-to-me-owner-message",
+    fromMeToGuest: "me-owner-to-guest-message",
+    fromGuestToGuest: "guest-to-guest-message-owner",
+    guests: "guest-to-all-message"
+});
+
 // set default handler for webrtc class
 
 // handler for all messages
@@ -270,4 +284,37 @@ document.querySelector('.content-view').onclick = function(e){
         document.querySelector('.overlay-content-view').style.display = "block";
     }
     contentView = !contentView;
+}
+
+// handler button for chat
+document.querySelector('.custom-input > svg').onclick = function(e){
+    let input = document.querySelector(".custom-input > input"),
+    message = input.value;
+    input.value = "";
+
+    if (message.length > 0) {
+        if (message.indexOf("@") == -1) {
+            teacher.sendMsg(message);
+        } else {
+
+            let startIndex = message.indexOf("@"),
+                userToArray = [],
+                userTo = "",
+                messageWithoutUserID = "";
+
+            for(let i = startIndex, j = 0; i < message.length; i++) {
+                if(message[i] == ' ') {
+                    break;
+                } else {
+                    userToArray[j] = message[i];
+                    j++;
+                }
+            }
+
+            userTo = userToArray.join("").replace("@", "");
+            messageWithoutUserID = message.replace(userTo, "").trim().replace("@", "");
+
+            teacher.sendMsg(messageWithoutUserID, userTo);
+        }
+    }
 }

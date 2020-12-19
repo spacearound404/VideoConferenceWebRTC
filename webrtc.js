@@ -31,7 +31,7 @@
             this.user = {
                 statusConnection: false, // current user status connection
                 name: "", // user name
-                id: "", // user ID
+                id: this.connection.userid, // user ID
                 roleName: "guest",
                 roleID: 0
             };
@@ -41,6 +41,22 @@
                 disconnectCallback: function(){} // callback to change the status of the connect/disconnect button to disconnect
             };
             this.guestAudibility = false;
+            this.chat = {
+                elementHTML: 0,
+                classStyle: {
+                    own: "",
+                    fromGuestToMe: "",
+                    fromOwnerToMe: "",
+                    fromMeToGuest: "",
+                    fromMeToOwner: "",
+                    guests: "",
+                    roomOwner: "",
+                },
+                mode: {
+                    isDirect: true, // can owner send msg to certain guest
+                    isVisibleForAll: true // can the owner see the message addressed not to him
+                }
+            };
         }
 
         // ---METHODS---
@@ -104,6 +120,7 @@
                 this.videoContainerRemote.camera.elementHTML.innerHTML = "";
             }
 
+
             // check and clear contaner of HTML elem for remote screen
             if(this.videoContainerRemote.screen.elementHTML.children.length > 0) {
                 this.videoContainerRemote.screen.elementHTML.innerHTML = "";
@@ -141,6 +158,53 @@
 
             // close socket.io connection
             this.connection.closeSocket();
+        }
+
+        setElementHTMLMessages(elementHTMLParam) {
+            this.chat.elementHTML = elementHTMLParam;
+        }
+
+
+        sendMsg(msgParam, userToParam = "") {
+            let data = {
+                    userFrom: this.user.id,
+                    userTo: userToParam,
+                    role: "guest",
+                    head: "chat",
+                    content: msgParam,
+                },
+                message = "";
+
+            if(msgParam.length > 0) {
+                if(this.chat.mode.isDirect && (userToParam.length > 0)) {
+                    this.connection.send(data);
+
+                    message = `
+                    <div class='` + this.chat.classStyle.fromMeToGuest + `'>
+                        <div>
+                            <span><span>from</span>` + this.user.id + `</span>
+                            <span><span>to</span>` + userToParam + `</span>
+                        </div>
+                        <span>` + msgParam + `</span>
+                    </div>
+                    `;
+                    this.chat.elementHTML.innerHTML += message;
+                } else {
+                    this.connection.send(data);
+
+                    message = `
+                    <div class='` + this.chat.classStyle.own + `'>
+                        <span>` + this.user.id + `</span>
+                        <span>` + msgParam + `</span>
+                    </div>
+                    `;
+                    this.chat.elementHTML.innerHTML += message;
+                }
+            }
+        }
+
+        setClassStyleMsg(configParam) {
+            this.chat.classStyle = configParam;
         }
 
         // disable/mute microphone
@@ -373,6 +437,97 @@
 
             this.connection.onmessage = function(event) {
 
+                switch(event.data.head) {
+                    case 'chat': {
+                        // from owner to guest
+
+                        // own: "",
+                        // fromGuestToMe: "",
+                        // fromOwnerToMe: "",
+                        // fromMeToGuest: "",
+                        // fromMeToOwner: "",
+                        // guests: "",
+                        // roomOwner: "",
+
+                        console.log(event.data);
+
+                        if(event.data.role == "owner"){
+                            if (thisGuestVC.user.id == event.data.userTo) {
+                                let tmpHTML = thisGuestVC.chat.elementHTML.innerHTML,
+                                    msgHTML = `
+                                        <div class='` + thisGuestVC.chat.classStyle.fromOwnerToMe + `'>
+                                            <div>
+                                                <span><span>from</span>` + event.data.userFrom + `</span>
+                                                <span><span>to</span>` + event.data.userTo + `</span>
+                                            </div>
+                                            <span>` + event.data.content + `</span>
+                                        </div>
+                                    `;
+                                thisGuestVC.chat.elementHTML.innerHTML = tmpHTML + msgHTML;
+
+                                return;
+                            } else {
+                                let tmpHTML = thisGuestVC.chat.elementHTML.innerHTML,
+                                    msgHTML = `
+                                        <div class='` + thisGuestVC.chat.classStyle.roomOwner + `'>
+                                            <span>` + event.data.userFrom + `</span>
+                                            <span>` + event.data.content + `</span>
+                                        </div>
+                                    `;
+                                thisGuestVC.chat.elementHTML.innerHTML = tmpHTML + msgHTML;
+                                return;
+                            }
+                        }
+
+                        // from guest to guest
+                        if (thisGuestVC.chat.mode.isDirect && (event.data.userTo.length > 0)) {
+                            if (thisGuestVC.user.id == event.data.userTo) {
+                                let tmpHTML = thisGuestVC.chat.elementHTML.innerHTML,
+                                    msgHTML = `
+                                        <div class='` + thisGuestVC.chat.classStyle.fromGuestToMe + `'>
+                                            <div>
+                                                <span><span>from</span>` + event.data.userFrom + `</span>
+                                                <span><span>to</span> ` + event.data.userTo + `</span>
+                                            </div>
+                                            <span>` + event.data.content + `</span>
+                                        </div>
+                                    `;
+                                thisGuestVC.chat.elementHTML.innerHTML = tmpHTML + msgHTML;
+                                return;
+                            }
+                        }
+
+                        // from guest to all
+                        if (thisGuestVC.chat.mode.isVisibleForAll) {
+                            console.log("tuta1");
+                            if (event.data.role == "guest") {
+                                console.log("tuta2");
+                                let tmpHTML = thisGuestVC.chat.elementHTML.innerHTML,
+                                    msgHTML = `
+                                        <div class='` + thisGuestVC.chat.classStyle.guests + `'>
+                                            <span>` + event.data.userFrom + `</span>
+                                            <span>` + event.data.content + `</span>
+                                        </div>
+                                    `;
+                                thisGuestVC.chat.elementHTML.innerHTML = tmpHTML + msgHTML;
+                            } else {
+                                // let tmpHTML = thisGuestVC.chat.elementHTML.innerHTML,
+                                //     msgHTML = `
+                                //         <div class='` + thisGuestVC.chat.classStyle.roomOwner + `'>
+                                //             <div>
+                                //                 <span>` + event.data.userFrom + `</span>
+                                //             </div>
+                                //             <span>` + event.data.content + `</span>
+                                //         </div>
+                                //     `;
+                                // thisGuestVC.chat.elementHTML.innerHTML = tmpHTML + msgHTML;
+                            }
+                        }
+
+                        break;
+                    }
+                }
+
                 // callback for custom messages
                 callback(event.data);
             };
@@ -417,7 +572,7 @@
             this.user = {
                 statusConnection: false, // current user status connection
                 name: "", // user name
-                id: "", // user ID
+                id: this.connection.userid, // user ID
                 roleName: "admin",
                 roleID: 1
             }; // not used yet
@@ -450,9 +605,75 @@
             this.contentView = {
                 elementHTML: 0
             };
+            // chat mode
+            this.chat = {
+                elementHTML: 0, // for display messages
+                classStyle: { // class for one msg
+                    own: "",
+                    fromGuestToMe: "",
+                    fromMeToGuest: "",
+                    fromGuestToGuest: "",
+                    guests: "",
+                },
+                mode: {
+                    isDirect: true, // can guest send msg to certain guest or owner
+                    isVisibleGuestForOwner: true, // can a guest see other guests' messages
+                }
+            };
         }
 
         // ---Methods---
+
+        // set chat mode
+        setChatMode(configParam) {
+            this.chat.mode = configParam;
+        }
+
+        sendMsg(msgParam, userToParam = "") {
+            let data = {
+                    userFrom: this.user.id,
+                    userTo: userToParam,
+                    role: "owner",
+                    head: "chat",
+                    content: msgParam,
+                },
+                message = "";
+
+            if(msgParam.length > 0) {
+                if(this.chat.mode.isDirect && (userToParam.length > 0)) {
+                    this.connection.send(data);
+
+                    message = `
+                    <div class='` + this.chat.classStyle.fromMeToGuest + `'>
+                        <div>
+                            <span><span>from</span>` + this.user.id + `</span>
+                            <span><span>to</span>` + userToParam + `</span>
+                        </div>
+                        <span>` + msgParam + `</span>
+                    </div>
+                    `;
+                    this.chat.elementHTML.innerHTML += message;
+                } else {
+                    this.connection.send(data);
+
+                    message = `
+                    <div class='` + this.chat.classStyle.own + `'>
+                        <span>` + this.user.id + `</span>
+                        <span>` + msgParam + `</span>
+                    </div>
+                    `;
+                    this.chat.elementHTML.innerHTML += message;
+                }
+            }
+        }
+
+        setClassStyleMsg(configParam) {
+            this.chat.classStyle = configParam;
+        }
+
+        setElementHTMLMessages(elementHTMLParam) {
+            this.chat.elementHTML = elementHTMLParam;
+        }
 
         // set maximum number of guests per room
         setMaxGuestCount(guestCountParam) {
@@ -973,6 +1194,54 @@
                     }
                     case 'unmute_video': {
                         document.getElementById(event.data.streamID).style.display = "block";
+                        break;
+                    }
+                }
+
+                switch(event.data.head) {
+                    case 'chat': {
+
+                        // from guest to owner
+                        if (thisAdminVC.user.id == event.data.userTo) {
+                            let tmpHTML = thisAdminVC.chat.elementHTML.innerHTML,
+                            msgHTML = `
+                            <div class='` + thisAdminVC.chat.classStyle.fromGuestToMe + `'>
+                                <div>
+                                    <span><span>from</span>` + event.data.userFrom + `</span>
+                                    <span><span>to</span>` + event.data.userTo + `</span>
+                                </div>
+                                <span>` + event.data.content + `</span>
+                            </div>
+                            `;
+                            thisAdminVC.chat.elementHTML.innerHTML = tmpHTML + msgHTML;
+                        }
+
+                        // from guest to all
+                        if (event.data.userTo.length == 0) {
+                            let tmpHTML = thisAdminVC.chat.elementHTML.innerHTML,
+                                msgHTML = `
+                                    <div class='` + thisAdminVC.chat.classStyle.guests + `'>
+                                        <span>` + event.data.userFrom + `</span>
+                                        <span>` + event.data.content + `</span>
+                                    </div>
+                                `;
+                            thisAdminVC.chat.elementHTML.innerHTML = tmpHTML + msgHTML;
+                        }
+
+                        //from guest to guset
+                        if (thisAdminVC.chat.mode.isVisibleGuestForOwner) {
+                            let tmpHTML = thisAdminVC.chat.elementHTML.innerHTML,
+                            msgHTML = `
+                            <div class='` + thisAdminVC.chat.classStyle.fromGuestToGuest + `'>
+                                <div>
+                                    <span><span>from</span>` + event.data.userFrom + `</span>
+                                    <span><span>to</span> ` + event.data.userTo + `</span>
+                                </div>
+                                <span>` + event.data.content + `</span>
+                            </div>
+                            `;
+                            thisAdminVC.chat.elementHTML.innerHTML = tmpHTML + msgHTML;
+                        }
                         break;
                     }
                 }

@@ -15,7 +15,7 @@ video::-webkit-media-controls {
 
 .video {
     width: 84vw;
-    height: 38vh;
+    height: 18vw;
     margin: 1em;
     background: transparent;
     border: 2px solid grey;
@@ -27,9 +27,9 @@ body {
 }
 
 .custom-btn-1 {
-    width: 2em;
-    height: 2em;
-    font-size: 2.5vw;
+    width: 3.5vw;
+    height: 3.5vw;
+    font-size: 2vw;
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -66,21 +66,27 @@ body {
 }
 
 .overlay-chat {
-    width: 30%;
-    height: 80vh;
+    width: 28vw;
+    height: 41vw;
+    z-index: 12;
     position: fixed;
     right: 1em;
     bottom: 2em;
-    -webkit-box-shadow: -7px 10px 21px -4px rgba(0,0,0,0.75);
-    box-shadow: -7px 10px 21px -4px rgba(0,0,0,0.75);
+    -webkit-box-shadow: -0.5px 0.5px 5px 0px rgba(0,0,0,0.75);
+    -moz-box-shadow: -0.5px 0.5px 5px 0px rgba(0,0,0,0.75);
+    box-shadow: -0.5px 0.5px 5px 0px rgba(0,0,0,0.75);
     border-radius: 20px;
     background: #f1f1f1;
+    overflow: hidden;
 }
 
 .messages {
     width: 100%;
     height: 90%;
     padding: 1em;
+    display: inline-flex;
+    flex-direction: column;
+    overflow-y: scroll;
 }
 
 .custom-input {
@@ -92,30 +98,38 @@ body {
             justify-content: center;
     position: relative;
     background: #f1f1f1;
+    border-radius: 50px;
 }
 
 .custom-input > input {
     width: 90%;
     border-radius: 20px;
-    border: 2px solid black;
+    border: 2px solid #bbbbbb;
     padding-left: 1em;
     padding-right: 2em;
     background: #f1f1f1;
+    outline:none;
 }
 
 .custom-input > svg {
     position: absolute;
+    color: #bbbbbb;
     right: 2em;
     top: 50%;
     -webkit-transform: translateY(-50%);
         -ms-transform: translateY(-50%);
             transform: translateY(-50%);
     cursor: pointer;
+    transition: opacity 0.2s ease;
+}
+
+.custom-input > svg:hover {
+    opacity: 0.5;
 }
 
 .screen-share-block {
-    width: 80%;
-    height: 20em;
+    width: 43vw;
+    height: 24vw;
     background: transparent;
     margin-top: 1em;
     border: 2px solid grey;
@@ -158,6 +172,389 @@ body {
     display: none;
 }
 
+.own-message {
+    width: auto;
+    background: #fff7dc;
+    border-radius: 10px;
+    padding: 0.5em 0.5em 0.5em 0.5em;
+    position: relative;
+    display: inline-flex;
+    flex-direction: column;
+    float: right;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    align-self: flex-end;
+}
+
+.own-message > span:nth-child(1) {
+    font-size: 0.7em;
+    font-weight: 700;
+    width: auto;
+    color: green;
+}
+
+.own-message > span:nth-child(2) {
+    width: auto;
+}
+
+.guest-to-guest-message {
+    width: auto;
+    background: #fff;
+    border-radius: 10px;
+    padding: 0.5em 0.5em 0.5em 0.5em;
+    position: relative;
+    display: inline-flex;
+    flex-direction: column;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    align-self: flex-start;
+}
+
+.guest-to-guest-message > div {
+    display: flex;
+    flex-direction: column;
+}
+
+.guest-to-guest-message > div > span:nth-child(1) {
+    font-size: 0.7em;
+    font-weight: 700;
+    width: auto;
+    color: green;
+}
+
+.guest-to-guest-message > div > span:nth-child(2) {
+    width: auto;
+}
+
+.owner-to-guest-message {
+    width: auto;
+    background: #fff;
+    border-radius: 10px;
+    padding: 0.5em 0.5em 0.5em 0.5em;
+    position: relative;
+    display: inline-flex;
+    flex-direction: column;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    align-self: flex-start;
+}
+
+.owner-to-guest-message > div {
+    display: flex;
+    flex-direction: column;
+}
+
+.owner-to-guest-message > div > span:nth-child(1) {
+    font-size: 0.7em;
+    font-weight: 700;
+    width: auto;
+    color: red;
+}
+
+.owner-to-guest-message > div > span:nth-child(2) {
+    font-size: 0.7em;
+    font-weight: 700;
+    width: auto;
+    color: green;
+}
+
+.owner-to-guest-message > div > span > span {
+    color: #cccccc;
+    font-weight: 400;
+    margin-right: 0.5em;
+}
+
+.owner-to-all-message {
+    width: auto;
+    background: #fff;
+    border-radius: 10px;
+    padding: 0.5em 0.5em 0.5em 0.5em;
+    position: relative;
+    display: inline-flex;
+    flex-direction: column;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    align-self: flex-start;
+}
+
+.owner-to-all-message > div {
+    display: flex;
+    flex-direction: column;
+}
+
+.owner-to-all-message > span:nth-child(1) {
+    font-size: 0.7em;
+    font-weight: 700;
+    width: auto;
+    color: red;
+}
+
+.owner-to-all-message > span:nth-child(2) {
+    width: auto;
+}
+
+.guest-to-all-message {
+    width: auto;
+    background: #fff;
+    border-radius: 10px;
+    padding: 0.5em 0.5em 0.5em 0.5em;
+    position: relative;
+    display: inline-flex;
+    flex-direction: column;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    align-self: flex-start;
+}
+
+.guest-to-all-message > div {
+    display: flex;
+    flex-direction: column;
+}
+
+.guest-to-all-message > span:nth-child(1) {
+    font-size: 0.7em;
+    font-weight: 700;
+    width: auto;
+}
+
+.guest-to-all-message > span:nth-child(2) {
+    width: auto;
+}
+
+.guest-to-all-message > div > span > span {
+    color: #cccccc;
+    font-weight: 400;
+    margin-right: 0.5em;
+}
+
+.from-me-to-guest-message {
+    width: auto;
+    background: #fff7dc;
+    border-radius: 10px;
+    padding: 0.5em 0.5em 0.5em 0.5em;
+    position: relative;
+    display: inline-flex;
+    flex-direction: column;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    align-self: flex-end;
+}
+
+.from-me-to-guest-message > div {
+    display: flex;
+    flex-direction: column;
+}
+
+.from-me-to-guest-message > div > span:nth-child(1) {
+    font-size: 0.7em;
+    font-weight: 700;
+    width: auto;
+    color: green;
+}
+
+.from-me-to-guest-message > div > span:nth-child(2) {
+    font-size: 0.7em;
+    font-weight: 700;
+    width: auto;
+    color: black;
+}
+
+.from-me-to-guest-message > div > span > span {
+    color: #cccccc;
+    font-weight: 400;
+    margin-right: 0.5em;
+}
+
+.from-me-to-owner-message {
+    width: auto;
+    background: #fff;
+    border-radius: 10px;
+    padding: 0.5em 0.5em 0.5em 0.5em;
+    position: relative;
+    display: inline-flex;
+    flex-direction: column;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    align-self: flex-start;
+}
+
+.from-me-to-owner-message > div {
+    display: flex;
+    flex-direction: column;
+}
+
+.from-me-to-owner-message > span:nth-child(1) {
+    font-size: 0.7em;
+    font-weight: 700;
+    width: auto;
+    color: green;
+}
+
+.from-me-to-owner-message > span:nth-child(2) {
+    font-size: 0.7em;
+    font-weight: 700;
+    width: auto;
+    color: red;
+}
+
+.from, .to {
+    color: #cccccc;
+    font-weight: 400;
+    margin-right: 0.5em;
+}
+
+.guest-to-me-owner-message {
+    width: auto;
+    background: #fff;
+    border-radius: 10px;
+    padding: 0.5em 0.5em 0.5em 0.5em;
+    position: relative;
+    display: inline-flex;
+    flex-direction: column;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    align-self: flex-start;
+}
+
+.guest-to-me-owner-message > div {
+    display: flex;
+    flex-direction: column;
+}
+
+.guest-to-me-owner-message > div > span:nth-child(1) {
+    font-size: 0.7em;
+    font-weight: 700;
+    width: auto;
+    color: black;
+}
+
+.guest-to-me-owner-message> div > span:nth-child(2) {
+    font-size: 0.7em;
+    font-weight: 700;
+    width: auto;
+    color: green;
+}
+
+.guest-to-me-owner-message> div > span > span {
+    color: #cccccc;
+    font-weight: 400;
+    margin-right: 0.5em;
+}
+
+.me-owner-to-guest-message {
+    width: auto;
+    background: #fff7dc;
+    border-radius: 10px;
+    padding: 0.5em 0.5em 0.5em 0.5em;
+    position: relative;
+    display: inline-flex;
+    flex-direction: column;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    align-self: flex-end;
+}
+
+.me-owner-to-guest-message > div {
+    display: flex;
+    flex-direction: column;
+}
+
+.me-owner-to-guest-message > div > span:nth-child(1) {
+    font-size: 0.7em;
+    font-weight: 700;
+    width: auto;
+    color: green;
+}
+
+.me-owner-to-guest-message > div > span:nth-child(2) {
+    font-size: 0.7em;
+    font-weight: 700;
+    width: auto;
+    color: black;
+}
+
+.me-owner-to-guest-message > div > span > span {
+    color: #cccccc;
+    font-weight: 400;
+    margin-right: 0.5em;
+}
+
+.guest-to-guest-message-owner {
+    width: auto;
+    background: #fff;
+    border-radius: 10px;
+    padding: 0.5em 0.5em 0.5em 0.5em;
+    position: relative;
+    display: inline-flex;
+    flex-direction: column;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    align-self: flex-start;
+}
+
+.guest-to-guest-message-owner > div {
+    display: flex;
+    flex-direction: column;
+}
+
+.guest-to-guest-message-owner > div > span:nth-child(1) {
+    font-size: 0.7em;
+    font-weight: 700;
+    width: auto;
+    color: black;
+}
+
+.guest-to-guest-message-owner > div > span:nth-child(2) {
+    font-size: 0.7em;
+    font-weight: 700;
+    width: auto;
+    color: black;
+}
+
+.guest-to-guest-message-owner > div > span > span {
+    color: #cccccc;
+    font-weight: 400;
+    margin-right: 0.5em;
+}
+
+.guest-to-me-message {
+    width: auto;
+    background: #fff;
+    border-radius: 10px;
+    padding: 0.5em 0.5em 0.5em 0.5em;
+    position: relative;
+    display: inline-flex;
+    flex-direction: column;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    align-self: flex-start;
+}
+
+.guest-to-me-message > div {
+    display: flex;
+    flex-direction: column;
+}
+
+.guest-to-me-message > div > span:nth-child(1) {
+    font-size: 0.7em;
+    font-weight: 700;
+    width: auto;
+    color: black;
+}
+
+.guest-to-me-message > div > span:nth-child(2) {
+    font-size: 0.7em;
+    font-weight: 700;
+    width: auto;
+    color: green;
+}
+
+.guest-to-me-message > div > span > span {
+    color: #cccccc;
+    font-weight: 400;
+    margin-right: 0.5em;
+}
+
 @media screen and (max-width:720px) {
     .overlay-control {
         width: 93vw !important;
@@ -168,7 +565,24 @@ body {
     }
 
     .overlay-chat {
-        width: 90%;
+        width: 85vw;
+        height: 130vw;
         bottom: 7em;
+    }
+
+    .video {
+        width: 35vw;
+        height: 35vw;
+    }
+
+    .screen-share-block {
+        width: 84vw;
+        height: 47vw;
+    }
+
+    .custom-btn-1 {
+        width: 12vw;
+        height: 12vw;
+        font-size: 5.5vw;
     }
 }
