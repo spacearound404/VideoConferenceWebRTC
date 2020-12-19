@@ -16,14 +16,14 @@ student.setConnectBtnUI(function() {
     // connection
     document.getElementById('connect').removeAttribute("disabled");
     document.getElementById('connect').classList.add("btn-primary");
-    document.getElementById('connect').innerHTML = "Подключиться";
+    document.getElementById('connect').innerHTML = "Connect";
     document.getElementById('connect').classList.remove("btn-danger");
 },
 function() {
     // disconnection
     document.getElementById('connect').removeAttribute("disabled");
     document.getElementById('connect').classList.remove("btn-primary");
-    document.getElementById('connect').innerHTML = "Отключиться";
+    document.getElementById('connect').innerHTML = "Diconnect";
     document.getElementById('connect').classList.add("btn-danger");
 });
 
