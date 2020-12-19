@@ -1224,6 +1224,8 @@
                             </div>
                             `;
                             thisAdminVC.chat.elementHTML.innerHTML = tmpHTML + msgHTML;
+
+                            return;
                         }
 
                         // from guest to all
@@ -1236,6 +1238,7 @@
                                     </div>
                                 `;
                             thisAdminVC.chat.elementHTML.innerHTML = tmpHTML + msgHTML;
+                            return;
                         }
 
                         //from guest to guset
@@ -1250,7 +1253,10 @@
                                 <span>` + event.data.content + `</span>
                             </div>
                             `;
+                            
                             thisAdminVC.chat.elementHTML.innerHTML = tmpHTML + msgHTML;
+
+                            return;
                         }
                         break;
                     }
