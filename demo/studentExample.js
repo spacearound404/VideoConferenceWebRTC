@@ -216,9 +216,7 @@ document.querySelector('.custom-input > svg').onclick = function(e){
     if (message.length > 0) {
         if (message.indexOf("@") == -1) {
             student.sendMsg(message);
-            console.log("Here 1");
         } else {
-            console.log("Here 2");
             let startIndex = message.indexOf("@"),
                 userToArray = [],
                 userTo = "",

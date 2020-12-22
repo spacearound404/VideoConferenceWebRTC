@@ -343,6 +343,19 @@
             return this.guestAudibility;
         }
 
+        // send some data to guests for display it in content view
+        sendDataToContentView(dataParam) {
+
+            let data = {
+                head: "",
+                content: ""
+            };
+
+            data = dataParam;
+
+            this.connection.send(data);
+        }
+
 
         // ---Events---
 
@@ -446,17 +459,6 @@
 
                 switch(event.data.head) {
                     case 'chat': {
-                        // from owner to guest
-
-                        // own: "",
-                        // fromGuestToMe: "",
-                        // fromOwnerToMe: "",
-                        // fromMeToGuest: "",
-                        // fromMeToOwner: "",
-                        // guests: "",
-                        // roomOwner: "",
-
-                        console.log(event.data);
 
                         if(event.data.role == "owner"){
                             if (thisGuestVC.user.id == event.data.userTo) {
@@ -1253,7 +1255,7 @@
                                 <span>` + event.data.content + `</span>
                             </div>
                             `;
-                            
+
                             thisAdminVC.chat.elementHTML.innerHTML = tmpHTML + msgHTML;
 
                             return;
@@ -1261,8 +1263,6 @@
                         break;
                     }
                 }
-
-
 
                 callback(event.data);
             };
