@@ -6,10 +6,6 @@ Lib for quickly creating a web video chat with using RTCMultiConnection lib.
 
 ## Latest update
 
-22.12.2020
-
-* Added content sharing to both side
-
 19.12.2020
 
 * Added a chat with the ability to send private messages inside a shared chat \(example, **`@student1234 hello!`**\)
