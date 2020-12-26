@@ -147,46 +147,82 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div class="settings-block">
-                        <h5>Video</h5>
-                        <div class="dropdown">
-                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Dropdown
-                            </button>
-                            <div class="dropdown-menu dm-1" aria-labelledby="dropdownMenu2">
+                    <div class="modal-body-1 card">
+                        <div class="card-body d-flex flex-row justify-content-between">
+                            <div class="settings-block">
+                                <h5>Video</h5>
+                                <div class="dropdown">
+                                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Dropdown
+                                    </button>
+                                    <div class="dropdown-menu dm-1" aria-labelledby="dropdownMenu2">
 
+                                    </div>
+                                </div>
+                                <div class="video-test">
+
+                                </div>
+                                <button id="test-devices" type="button" class="btn btn-primary mt-4">Start test</button>
+                            </div>
+                            <div class="settings-block">
+                                <h5>Sound</h5>
+                                <div class="dropdown">
+                                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Dropdown
+                                    </button>
+                                    <div class="dropdown-menu dm-2" aria-labelledby="dropdownMenu3">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="settings-block">
+                                <h5>Microphone</h5>
+                                <div class="dropdown">
+                                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu4" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Dropdown
+                                    </button>
+                                    <div class="dropdown-menu dm-3" aria-labelledby="dropdownMenu4">
+
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="video-test">
 
-                        </div>
                     </div>
-                    <div class="settings-block">
-                        <h5>Sound</h5>
-                        <div class="dropdown">
-                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Dropdown
-                            </button>
-                            <div class="dropdown-menu dm-2" aria-labelledby="dropdownMenu3">
+                    <div class="modal-body-2 mt-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="form-group d-flex flex-column ">
+                                    <h5>Remote video quality</h5>
+                                    <div class="d-flex flex-row align-items-start flex-column">
+                                        <div class="d-flex align-items-center justify-content-center flex-column w-100">
+                                            <input type="range" class="form-control-range w-100" id="formControlRange">
+                                            <div class="d-flex flex-row w-100 justify-content-between">
+                                                <span>Low</span>
+                                                <span>Medium</span>
+                                                <span>High</span>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex flex-row justify-content-between mt-3">
+                                            <div class="d-flex flex-column">
+                                                <label>Width</label>
+                                                <input class="form-control input-text" id="remoteVideoWidth">
+                                            </div>
+                                            <div class="d-flex flex-column ml-3">
+                                                <label>Height</label>
+                                                <input class="form-control input-text" id="remoteVideoHeight">
+                                            </div>
+                                            <div class="d-flex flex-column ml-3">
+                                                <label>Framerate</label>
+                                                <input class="form-control input-text" id="remoteVideoFramerate">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button type="button" class="btn btn-primary apply-resolution">Apply</button>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="settings-block">
-                        <h5>Microphone</h5>
-                        <div class="dropdown">
-                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu4" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Dropdown
-                            </button>
-                            <div class="dropdown-menu dm-3" aria-labelledby="dropdownMenu4">
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button id="test-devices" type="button" class="btn btn-primary">Start test</button>
-                </div>
+                </div>                
             </div>
         </div>
     </div>

@@ -74,7 +74,12 @@
                     elementHTML: 0
                 },
                 isTestingActive: false,
-            }
+            };
+            this.localVideoConstrains = {
+                width: 1240,
+                height: 720,
+                frameRate: 30
+            };
 
 
             let tmp = this;
@@ -261,11 +266,46 @@
         connect() {
 
 
-            this.connection.session = {
-                audio: true, // enabling the local microphone
-                video: true, // enabling the local web-camera
-                data: true
-            };
+            // this.connection.session = {
+            //     audio: true, // enabling the local microphone
+            //     video: true, // enabling the local web-camera
+            //     data: true
+            // };
+            //
+            // var BandwidthHandler = this.connection.BandwidthHandler;
+            // this.connection.bandwidth = {
+            //     audio: 128,
+            //     video: 30,
+            //     screen: 300
+            // };
+            //
+            // let tmp = this;
+            //
+            // this.connection.processSdp = function(sdp) {
+            //     sdp = BandwidthHandler.setApplicationSpecificBandwidth(sdp, tmp.connection.bandwidth, !!tmp.connection.session.screen);
+            //     sdp = BandwidthHandler.setVideoBitrates(sdp, {
+            //         min: tmp.connection.bandwidth.video,
+            //         max: tmp.connection.bandwidth.video
+            //     });
+            //
+            //     sdp = BandwidthHandler.setOpusAttributes(sdp);
+            //
+            //     sdp = BandwidthHandler.setOpusAttributes(sdp, {
+            //         'stereo': 1,
+            //         //'sprop-stereo': 1,
+            //         'maxaveragebitrate': tmp.connection.bandwidth.audio * 1000 * 8,
+            //         'maxplaybackrate': tmp.connection.bandwidth.audio * 1000 * 8,
+            //         //'cbr': 1,
+            //         //'useinbandfec': 1,
+            //         // 'usedtx': 1,
+            //         'maxptime': 3
+            //     });
+            //
+            //     return sdp;
+            // };
+
+            ;
+
 
             this.connection.sdpConstraints.mandatory = {
                 OfferToReceiveAudio: true, // offer for receiving data from remote microphone
@@ -578,6 +618,18 @@
             this.connection.send(data);
         }
 
+        // set lcaol video constarints
+        setLocalVideoConstraints(widthParam, heightParam, frameRateParam) {
+
+            this.localVideoConstrains.width = widthParam
+            this.localVideoConstrains.height = heightParam
+            this.localVideoConstrains.frameRate = frameRateParam
+
+            this.connection.applyConstraints({
+                video: this.localVideoConstrains
+            });
+        }
+
 
         // ---Events---
 
@@ -663,6 +715,7 @@
                             // set a video stream in an HTML container
                             thisGuestVC.videoContainerRemote.screen.elementHTML.appendChild(event.mediaElement);
                         } else {
+
                             thisGuestVC.videoContainerRemote.camera.elementHTML.innerHTML = "";
 
                             // set a video stream in an HTML container
@@ -766,6 +819,16 @@
 
                         break;
                     }
+                    case 'change_constraints': {
+
+                        thisGuestVC.localVideoConstrains.width = event.data.videoConstraints.width;
+                        thisGuestVC.localVideoConstrains.height = event.data.videoConstraints.height;
+                        thisGuestVC.localVideoConstrains.frameRate = event.data.videoConstraints.frameRate;
+
+                        thisGuestVC.setLocalVideoConstraints(thisGuestVC.localVideoConstrains.width, thisGuestVC.localVideoConstrains.height, thisGuestVC.localVideoConstrains.frameRate);
+
+                        break;
+                    }
                 }
 
                 // callback for custom messages
@@ -784,6 +847,7 @@
     }
 
     class AdminVC {
+
         // class constructor
         constructor() {
             this.connection = new RTCMultiConnection(); // instance of RTCMultiConnection lib
@@ -878,7 +942,13 @@
                     elementHTML: 0
                 },
                 isTestingActive: false,
-            }
+            };
+
+            this.remoteVideoConstrains = {
+                width: 1280,
+                height: 720,
+                frameRate: 30
+            };
 
 
             let tmp = this;
@@ -915,7 +985,23 @@
             }
         }
 
+
         // ---Methods---
+
+        // change remote video constarints
+        changeVideoConstraints(widthParam, heightParam, frameRateParam) {
+
+            this.remoteVideoConstrains.width = Number(widthParam);
+            this.remoteVideoConstrains.height = Number(heightParam);
+            this.remoteVideoConstrains.frameRate = Number(frameRateParam);
+
+            let data = {
+                head: "change_constraints",
+                videoConstraints: this.remoteVideoConstrains,
+            }
+
+            this.connection.send(data);
+        }
 
         // set video container for testing to display camera
         setVideoContainerForTestCamera(elemHTMLParam) {
@@ -1652,7 +1738,6 @@
                 console.log(error);
             };
         }
-
 
         // message event
         onMessage(callback) {

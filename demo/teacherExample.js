@@ -422,4 +422,35 @@ window.onload = function() {
 
         testDevices = !testDevices;
     }
+
+    document.querySelector("#formControlRange").onchange = () => {
+        let elem = document.querySelector("#formControlRange"),
+        value = elem.value;
+
+        if (value <= 25) {
+            elem.value = 0;
+        }
+
+        if ((value > 25) && (value <= 75)) {
+            elem.value = 50;
+        }
+
+        if ((value > 70) && (value <= 100)) {
+            elem.value = 100;
+        }
+    }
+
+    document.querySelector(".apply-resolution").onclick = () => {
+
+        let widthElem = document.querySelector("#remoteVideoWidth"),
+            heightElem = document.querySelector("#remoteVideoHeight"),
+            frameRateElem = document.querySelector("#remoteVideoFramerate"),
+            widthValue = widthElem.value,
+            heightValue = heightElem.value,
+            frameRateValue = frameRateElem.value;
+
+        // console.log(1234);
+
+        teacher.changeVideoConstraints(widthValue, heightValue, frameRateValue);
+    }
 }

@@ -560,7 +560,7 @@ body {
     flex-direction: column;
 }
 
-.modal-body {
+.modal-body-1 {
     display: flex;
     flex-direction: row;
     justify-content: space-around;
@@ -571,6 +571,24 @@ body {
     width: 14vw;
     border: 2px solid grey;
     border-radius: 6px;
+    margin-top: 2em;
+}
+
+.form-group {
+    margin-top: 2em;
+    margin-left: 1em;
+}
+
+.input-text {
+    width: 8vw;
+}
+
+.form-control-range {
+    width: 34vw;
+}
+
+.apply-resolution {
+    width: 13vw;
     margin-top: 2em;
 }
 
