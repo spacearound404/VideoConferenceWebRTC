@@ -72,7 +72,8 @@
                 cameraList: "",
                 testVideoContaner: { // container for testing to display camera
                     elementHTML: 0
-                }
+                },
+                isTestingActive: false,
             }
 
 
@@ -233,16 +234,13 @@
 
             this.connection.enableScalableBroadcast = true;
 
+            this.devices.isTestingActive = true;
+
             this.connection.addStream({
                 audio: true,
                 video: true,
                 oneway: true,
-                streamCallback: function(stream) {
-                    let elem = document.querySelector("#" + stream.streamid);
-                    tmp.devices.testVideoContaner.elementHTML.appendChild(elem);
-                    elem.muted = false;
-                    elem.volume = 1.0;
-                }
+                streamCallback: function(stream) {}
             });
         }
 
@@ -623,9 +621,18 @@
 
                 switch(event.type) {
                     case "local": {
-                        // set a video stream in an HTML container
-                        thisGuestVC.videoContainerLocal.elementHTML.appendChild(event.mediaElement);
-                        thisGuestVC.videoContainerLocal.elementHTML.children[0].muted = true;
+
+                        if (thisGuestVC.devices.isTestingActive) {
+                            thisGuestVC.devices.testVideoContaner.elementHTML.appendChild(event.mediaElement);
+                            thisGuestVC.devices.testVideoContaner.elementHTML.children[0].muted = false;
+                            thisGuestVC.devices.testVideoContaner.elementHTML.children[0].volume = 1.0;
+                        } else {
+                            // set a video stream in an HTML container
+                            thisGuestVC.videoContainerLocal.elementHTML.appendChild(event.mediaElement);
+                            thisGuestVC.videoContainerLocal.elementHTML.children[0].muted = true;
+                        }
+
+
                         break;
                     }
                     case "remote": {
@@ -869,7 +876,8 @@
                 cameraList: "",
                 testVideoContaner: { // container for testing to display camera
                     elementHTML: 0
-                }
+                },
+                isTestingActive: false,
             }
 
 
@@ -1030,16 +1038,13 @@
 
             this.connection.enableScalableBroadcast = true;
 
+            this.devices.isTestingActive = true;
+
             this.connection.addStream({
                 audio: true,
                 video: true,
                 oneway: true,
-                streamCallback: function(stream) {
-                    let elem = document.querySelector("#" + stream.streamid);
-                    tmp.devices.testVideoContaner.elementHTML.appendChild(elem);
-                    elem.muted = false;
-                    elem.volume = 1.0;
-                }
+                streamCallback: function(stream) {}
             });
         }
 
@@ -1623,8 +1628,16 @@
                             thisAdminVC.videoContainerLocal.screen.streamID = event.stream.id;
                             thisAdminVC.videoContainerLocal.screen.elementHTML.appendChild(event.mediaElement);
                         } else {
-                            thisAdminVC.videoContainerLocal.camera.streamID = event.stream.id;
-                            thisAdminVC.videoContainerLocal.camera.elementHTML.appendChild(event.mediaElement);
+
+                            if (thisAdminVC.devices.isTestingActive) {
+                                thisAdminVC.devices.testVideoContaner.elementHTML.appendChild(event.mediaElement);
+                                thisAdminVC.devices.testVideoContaner.elementHTML.children[0].muted = false;
+                                thisAdminVC.devices.testVideoContaner.elementHTML.children[0].volume = 1.0;
+                            } else {
+                                thisAdminVC.videoContainerLocal.camera.streamID = event.stream.id;
+                                thisAdminVC.videoContainerLocal.camera.elementHTML.appendChild(event.mediaElement);
+                            }
+
                         }
 
                         break;
