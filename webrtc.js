@@ -950,7 +950,7 @@
             return this.devices.soundList;
         }
 
-        // get current cemara device
+        // get current camera device
         getCurrentCameraDevice() {
             let devices = this.devices.cameraList,
                 currentDeviceIDLS = localStorage.getItem("camera"),
