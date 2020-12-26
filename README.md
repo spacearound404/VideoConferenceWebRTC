@@ -10,6 +10,7 @@ Lib for quickly creating a web video chat with using RTCMultiConnection lib.
 
 * Add device changes
 * Add device testing
+* Aad functionality for changing video constraints for the room owner
 
 22.12.2020
 
