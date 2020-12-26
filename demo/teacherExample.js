@@ -405,7 +405,6 @@ window.onload = function() {
 
     document.querySelector("#test-devices").onclick = () => {
         if (!testDevices) {
-            console.log("on");
 
             document.querySelector("#test-devices").classList.remove("btn-primary");
             document.querySelector("#test-devices").classList.add("btn-danger");
@@ -414,7 +413,6 @@ window.onload = function() {
             teacher.setVideoContainerForTestCamera(document.querySelector(".video-test"));
             teacher.startTest();
         } else {
-            console.log("off");
 
             document.querySelector("#test-devices").classList.remove("btn-danger");
             document.querySelector("#test-devices").classList.add("btn-primary");
