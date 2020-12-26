@@ -631,6 +631,16 @@ Must call before connect
 |  |  | **`true`** - guest will be hear other guests |
 |  |  | **`false`** - guest will not hear other guests |
 
+### **`setLocalVideoConstraints`**
+
+**Desc:** Sey local video constraints
+
+| Type | Param | Return |
+| :--- | :--- | :--- |
+| **method** | - | **`int`** - width |
+|  |  | **`int`** - height |
+|  |  | **`int`** - frame rate |
+
 ### **`onUserStatusChanged`**
 
 **Desc:** Event that is triggered when the status of the room owner changes
@@ -1315,6 +1325,16 @@ It can be called anywhere in the code, but after defining an instance of this cl
 | Type | Param | Return |
 | :--- | :--- | :--- |
 | **method** | - | **`AdminVC`** |
+
+### **`changeVideoConstraints`**
+
+**Desc:** change guest video constraints from room owner
+
+| Type | Param | Return |
+| :--- | :--- | :--- |
+| **method** | - | **`int`** - width |
+|  |  | **`int`** - height |
+|  |  | **`int`** - frame rate |
 
 ### **`onUserStatusChanged`**
 
