@@ -22,6 +22,9 @@
                     <div class="col-md-4 position-relative d-flex align-items-end">
                         <button id="connect" class="btn btn-primary ml-3" type="button" aria-disabled="false" autocomplete="off">Connect</button>
                     </div>
+                    <div class="col-md-4 position-relative d-flex align-items-end">
+                        <button id="settings" class="btn btn-primary ml-3" type="button" aria-disabled="false" autocomplete="off">Settings</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -105,6 +108,60 @@
         <div class="overlay-content-view"></div>
     </main>
     <footer></footer>
+    <div class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Settings</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="settings-block">
+                        <h5>Video</h5>
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Dropdown
+                            </button>
+                            <div class="dropdown-menu dm-1" aria-labelledby="dropdownMenu2">
+
+                            </div>
+                        </div>
+                        <div class="video-test">
+
+                        </div>
+                    </div>
+                    <div class="settings-block">
+                        <h5>Sound</h5>
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Dropdown
+                            </button>
+                            <div class="dropdown-menu dm-2" aria-labelledby="dropdownMenu3">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="settings-block">
+                        <h5>Microphone</h5>
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu4" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Dropdown
+                            </button>
+                            <div class="dropdown-menu dm-3" aria-labelledby="dropdownMenu4">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button id="test-devices" type="button" class="btn btn-primary">Start test</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://use.fontawesome.com/fe0a71aee6.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha2/js/bootstrap.bundle.min.js" integrity="sha384-BOsAfwzjNJHrJ8cZidOg56tcQWfp6y72vEJ8xQ9w6Quywb24iOsW913URv1IS4GD" crossorigin="anonymous"></script>
     <script src="https://rtcmulticonnection.herokuapp.com/dist/RTCMultiConnection.min.js"></script>

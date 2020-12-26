@@ -555,6 +555,25 @@ body {
     margin-right: 0.5em;
 }
 
+.settings-block {
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-body {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.video-test {
+    height: 8vw;
+    width: 14vw;
+    border: 2px solid grey;
+    border-radius: 6px;
+    margin-top: 2em;
+}
+
 @media screen and (max-width:720px) {
     .overlay-control {
         width: 93vw !important;

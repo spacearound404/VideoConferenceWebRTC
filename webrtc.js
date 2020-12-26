@@ -57,9 +57,207 @@
                     isVisibleForAll: true // can the owner see the message addressed not to him
                 }
             };
+            this.devices = {
+                micro: {
+                    id: ""
+                },
+                sound: {
+                    id: ""
+                },
+                camera: {
+                    id: ""
+                },
+                microList: "",
+                soundList: "",
+                cameraList: "",
+                testVideoContaner: { // container for testing to display camera
+                    elementHTML: 0
+                }
+            }
+
+
+            let tmp = this;
+
+            // when connection will be loaded
+            this.connection.DetectRTC.load(function() {
+
+                    tmp.devices.cameraList = DetectRTC.videoInputDevices; // get list of video input devices
+                    tmp.devices.microList = DetectRTC.audioInputDevices; // get list of audio input devices
+                    tmp.devices.soundList = DetectRTC.audioOutputDevices; // get list of audio output devices
+
+                    // if local storage is empty then set default device
+                    if (tmp.devices.camera.id.length == 0)
+                        tmp.devices.camera.id = DetectRTC.videoInputDevices[0];
+
+                    if (tmp.devices.micro.id.length == 0)
+                        tmp.devices.micro.id = DetectRTC.audioInputDevices[0];
+
+                    if (tmp.devices.sound.id.length == 0)
+                        tmp.devices.sound.id = DetectRTC.audioOutputDevices[0];
+            });
+
+            // if local storage is't empty then get last saved device
+            if ((localStorage.getItem("camera") != null) || (localStorage.getItem("camera") != undefined)) {
+                this.devices.camera.id = localStorage.getItem("camera");
+            }
+
+            if ((localStorage.getItem("micro") != null) || (localStorage.getItem("micro") != undefined)) {
+                this.devices.micro.id = localStorage.getItem("micro");
+            }
+
+            if ((localStorage.getItem("sound") != null) || (localStorage.getItem("sound") != undefined)) {
+                this.devices.sound.id = localStorage.getItem("sound");
+            }
         }
 
         // ---METHODS---
+
+        // set container for testing to display camera
+        setVideoContainerForTestCamera(elemHTMLParam) {
+            this.devices.testVideoContaner.elementHTML = elemHTMLParam;
+        }
+
+        // set camera device
+        setCameraDevice(deviceID) {
+            this.devices.camera.id = deviceID;
+
+            localStorage.setItem("camera", deviceID);
+        }
+
+        // set micro device
+        setMicroDevice(deviceID) {
+            this.devices.camera.id = deviceID;
+
+            localStorage.setItem("micro", deviceID);
+        }
+
+        // set sound device
+        setSoundDevice(deviceID) {
+            this.devices.sound.id = deviceID;
+
+            localStorage.setItem("sound", deviceID);
+        }
+
+        // get micro devices list
+        getMicroDevicesList() {
+            return this.devices.microList;
+        }
+
+        // get camera devices list
+        getCameraDevicesList() {
+            return this.devices.cameraList;
+        }
+
+        // get sound devices list
+        getSoundDevicesList() {
+            return this.devices.soundList;
+        }
+
+        // get current set camera device
+        getCurrentCameraDevice() {
+            let devices = this.devices.cameraList,
+                currentDeviceIDLS = localStorage.getItem("camera"),
+                device = devices[0];
+
+
+            if ((currentDeviceIDLS != null) || (currentDeviceIDLS != undefined))
+                for (let i = 0; i < devices.length; i++) {
+                    if (currentDeviceIDLS == devices[i].deviceId)
+                        device = devices[i];
+                }
+
+            return device;
+        }
+
+        // get current set sound device
+        getCurrentSoundDevice() {
+            let devices = this.devices.soundList,
+                currentDeviceIDLS = localStorage.getItem("sound"),
+                device = devices[0];
+
+
+            if ((currentDeviceIDLS != null) || (currentDeviceIDLS != undefined))
+                for (let i = 0; i < devices.length; i++) {
+                    if (currentDeviceIDLS == devices[i].deviceId)
+                        device = devices[i];
+                }
+
+            return device;
+        }
+
+        // get current micro device
+        getCurrentMicroDevice() {
+            let devices = this.devices.microList,
+                currentDeviceIDLS = localStorage.getItem("micro"),
+                device = devices[0];
+
+
+            if ((currentDeviceIDLS != null) || (currentDeviceIDLS != undefined))
+                for (let i = 0; i < devices.length; i++) {
+                    if (currentDeviceIDLS == devices[i].deviceId)
+                        device = devices[i];
+                }
+
+            return device;
+        }
+
+        // start testing devices
+        startTest() {
+            this.connection.mediaConstraints = {
+                audio: {
+                    mandatory: {},
+                    optional: [{
+                        sourceId: this.devices.micro.id
+                    }]
+                },
+                video: {
+                    mandatory: {},
+                    optional: [{
+                        sourceId: this.devices.camera.id
+                    }]
+                }
+            };
+
+            if (this.connection.DetectRTC.browser.name === 'Firefox') {
+                this.connection.mediaConstraints = {
+                    audio: {
+                        deviceId: this.devices.micro.id
+                    },
+                    video: {
+                        deviceId: this.devices.camera.id
+                    }
+                };
+            }
+
+            let tmp = this;
+
+            this.connection.enableScalableBroadcast = true;
+
+            this.connection.addStream({
+                audio: true,
+                video: true,
+                oneway: true,
+                streamCallback: function(stream) {
+                    let elem = document.querySelector("#" + stream.streamid);
+                    tmp.devices.testVideoContaner.elementHTML.appendChild(elem);
+                    elem.muted = false;
+                    elem.volume = 1.0;
+                }
+            });
+        }
+
+        // stop testing devices
+        stopTest() {
+            this.connection.getAllParticipants().forEach(function(pid) {
+                thisAdminVC.connection.disconnectWith(pid);
+            });
+
+            // stop all local cameras
+            this.connection.attachStreams.forEach(function(localStream) {
+                localStream.stop();
+            });
+        }
+
 
         // connecting to room
         connect() {
@@ -75,6 +273,32 @@
                 OfferToReceiveAudio: true, // offer for receiving data from remote microphone
                 OfferToReceiveVideo: true // offer for receiving data from remote web-camera or screen
             };
+
+            this.connection.mediaConstraints = {
+                audio: {
+                    mandatory: {},
+                    optional: [{
+                        sourceId: this.devices.micro.id
+                    }]
+                },
+                video: {
+                    mandatory: {},
+                    optional: [{
+                        sourceId: this.devices.camera.id
+                    }]
+                }
+            };
+
+            if (this.connection.DetectRTC.browser.name === 'Firefox') {
+                this.connection.mediaConstraints = {
+                    audio: {
+                        deviceId: this.devices.micro.id
+                    },
+                    video: {
+                        deviceId: this.devices.camera.id
+                    }
+                };
+            }
 
             let thisGuestVC = this.getInstance();
             thisGuestVC.connection.extra.guest = this.user;
@@ -629,9 +853,207 @@
                     isVisibleGuestForOwner: true, // can a guest see other guests' messages
                 }
             };
+
+            this.devices = {
+                micro: {
+                    id: ""
+                },
+                sound: {
+                    id: ""
+                },
+                camera: {
+                    id: ""
+                },
+                microList: "",
+                soundList: "",
+                cameraList: "",
+                testVideoContaner: { // container for testing to display camera
+                    elementHTML: 0
+                }
+            }
+
+
+            let tmp = this;
+
+            // when connection will be loaded then
+            this.connection.DetectRTC.load(function() {
+
+                    tmp.devices.cameraList = DetectRTC.videoInputDevices; // get video input devices
+                    tmp.devices.microList = DetectRTC.audioInputDevices; // get audio input devices
+                    tmp.devices.soundList = DetectRTC.audioOutputDevices; // get audio output devices
+
+                    // if local storage is empty then get default device
+                    if (tmp.devices.camera.id.length == 0)
+                        tmp.devices.camera.id = DetectRTC.videoInputDevices[0];
+
+                    if (tmp.devices.micro.id.length == 0)
+                        tmp.devices.micro.id = DetectRTC.audioInputDevices[0];
+
+                    if (tmp.devices.sound.id.length == 0)
+                        tmp.devices.sound.id = DetectRTC.audioOutputDevices[0];
+            });
+
+            // if local storage isn't empty then get device from local storage
+            if ((localStorage.getItem("camera") != null) || (localStorage.getItem("camera") != undefined)) {
+                this.devices.camera.id = localStorage.getItem("camera");
+            }
+
+            if ((localStorage.getItem("micro") != null) || (localStorage.getItem("micro") != undefined)) {
+                this.devices.micro.id = localStorage.getItem("micro");
+            }
+
+            if ((localStorage.getItem("sound") != null) || (localStorage.getItem("sound") != undefined)) {
+                this.devices.sound.id = localStorage.getItem("sound");
+            }
         }
 
         // ---Methods---
+
+        // set video container for testing to display camera
+        setVideoContainerForTestCamera(elemHTMLParam) {
+            this.devices.testVideoContaner.elementHTML = elemHTMLParam;
+        }
+
+        // set camera device
+        setCameraDevice(deviceID) {
+            this.devices.camera.id = deviceID;
+
+            localStorage.setItem("camera", deviceID);
+        }
+
+        // set micro device
+        setMicroDevice(deviceID) {
+            this.devices.camera.id = deviceID;
+
+            localStorage.setItem("micro", deviceID);
+        }
+
+        // set sound device
+        setSoundDevice(deviceID) {
+            this.devices.sound.id = deviceID;
+
+            localStorage.setItem("sound", deviceID);
+        }
+
+        // get micro devices list
+        getMicroDevicesList() {
+            return this.devices.microList;
+        }
+
+        // get camera devices list
+        getCameraDevicesList() {
+            return this.devices.cameraList;
+        }
+
+        // get sound devices list
+        getSoundDevicesList() {
+            return this.devices.soundList;
+        }
+
+        // get current cemara device
+        getCurrentCameraDevice() {
+            let devices = this.devices.cameraList,
+                currentDeviceIDLS = localStorage.getItem("camera"),
+                device = devices[0];
+
+
+            if ((currentDeviceIDLS != null) || (currentDeviceIDLS != undefined))
+                for (let i = 0; i < devices.length; i++) {
+                    if (currentDeviceIDLS == devices[i].deviceId)
+                        device = devices[i];
+                }
+
+            return device;
+        }
+
+        // get current sound device
+        getCurrentSoundDevice() {
+            let devices = this.devices.soundList,
+                currentDeviceIDLS = localStorage.getItem("sound"),
+                device = devices[0];
+
+
+            if ((currentDeviceIDLS != null) || (currentDeviceIDLS != undefined))
+                for (let i = 0; i < devices.length; i++) {
+                    if (currentDeviceIDLS == devices[i].deviceId)
+                        device = devices[i];
+                }
+
+            return device;
+        }
+
+        // get current micro device
+        getCurrentMicroDevice() {
+            let devices = this.devices.microList,
+                currentDeviceIDLS = localStorage.getItem("micro"),
+                device = devices[0];
+
+
+            if ((currentDeviceIDLS != null) || (currentDeviceIDLS != undefined))
+                for (let i = 0; i < devices.length; i++) {
+                    if (currentDeviceIDLS == devices[i].deviceId)
+                        device = devices[i];
+                }
+
+            return device;
+        }
+
+        // start testing devices
+        startTest() {
+            this.connection.mediaConstraints = {
+                audio: {
+                    mandatory: {},
+                    optional: [{
+                        sourceId: this.devices.micro.id
+                    }]
+                },
+                video: {
+                    mandatory: {},
+                    optional: [{
+                        sourceId: this.devices.camera.id
+                    }]
+                }
+            };
+
+            if (this.connection.DetectRTC.browser.name === 'Firefox') {
+                this.connection.mediaConstraints = {
+                    audio: {
+                        deviceId: this.devices.micro.id
+                    },
+                    video: {
+                        deviceId: this.devices.camera.id
+                    }
+                };
+            }
+
+            let tmp = this;
+
+            this.connection.enableScalableBroadcast = true;
+
+            this.connection.addStream({
+                audio: true,
+                video: true,
+                oneway: true,
+                streamCallback: function(stream) {
+                    let elem = document.querySelector("#" + stream.streamid);
+                    tmp.devices.testVideoContaner.elementHTML.appendChild(elem);
+                    elem.muted = false;
+                    elem.volume = 1.0;
+                }
+            });
+        }
+
+        // stop testing devices
+        stopTest() {
+            this.connection.getAllParticipants().forEach(function(pid) {
+                thisAdminVC.connection.disconnectWith(pid);
+            });
+
+            // stop all local cameras
+            this.connection.attachStreams.forEach(function(localStream) {
+                localStream.stop();
+            });
+        }
 
         // set chat mode
         setChatMode(configParam) {
@@ -905,6 +1327,32 @@
 
         // create room
         connect() {
+
+            this.connection.mediaConstraints = {
+                audio: {
+                    mandatory: {},
+                    optional: [{
+                        sourceId: this.devices.micro.id
+                    }]
+                },
+                video: {
+                    mandatory: {},
+                    optional: [{
+                        sourceId: this.devices.camera.id
+                    }]
+                }
+            };
+
+            if (this.connection.DetectRTC.browser.name === 'Firefox') {
+                this.connection.mediaConstraints = {
+                    audio: {
+                        deviceId: this.devices.micro.id
+                    },
+                    video: {
+                        deviceId: this.devices.camera.id
+                    }
+                };
+            }
 
             // save data to extra to send guest in order to could distinguish other guests from the owner/admin
             this.connection.extra = {
