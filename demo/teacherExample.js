@@ -429,14 +429,17 @@ window.onload = function() {
 
         if (value <= 25) {
             elem.value = 0;
+            teacher.changeVideoConstraints(100, 100, 10);
         }
 
         if ((value > 25) && (value <= 75)) {
             elem.value = 50;
+            teacher.changeVideoConstraints(640, 480, 15);
         }
 
         if ((value > 70) && (value <= 100)) {
             elem.value = 100;
+            teacher.changeVideoConstraints(1280, 720, 30);
         }
     }
 
@@ -448,8 +451,6 @@ window.onload = function() {
             widthValue = widthElem.value,
             heightValue = heightElem.value,
             frameRateValue = frameRateElem.value;
-
-        // console.log(1234);
 
         teacher.changeVideoConstraints(widthValue, heightValue, frameRateValue);
     }
