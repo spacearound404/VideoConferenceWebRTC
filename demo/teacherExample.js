@@ -338,7 +338,6 @@ window.onload = function() {
         microDropDownElemHTML.innerHTML = "";
 
         for (let i = 0; i < cameraDevices.length; i++) {
-
             button = '<button class="dropdown-item" type="button" onclick="setDevice(' + 0 + ',' + i + ')">' + cameraDevices[i].label + '</button>';
             cameraDropDownElemHTML.innerHTML += button;
         }
