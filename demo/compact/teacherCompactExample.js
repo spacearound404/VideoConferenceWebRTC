@@ -16,7 +16,10 @@ window.onload = function () {
         ],
       },
     },
-    roomIDInput: document.getElementById("validationTooltip01"),
+    room: {
+      ID: 1234,
+      input: document.getElementById("validationTooltip01"),
+    },
     maxGuestCount: 5,
     connect: {
       btn: document.getElementById("connect"),
@@ -258,222 +261,294 @@ window.onload = function () {
       screen_record = false,
       dashboard = true,
       contentView = false;
-  
+
     // set HTML elems where the own camera and screen will be displayed
-    teacher.setElementsHTMLVideoContainerLocal(
-      config.stream.local.camera, // camera
-      config.stream.local.screen
-    ); //screen
-  
+    try {
+      teacher.setElementsHTMLVideoContainerLocal(
+        config.stream.local.camera, // camera
+        config.stream.local.screen //screen
+      );
+    } catch (e) {
+      console.log(e);
+    }
+
     // set HTML elems where the guest camera will be displayed
-    teacher.setElementsHTMLVideoContainerRemote(config.stream.remote.camera);
+    try {
+      teacher.setElementsHTMLVideoContainerRemote(config.stream.remote.camera);
+    } catch (e) {
+      console.log(e);
+    }
 
     config.controllers.defaultState();
-  
+
     // set button status when connecting and diconnection
-    teacher.setConnectBtnUI(config.connect.UI.conn, config.connect.UI.diconn);
-  
+    try {
+      teacher.setConnectBtnUI(config.connect.UI.conn, config.connect.UI.diconn);
+    } catch (e) {
+      console.log(e);
+    }
+
     // handler button click for connection/diconnectiong
-    config.connect.btn.onclick = function() {
-      // check connection status
-      if (!teacher.getUserStatusConnection()) {
-        // if disconnect
-        let roomID = config.roomIDInput.value;
-        teacher.setRoomID(roomID);
-        teacher.setMaxGuestCount(config.maxGuestCount);
-        teacher.connect();
-        teacher.setUserStatusConnection(true);
-      } else {
-        // if connect
-        teacher.setUserStatusConnection(false);
-        teacher.disconnect();
+    config.connect.btn.onclick = function () {
+      try {
+        // check connection status
+        if (!teacher.getUserStatusConnection()) {
+          // if disconnect
+          let roomID = 0;
+          if (config.room.input != undefined)
+            roomID = config.room.input.value
+          else 
+            roomID = config.room.ID
+          teacher.setRoomID(roomID);
+          teacher.setMaxGuestCount(config.maxGuestCount);
+          teacher.connect();
+          teacher.setUserStatusConnection(true);
+        } else {
+          // if connect
+          teacher.setUserStatusConnection(false);
+          teacher.disconnect();
+        }
+      } catch (e) {
+        console.log(e);
       }
     };
-  
-    teacher.setElementHTMLMessages(config.msg.modal);
-  
-    teacher.setClassStyleMsg(config.msg.css);
-  
-    config.contentView.sendBtn.onclick = config.contentView.handler;
-  
+
+    try {
+      teacher.setElementHTMLMessages(config.msg.modal);
+    } catch (e) {
+      console.log(e);
+    }
+
+    try {
+      teacher.setClassStyleMsg(config.msg.css);
+    } catch (e) {
+      console.log(e);
+    }
+
+    try {
+      config.contentView.sendBtn.onclick = config.contentView.handler;
+    } catch (e) {
+      console.log(e);
+    }
+
     // handler button for micro
-    config.controllers.micro.btn.onclick = function() {
+    config.controllers.micro.btn.onclick = function () {
       micro = !micro;
-      if (micro) {
-        // disable
-        config.controllers.micro.disable();
-  
-        teacher.microOff();
-      } else {
-        // enable
-        config.controllers.micro.enable();
-  
-        teacher.microOn();
+      try {
+        if (micro) {
+          // disable
+          config.controllers.micro.disable();
+
+          teacher.microOff();
+        } else {
+          // enable
+          config.controllers.micro.enable();
+
+          teacher.microOn();
+        }
+      } catch (e) {
+        console.log(e);
       }
     };
-  
+
     // handler button for camera
-    config.controllers.camera.btn.onclick = function() {
+    config.controllers.camera.btn.onclick = function () {
       camera = !camera;
-      if (camera) {
-        // disable
-        config.controllers.camera.disable();
-  
-        teacher.localCameraOff();
-      } else {
-        // enabale
-        config.controllers.camera.enable();
-  
-        teacher.localCameraOn();
+      try {
+        if (camera) {
+          // disable
+          config.controllers.camera.disable();
+
+          teacher.localCameraOff();
+        } else {
+          // enabale
+          config.controllers.camera.enable();
+
+          teacher.localCameraOn();
+        }
+      } catch (e) {
+        console.log(e);
       }
     };
-  
+
     // handler button for chat
-    config.controllers.chat.btn.onclick = function() {
-      if (chat) {
-        // disable
-        config.controllers.chat.disable();
-      } else {
-        // enable
-        config.controllers.chat.enable();
+    config.controllers.chat.btn.onclick = function () {
+      try {
+        if (chat) {
+          // disable
+          config.controllers.chat.disable();
+        } else {
+          // enable
+          config.controllers.chat.enable();
+        }
+      } catch (e) {
+        console.log(e);
       }
-  
+
       chat = !chat;
     };
-  
+
     // handler button for screen sharing
-    config.controllers.screenShare.btn.onclick = function() {
-      if (screen_share) {
-        // disable
-        config.controllers.screenShare.disable();
-  
-        teacher.screenShareOff();
-      } else {
-        // enbale
-        config.controllers.screenShare.enable();
-  
-        teacher.screenShareOn();
+    config.controllers.screenShare.btn.onclick = function () {
+      try {
+        if (screen_share) {
+          // disable
+          config.controllers.screenShare.disable();
+
+          teacher.screenShareOff();
+        } else {
+          // enbale
+          config.controllers.screenShare.enable();
+
+          teacher.screenShareOn();
+        }
+      } catch (e) {
+        console.log(e);
       }
-  
+
       screen_share = !screen_share;
     };
-  
+
     // handler button for screen recording
-    config.controllers.screenRecord.btn.onclick = function() {
-      if (screen_record) {
-        // disable
-        let result = teacher.screenRecordingOff(function (blobParam) {
-          zip.workerScriptsPath = "../libs/";
-  
-          function zipBlob(filename, blob, callback) {
-            // use a zip.BlobWriter object to write zipped data into a Blob object
-            zip.createWriter(
-              new zip.BlobWriter("application/zip"),
-              function (zipWriter) {
-                // use a BlobReader object to read the data stored into blob variable
-                zipWriter.add(filename, new zip.BlobReader(blob), function () {
-                  // close the writer and calls callback function
-                  zipWriter.close(callback);
-                });
-              },
-              onerror
-            );
-          }
-          // create zip file
-          zipBlob("video.webm", blobParam, (zippedBlob) => {
-            // download zip for test
-            let link = document.createElement("a");
-            link.download = "archive.zip";
-            link.href = URL.createObjectURL(zippedBlob);
-            link.click();
-            URL.revokeObjectURL(link.href);
+    config.controllers.screenRecord.btn.onclick = function () {
+      try {
+        if (screen_record) {
+          // disable
+          let result = teacher.screenRecordingOff(function (blobParam) {
+            zip.workerScriptsPath = "../libs/";
+
+            function zipBlob(filename, blob, callback) {
+              // use a zip.BlobWriter object to write zipped data into a Blob object
+              zip.createWriter(
+                new zip.BlobWriter("application/zip"),
+                function (zipWriter) {
+                  // use a BlobReader object to read the data stored into blob variable
+                  zipWriter.add(
+                    filename,
+                    new zip.BlobReader(blob),
+                    function () {
+                      // close the writer and calls callback function
+                      zipWriter.close(callback);
+                    }
+                  );
+                },
+                onerror
+              );
+            }
+            // create zip file
+            zipBlob("video.webm", blobParam, (zippedBlob) => {
+              // download zip for test
+              let link = document.createElement("a");
+              link.download = "archive.zip";
+              link.href = URL.createObjectURL(zippedBlob);
+              link.click();
+              URL.revokeObjectURL(link.href);
+            });
           });
-        });
-  
-        if (result != false) {
-          config.controllers.screenRecord.disable();
-          screen_record = !screen_record;
+
+          if (result != false) {
+            config.controllers.screenRecord.disable();
+            screen_record = !screen_record;
+          }
+        } else {
+          // enable
+          let result = teacher.screenRecordingOn();
+          if (result != false) {
+            config.controllers.screenRecord.enable();
+            screen_record = !screen_record;
+          }
         }
-      } else {
-        // enable
-        let result = teacher.screenRecordingOn();
-        if (result != false) {
-          config.controllers.screenRecord.enable();
-          screen_record = !screen_record;
-        }
+      } catch (e) {
+        console.log(e);
       }
     };
-  
+
     // handler button for dashboard
-    config.controllers.dashboard.onclick = function() {
-      if (dashboard) {
-        // disable
-        config.controllers.dashboard.disable();
-  
-        // teacher.screenRecordingOff();
-      } else {
-        // enable
-        config.controllers.dashboard.enable();
-  
-        // teacher.screenRecordingOn();
+    config.controllers.dashboard.onclick = function () {
+      try {
+        if (dashboard) {
+          // disable
+          config.controllers.dashboard.disable();
+
+          // teacher.screenRecordingOff();
+        } else {
+          // enable
+          config.controllers.dashboard.enable();
+
+          // teacher.screenRecordingOn();
+        }
+      } catch (e) {
+        console.log(e);
       }
       dashboard = !dashboard;
     };
-  
+
     // handler button for content view
-    config.controllers.contentView.onclick = function() {
-      if (contentView) {
-        // disable
-        config.controllers.contentView.disable();
-      } else {
-        // enable
-        config.controllers.contentView.enable();
+    config.controllers.contentView.onclick = function () {
+      try {
+        if (contentView) {
+          // disable
+          config.controllers.contentView.disable();
+        } else {
+          // enable
+          config.controllers.contentView.enable();
+        }
+      } catch (e) {
+        console.log(e);
       }
       contentView = !contentView;
     };
-  
+
     // handler button for chat
-    config.msg.sendBtn.onclick = function() {
-      let input = config.msg.input,
-        message = input.value;
-      input.value = "";
-  
-      if (message.length > 0) {
-        if (message.indexOf("@") == -1) {
-          teacher.sendMsg(message);
-        } else {
-          let startIndex = message.indexOf("@"),
-            userToArray = [],
-            userTo = "",
-            messageWithoutUserID = "";
-  
-          for (let i = startIndex, j = 0; i < message.length; i++) {
-            if (message[i] == " ") {
-              break;
-            } else {
-              userToArray[j] = message[i];
-              j++;
+    config.msg.sendBtn.onclick = function () {
+      try {
+        let input = config.msg.input,
+          message = input.value;
+        input.value = "";
+
+        if (message.length > 0) {
+          if (message.indexOf("@") == -1) {
+            teacher.sendMsg(message);
+          } else {
+            let startIndex = message.indexOf("@"),
+              userToArray = [],
+              userTo = "",
+              messageWithoutUserID = "";
+
+            for (let i = startIndex, j = 0; i < message.length; i++) {
+              if (message[i] == " ") {
+                break;
+              } else {
+                userToArray[j] = message[i];
+                j++;
+              }
             }
+
+            userTo = userToArray.join("").replace("@", "");
+            messageWithoutUserID = message
+              .replace(userTo, "")
+              .trim()
+              .replace("@", "");
+
+            teacher.sendMsg(messageWithoutUserID, userTo);
           }
-  
-          userTo = userToArray.join("").replace("@", "");
-          messageWithoutUserID = message
-            .replace(userTo, "")
-            .trim()
-            .replace("@", "");
-  
-          teacher.sendMsg(messageWithoutUserID, userTo);
         }
+      } catch (e) {
+        console.log(e);
       }
     };
-  
+
     // handler for all messages
-    teacher.onMessage((eventParam) => {});
-    teacher.onOpen();
-    teacher.detect2g();
-    teacher.onUserStatusChanged();
-    teacher.onStream();
-    teacher.onMediaError();
+    try {
+      teacher.onMessage((eventParam) => {});
+      teacher.onOpen();
+      teacher.detect2g();
+      teacher.onUserStatusChanged();
+      teacher.onStream();
+      teacher.onMediaError();
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   init(config);
@@ -481,64 +556,71 @@ window.onload = function () {
   document.querySelector("#settings").onclick = function (e) {
     $(".modal").modal("show");
 
-    let cameraDevices = teacher.getCameraDevicesList(),
-      soundDevices = teacher.getSoundDevicesList(),
-      microDevices = teacher.getMicroDevicesList(),
-      currentCameraDevice = teacher.getCurrentCameraDevice(),
-      currentSoundDevice = teacher.getCurrentSoundDevice(),
-      currentMicroDevice = teacher.getCurrentMicroDevice(),
-      cameraDropDownElemHTML = document.querySelector(".dm-1"),
-      soundDropDownElemHTML = document.querySelector(".dm-2"),
-      microDropDownElemHTML = document.querySelector(".dm-3"),
-      cameraDDButtonElemHTML = document.querySelector("#dropdownMenu2"),
-      soundDDButtonElemHTML = document.querySelector("#dropdownMenu3"),
-      microDDButtonElemHTML = document.querySelector("#dropdownMenu4"),
-      button = "";
+    try {
+      let cameraDevices = teacher.getCameraDevicesList(),
+        soundDevices = teacher.getSoundDevicesList(),
+        microDevices = teacher.getMicroDevicesList(),
+        currentCameraDevice = teacher.getCurrentCameraDevice(),
+        currentSoundDevice = teacher.getCurrentSoundDevice(),
+        currentMicroDevice = teacher.getCurrentMicroDevice(),
+        cameraDropDownElemHTML = document.querySelector(".dm-1"),
+        soundDropDownElemHTML = document.querySelector(".dm-2"),
+        microDropDownElemHTML = document.querySelector(".dm-3"),
+        cameraDDButtonElemHTML = document.querySelector("#dropdownMenu2"),
+        soundDDButtonElemHTML = document.querySelector("#dropdownMenu3"),
+        microDDButtonElemHTML = document.querySelector("#dropdownMenu4"),
+        button = "";
 
-    cameraDropDownElemHTML.innerHTML = "";
-    soundDropDownElemHTML.innerHTML = "";
-    microDropDownElemHTML.innerHTML = "";
+      cameraDropDownElemHTML.innerHTML = "";
+      soundDropDownElemHTML.innerHTML = "";
+      microDropDownElemHTML.innerHTML = "";
 
-    for (let i = 0; i < cameraDevices.length; i++) {
-      button =
-        '<button class="dropdown-item" type="button" onclick="setDevice(' +
-        0 +
-        "," +
-        i +
-        ')">' +
-        cameraDevices[i].label +
-        "</button>";
-      cameraDropDownElemHTML.innerHTML += button;
+      for (let i = 0; i < cameraDevices.length; i++) {
+        button =
+          '<button class="dropdown-item" type="button" onclick="setDevice(' +
+          0 +
+          "," +
+          i +
+          ')">' +
+          cameraDevices[i].label +
+          "</button>";
+        cameraDropDownElemHTML.innerHTML += button;
+      }
+
+      for (let i = 0; i < soundDevices.length; i++) {
+        button =
+          '<button class="dropdown-item" type="button" onclick="setDevice(' +
+          1 +
+          "," +
+          i +
+          ')">' +
+          soundDevices[i].label +
+          "</button>";
+        soundDropDownElemHTML.innerHTML += button;
+      }
+
+      for (let i = 0; i < microDevices.length; i++) {
+        button =
+          '<button class="dropdown-item" type="button" onclick="setDevice(' +
+          2 +
+          "," +
+          i +
+          ')">' +
+          microDevices[i].label +
+          "</button>";
+        microDropDownElemHTML.innerHTML += button;
+      }
+
+      cameraDDButtonElemHTML.innerHTML = currentCameraDevice.label.substr(
+        0,
+        10
+      );
+      soundDDButtonElemHTML.innerHTML = currentSoundDevice.label.substr(0, 10);
+      microDDButtonElemHTML.innerHTML = currentMicroDevice.label.substr(0, 10);
+      // console.log(teacher.devices);
+    } catch (e) {
+      console.log(e);
     }
-
-    for (let i = 0; i < soundDevices.length; i++) {
-      button =
-        '<button class="dropdown-item" type="button" onclick="setDevice(' +
-        1 +
-        "," +
-        i +
-        ')">' +
-        soundDevices[i].label +
-        "</button>";
-      soundDropDownElemHTML.innerHTML += button;
-    }
-
-    for (let i = 0; i < microDevices.length; i++) {
-      button =
-        '<button class="dropdown-item" type="button" onclick="setDevice(' +
-        2 +
-        "," +
-        i +
-        ')">' +
-        microDevices[i].label +
-        "</button>";
-      microDropDownElemHTML.innerHTML += button;
-    }
-
-    cameraDDButtonElemHTML.innerHTML = currentCameraDevice.label.substr(0, 10);
-    soundDDButtonElemHTML.innerHTML = currentSoundDevice.label.substr(0, 10);
-    microDDButtonElemHTML.innerHTML = currentMicroDevice.label.substr(0, 10);
-    // console.log(teacher.devices);
   };
 
   window.setDevice = (deviceType, deviceIndexParam) => {
@@ -548,59 +630,67 @@ window.onload = function () {
       soundDDButtonElemHTML = document.querySelector("#dropdownMenu3"),
       microDDButtonElemHTML = document.querySelector("#dropdownMenu4");
 
-    switch (deviceType) {
-      case 0: {
-        // camera
-        deviceID = teacher.getCameraDevicesList()[deviceIndexParam].deviceId;
-        deviceName = teacher.getCameraDevicesList()[deviceIndexParam].label;
+    try {
+      switch (deviceType) {
+        case 0: {
+          // camera
+          deviceID = teacher.getCameraDevicesList()[deviceIndexParam].deviceId;
+          deviceName = teacher.getCameraDevicesList()[deviceIndexParam].label;
 
-        teacher.setCameraDevice(deviceID);
+          teacher.setCameraDevice(deviceID);
 
-        cameraDDButtonElemHTML.innerHTML = deviceName.substr(0, 10);
+          cameraDDButtonElemHTML.innerHTML = deviceName.substr(0, 10);
 
-        break;
+          break;
+        }
+        case 1: {
+          // sound
+          deviceID = teacher.getSoundDevicesList()[deviceIndexParam].deviceId;
+          deviceName = teacher.getSoundDevicesList()[deviceIndexParam].label;
+
+          teacher.setSoundDevice(deviceID);
+
+          soundDDButtonElemHTML.innerHTML = deviceName.substr(0, 10);
+          break;
+        }
+        case 2: {
+          // micro
+          deviceID = teacher.getMicroDevicesList()[deviceIndexParam].deviceId;
+          deviceName = teacher.getMicroDevicesList()[deviceIndexParam].label;
+
+          teacher.setMicroDevice(deviceID);
+
+          microDDButtonElemHTML.innerHTML = deviceName.substr(0, 10);
+          break;
+        }
       }
-      case 1: {
-        // sound
-        deviceID = teacher.getSoundDevicesList()[deviceIndexParam].deviceId;
-        deviceName = teacher.getSoundDevicesList()[deviceIndexParam].label;
-
-        teacher.setSoundDevice(deviceID);
-
-        soundDDButtonElemHTML.innerHTML = deviceName.substr(0, 10);
-        break;
-      }
-      case 2: {
-        // micro
-        deviceID = teacher.getMicroDevicesList()[deviceIndexParam].deviceId;
-        deviceName = teacher.getMicroDevicesList()[deviceIndexParam].label;
-
-        teacher.setMicroDevice(deviceID);
-
-        microDDButtonElemHTML.innerHTML = deviceName.substr(0, 10);
-        break;
-      }
+    } catch (e) {
+      console.log(e);
     }
   };
 
   let testDevices = false;
 
   document.querySelector("#test-devices").onclick = () => {
-    if (!testDevices) {
-      document.querySelector("#test-devices").classList.remove("btn-primary");
-      document.querySelector("#test-devices").classList.add("btn-danger");
-      document.querySelector("#test-devices").innerHTML = "Stop test";
+    try {
+      if (!testDevices) {
+        document.querySelector("#test-devices").classList.remove("btn-primary");
+        document.querySelector("#test-devices").classList.add("btn-danger");
+        document.querySelector("#test-devices").innerHTML = "Stop test";
 
-      teacher.setVideoContainerForTestCamera(
-        document.querySelector(".video-test")
-      );
-      teacher.startTest();
-    } else {
-      document.querySelector("#test-devices").classList.remove("btn-danger");
-      document.querySelector("#test-devices").classList.add("btn-primary");
-      document.querySelector("#test-devices").innerHTML = "Start test";
+        teacher.setVideoContainerForTestCamera(
+          document.querySelector(".video-test")
+        );
+        teacher.startTest();
+      } else {
+        document.querySelector("#test-devices").classList.remove("btn-danger");
+        document.querySelector("#test-devices").classList.add("btn-primary");
+        document.querySelector("#test-devices").innerHTML = "Start test";
 
-      teacher.stopTest();
+        teacher.stopTest();
+      }
+    } catch (e) {
+      console.log(e);
     }
 
     testDevices = !testDevices;
@@ -610,19 +700,23 @@ window.onload = function () {
     let elem = document.querySelector("#formControlRange"),
       value = elem.value;
 
-    if (value <= 25) {
-      elem.value = 0;
-      teacher.changeVideoConstraints(100, 100, 10);
-    }
+    try {
+      if (value <= 25) {
+        elem.value = 0;
+        teacher.changeVideoConstraints(100, 100, 10);
+      }
 
-    if (value > 25 && value <= 75) {
-      elem.value = 50;
-      teacher.changeVideoConstraints(640, 480, 15);
-    }
+      if (value > 25 && value <= 75) {
+        elem.value = 50;
+        teacher.changeVideoConstraints(640, 480, 15);
+      }
 
-    if (value > 70 && value <= 100) {
-      elem.value = 100;
-      teacher.changeVideoConstraints(1280, 720, 30);
+      if (value > 70 && value <= 100) {
+        elem.value = 100;
+        teacher.changeVideoConstraints(1280, 720, 30);
+      }
+    } catch (e) {
+      console.log(e);
     }
   };
 
@@ -632,9 +726,12 @@ window.onload = function () {
       frameRateElem = document.querySelector("#remoteVideoFramerate"),
       widthValue = widthElem.value,
       heightValue = heightElem.value,
-      frameRateValue = frameRateElem.value;
+      frameRateValue = frameRateElem.value;      
 
-    teacher.changeVideoConstraints(widthValue, heightValue, frameRateValue);
+    try {
+      teacher.changeVideoConstraints(widthValue, heightValue, frameRateValue);
+    } catch(e) {
+      console.log(e);
+    }
   };
-
 };
