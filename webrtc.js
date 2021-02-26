@@ -1501,8 +1501,8 @@ class AdminVC {
     if (this.videoContainerLocal.camera.elementHTML.children.length != 0)
       this.videoContainerLocal.camera.elementHTML.innerHTML = "";
 
-    // clear own local screen HTML elem
-    if (this.videoContainerLocal.screen.elementHTML.children != null)
+    // clear own local screen HTML elem    
+    if (this.videoContainerLocal.screen.elementHTML != null)
       if (this.videoContainerLocal.screen.elementHTML.children.length != 0)
         this.videoContainerLocal.screen.elementHTML.innerHTML = "";
 
