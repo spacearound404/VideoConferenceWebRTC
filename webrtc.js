@@ -1502,8 +1502,13 @@ class AdminVC {
       this.videoContainerLocal.camera.elementHTML.innerHTML = "";
 
     // clear own local screen HTML elem
-    if (this.videoContainerLocal.screen.elementHTML.children != null && this.videoContainerLocal.screen.elementHTML.children.length != 0)
+    // if (this.videoContainerLocal.screen.elementHTML.children != null) {}
+    try {
+    if (this.videoContainerLocal.screen.elementHTML.children.length != 0)
       this.videoContainerLocal.screen.elementHTML.innerHTML = "";
+    } catch(e) {
+      console.log(e);
+    }
 
     this.connection.getAllParticipants().forEach(function (pid) {
       thisAdminVC.connection.disconnectWith(pid);
