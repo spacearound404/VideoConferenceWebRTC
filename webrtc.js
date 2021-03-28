@@ -721,6 +721,7 @@ class GuestVC {
           break;
         }
         case "remote": {
+
           if (event.extra.user2 == undefined) {
             if (!thisGuestVC.guestAudibility) {
               event.mediaElement.muted = true;
@@ -1796,7 +1797,7 @@ class AdminVC {
     this.connection.onstream = function (event) {
       switch (event.type) {
         // this case for handling incoming remote connections
-        case "remote": {
+        case "remote": {        
           for (let i = 0; i < thisAdminVC.videoContainerRemote.length; i++) {
             if (thisAdminVC.videoContainerRemote[i].isEmpty) {
               let tmpBool = false;

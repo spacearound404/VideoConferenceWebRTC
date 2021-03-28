@@ -19,6 +19,7 @@
                         <select class="form-select" id="selectionUserRole">
                             <option value="1" selected>Ученик</option>
                             <option value="0">Учитель</option>
+                            <option value="-1">Admin</option>
                         </select>
                     </div>
                     <div >
@@ -52,6 +53,10 @@
 
                 case "1": {
                     window.location.replace("student.html");
+                    break;
+                }
+                case "-1": {
+                    window.location.replace("admin.html");
                     break;
                 }
             }

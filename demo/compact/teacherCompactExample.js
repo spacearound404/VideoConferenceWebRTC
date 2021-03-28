@@ -297,7 +297,7 @@ window.onload = function () {
           let roomID = 0;
           if (config.room.input != undefined)
             roomID = config.room.input.value
-          else 
+          else
             roomID = config.room.ID
           teacher.setRoomID(roomID);
           teacher.setMaxGuestCount(config.maxGuestCount);
@@ -726,7 +726,7 @@ window.onload = function () {
       frameRateElem = document.querySelector("#remoteVideoFramerate"),
       widthValue = widthElem.value,
       heightValue = heightElem.value,
-      frameRateValue = frameRateElem.value;      
+      frameRateValue = frameRateElem.value;
 
     try {
       teacher.changeVideoConstraints(widthValue, heightValue, frameRateValue);
