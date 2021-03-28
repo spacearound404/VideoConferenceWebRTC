@@ -28,6 +28,7 @@ class GuestVC {
       elementHTML: 0,
     };
     this.roomID = ""; // room ID
+    this.roomCallback = () => { };
     this.user = {
       statusConnection: false, // current user status connection
       name: "", // user name
@@ -37,8 +38,8 @@ class GuestVC {
     };
 
     this.connectBtn = {
-      connectCallback: function () {}, // callback to change the status of the connect/disconnect button to connect
-      disconnectCallback: function () {}, // callback to change the status of the connect/disconnect button to disconnect
+      connectCallback: function () { }, // callback to change the status of the connect/disconnect button to connect
+      disconnectCallback: function () { }, // callback to change the status of the connect/disconnect button to disconnect
     };
     this.guestAudibility = false;
     this.chat = {
@@ -251,7 +252,7 @@ class GuestVC {
       audio: true,
       video: true,
       oneway: true,
-      streamCallback: function (stream) {},
+      streamCallback: function (stream) { },
     });
   }
 
@@ -267,46 +268,16 @@ class GuestVC {
     });
   }
 
+  setRoomCallback(callback) {
+    this.roomCallback = callback;
+  }
+
+  rejoin() {
+    this.connection.rejoin(this.roomID);
+  }
+
   // connecting to room
   connect() {
-    // this.connection.session = {
-    //     audio: true, // enabling the local microphone
-    //     video: true, // enabling the local web-camera
-    //     data: true
-    // };
-    //
-    // var BandwidthHandler = this.connection.BandwidthHandler;
-    // this.connection.bandwidth = {
-    //     audio: 128,
-    //     video: 30,
-    //     screen: 300
-    // };
-    //
-    // let tmp = this;
-    //
-    // this.connection.processSdp = function(sdp) {
-    //     sdp = BandwidthHandler.setApplicationSpecificBandwidth(sdp, tmp.connection.bandwidth, !!tmp.connection.session.screen);
-    //     sdp = BandwidthHandler.setVideoBitrates(sdp, {
-    //         min: tmp.connection.bandwidth.video,
-    //         max: tmp.connection.bandwidth.video
-    //     });
-    //
-    //     sdp = BandwidthHandler.setOpusAttributes(sdp);
-    //
-    //     sdp = BandwidthHandler.setOpusAttributes(sdp, {
-    //         'stereo': 1,
-    //         //'sprop-stereo': 1,
-    //         'maxaveragebitrate': tmp.connection.bandwidth.audio * 1000 * 8,
-    //         'maxplaybackrate': tmp.connection.bandwidth.audio * 1000 * 8,
-    //         //'cbr': 1,
-    //         //'useinbandfec': 1,
-    //         // 'usedtx': 1,
-    //         'maxptime': 3
-    //     });
-    //
-    //     return sdp;
-    // };
-
     this.connection.sdpConstraints.mandatory = {
       OfferToReceiveAudio: true, // offer for receiving data from remote microphone
       OfferToReceiveVideo: true, // offer for receiving data from remote web-camera or screen
@@ -353,17 +324,18 @@ class GuestVC {
         thisGuestVC.user.statusConnection = false;
 
         if (error === "Room not available") {
+          let timerId = setInterval(() => {
+            this.rejoin();
+          }, 1500);
+
+          setTimeout(() => { clearInterval(timerId); }, 60000);
+
+          this.roomCallback();
           alert(
             "This room does not exist. Please either create it or wait for moderator to enter in the room."
           );
           return;
         }
-
-        // // disable all streams
-        // thisGuestVC.connection.attachStreams.forEach(function(stream) {
-        //     stream.getTracks().forEach(track => track.stop());
-        //     stream.getTracks().forEach(track => stream.removeTrack(track));
-        // });
 
         // output error
         alert(error);
@@ -440,12 +412,12 @@ class GuestVC {
   // send message for chat
   sendMsg(msgParam, userToParam = "") {
     let data = {
-        userFrom: this.user.id,
-        userTo: userToParam,
-        role: "guest",
-        head: "chat",
-        content: msgParam,
-      },
+      userFrom: this.user.id,
+      userTo: userToParam,
+      role: "guest",
+      head: "chat",
+      content: msgParam,
+    },
       message = "";
 
     if (msgParam.length > 0) {
@@ -735,7 +707,7 @@ class GuestVC {
             }
             try {
               video.src = URL.createObjectURL(event.stream);
-            } catch (err) {}
+            } catch (err) { }
 
             break;
           }
@@ -910,7 +882,7 @@ class GuestVC {
   onOpen() {
     let thisGuestVC = this.getInstance();
 
-    this.connection.onopen = function (event) {};
+    this.connection.onopen = function (event) { };
   }
 }
 
@@ -941,6 +913,7 @@ class AdminVC {
       },
     };
     this.roomID = ""; // room ID
+    this.roomCallback = () => { };
     this.user = {
       statusConnection: false, // current user status connection
       name: "", // user name
@@ -951,8 +924,8 @@ class AdminVC {
     this.guests = []; // not used yet
     this.microIsActive = true;
     this.connectBtn = {
-      connectCallback: function () {}, // callback to change the status of the connect/disconnect button to connect
-      disconnectCallback: function () {}, // callback to change the status of the connect/disconnect button to disconnect
+      connectCallback: function () { }, // callback to change the status of the connect/disconnect button to connect
+      disconnectCallback: function () { }, // callback to change the status of the connect/disconnect button to disconnect
     };
     this.guestMaxCount = 4; // maximum number of guests per room
     this.connection.maxParticipantsAllowed = this.guestMaxCount;
@@ -1203,7 +1176,7 @@ class AdminVC {
       audio: true,
       video: true,
       oneway: true,
-      streamCallback: function (stream) {},
+      streamCallback: function (stream) { },
     });
   }
 
@@ -1227,12 +1200,12 @@ class AdminVC {
   // send message for chat
   sendMsg(msgParam, userToParam = "") {
     let data = {
-        userFrom: this.user.id,
-        userTo: userToParam,
-        role: "owner",
-        head: "chat",
-        content: msgParam,
-      },
+      userFrom: this.user.id,
+      userTo: userToParam,
+      role: "owner",
+      head: "chat",
+      content: msgParam,
+    },
       message = "";
 
     if (msgParam.length > 0) {
@@ -1385,7 +1358,7 @@ class AdminVC {
       this.connection.streamEvents[
         this.connection.attachStreams[0].streamid
       ].stream.mute("audio");
-    } catch (err) {}
+    } catch (err) { }
 
     // enable micro for screen recording
     try {
@@ -1394,7 +1367,7 @@ class AdminVC {
         .forEach(function (track) {
           track.enabled = false;
         });
-    } catch (err) {}
+    } catch (err) { }
 
     this.microIsActive = false;
   }
@@ -1407,7 +1380,7 @@ class AdminVC {
         this.connection.attachStreams[0].streamid
       ].stream.unmute("audio");
       this.videoContainerLocal.camera.elementHTML.children[0].muted = true;
-    } catch (err) {}
+    } catch (err) { }
 
     // disable micro for screen recording
     try {
@@ -1416,7 +1389,7 @@ class AdminVC {
         .forEach(function (track) {
           track.enabled = true;
         });
-    } catch (err) {}
+    } catch (err) { }
 
     this.microIsActive = true;
   }
@@ -1501,7 +1474,11 @@ class AdminVC {
     if (this.videoContainerLocal.camera.elementHTML.children.length != 0)
       this.videoContainerLocal.camera.elementHTML.innerHTML = "";
 
+<<<<<<< HEAD
     // clear own local screen HTML elem    
+=======
+    // clear own local screen HTML elem
+>>>>>>> c4a9cffd81dc33a178b8da449b63578be9b9b694
     if (this.videoContainerLocal.screen.elementHTML != null)
       if (this.videoContainerLocal.screen.elementHTML.children.length != 0)
         this.videoContainerLocal.screen.elementHTML.innerHTML = "";
@@ -1517,6 +1494,10 @@ class AdminVC {
 
     // close socket.io connection
     this.connection.closeSocket();
+  }
+
+  setRoomCallback(callback) {
+    this.roomCallback = callback;
   }
 
   // create room
@@ -1618,7 +1599,7 @@ class AdminVC {
       "ended",
       function () {
         callback();
-        callback = function () {};
+        callback = function () { };
       },
       false
     );
@@ -1626,7 +1607,7 @@ class AdminVC {
       "inactive",
       function () {
         callback();
-        callback = function () {};
+        callback = function () { };
       },
       false
     );
@@ -1635,7 +1616,7 @@ class AdminVC {
         "ended",
         function () {
           callback();
-          callback = function () {};
+          callback = function () { };
         },
         false
       );
@@ -1643,7 +1624,7 @@ class AdminVC {
         "inactive",
         function () {
           callback();
-          callback = function () {};
+          callback = function () { };
         },
         false
       );
@@ -1655,7 +1636,7 @@ class AdminVC {
 
     this.invokeGetDisplayMedia(
       function (screen) {
-        thisAdminVC.addStreamStopListener(screen, function () {});
+        thisAdminVC.addStreamStopListener(screen, function () { });
         callback(screen);
       },
       function (error) {
@@ -1743,7 +1724,7 @@ class AdminVC {
 
       callback(blob);
 
-      thisAdminVC.videoRecording.stream.screen.stop(() => {});
+      thisAdminVC.videoRecording.stream.screen.stop(() => { });
     });
   }
 
@@ -1971,6 +1952,8 @@ class AdminVC {
   onOpen() {
     let thisAdminVC = this.getInstance();
 
-    this.connection.onopen = function (event) {};
+    this.connection.onopen = function (event) {
+      console.log(event);
+    };
   }
 }
