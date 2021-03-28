@@ -338,12 +338,6 @@ class GuestVC {
           return;
         }
 
-        // // disable all streams
-        // thisGuestVC.connection.attachStreams.forEach(function(stream) {
-        //     stream.getTracks().forEach(track => track.stop());
-        //     stream.getTracks().forEach(track => stream.removeTrack(track));
-        // });
-
         // output error
         alert(error);
         return;
@@ -390,17 +384,6 @@ class GuestVC {
         streams[streamsID[i]].stream.stop();
       }
     }
-
-    // stop all local cameras
-    // this.connection.attachStreams.forEach(function(localStream) {
-    //     localStream.stop();
-    // });
-
-    // // disable all streamsq
-    // this.connection.attachStreams.forEach(function(stream) {
-    //     stream.getTracks().forEach(track => track.stop());
-    //     stream.getTracks().forEach(track => stream.removeTrack(track));
-    // });
 
     // close socket.io connection
     this.connection.closeSocket();
@@ -835,16 +818,6 @@ class GuestVC {
                                     `;
               thisGuestVC.chat.elementHTML.innerHTML = tmpHTML + msgHTML;
             } else {
-              // let tmpHTML = thisGuestVC.chat.elementHTML.innerHTML,
-              //     msgHTML = `
-              //         <div class='` + thisGuestVC.chat.classStyle.roomOwner + `'>
-              //             <div>
-              //                 <span>` + event.data.userFrom + `</span>
-              //             </div>
-              //             <span>` + event.data.content + `</span>
-              //         </div>
-              //     `;
-              // thisGuestVC.chat.elementHTML.innerHTML = tmpHTML + msgHTML;
             }
           }
 
@@ -1264,12 +1237,20 @@ class AdminVC {
 
   // set HTML elems for display remote video streams
   setElementsHTMLVideoContainerRemote() {
-    console.log(arguments);
-    for (let i = 0; i < arguments[0].length; i++) {
-      this.videoContainerRemote.push({
-        elementHTML: arguments[0][i],
-        isEmpty: true,
-      });
+    if (arguments.length == 1) {
+      for (let i = 0; i < arguments[0].length; i++) {
+        this.videoContainerRemote.push({
+          elementHTML: arguments[0][i],
+          isEmpty: true,
+        });
+      }
+    } else {
+      for (let i = 0; i < arguments.length; i++) {
+        this.videoContainerRemote.push({
+          elementHTML: arguments[i],
+          isEmpty: true,
+        });
+      }
     }
   }
 
@@ -1778,11 +1759,11 @@ class AdminVC {
   // stream event
   onStream() {
     let thisAdminVC = this.getInstance();
-
+    
     this.connection.onstream = function (event) {
       switch (event.type) {
         // this case for handling incoming remote connections
-        case "remote": {        
+        case "remote": {       
           for (let i = 0; i < thisAdminVC.videoContainerRemote.length; i++) {
             if (thisAdminVC.videoContainerRemote[i].isEmpty) {
               let tmpBool = false;
