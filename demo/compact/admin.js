@@ -20,9 +20,6 @@ const connect = (roomID, btn) => {
     // check connection status
     if (btn.innerHTML == "Connect") {
         // if disconnect
-        connection.extra = {
-          user3: "Hiddenmen",
-        };
 
         connection.sdpConstraints.mandatory = {
           OfferToReceiveAudio: true, // offer for receiving data from remote microphone
@@ -63,7 +60,27 @@ const connect = (roomID, btn) => {
       btn.classList.add("btn-danger");
 
     } else {
-      //disconnect();
+
+      for (let i = 0; i < remoteContainers.length; i++) {
+        let element = remoteContainers[i];        
+        element.innerHTML = "";
+      }
+      
+      for (let i = 0; i < connection.getAllParticipants().length; i++) {
+        connection.disconnectWith(connection.getAllParticipants()[i]);
+      }
+  
+      let streams = connection.streamEvents,
+        streamsID = Object.keys(streams),
+        streamsLength = streamsID.length;
+  
+      for (let i = 0; i < streamsLength; i++) {
+        if (streams[streamsID[i]].type == "local") {
+          streams[streamsID[i]].stream.stop();
+        }
+      }
+
+      connection.closeSocket();
 
       btn.removeAttribute("disabled");
       btn.classList.add("btn-primary");
