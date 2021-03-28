@@ -269,43 +269,22 @@ class GuestVC {
 
   // connecting to room
   connect() {
-    // this.connection.session = {
-    //     audio: true, // enabling the local microphone
-    //     video: true, // enabling the local web-camera
-    //     data: true
-    // };
-    //
-    // var BandwidthHandler = this.connection.BandwidthHandler;
-    // this.connection.bandwidth = {
-    //     audio: 128,
-    //     video: 30,
-    //     screen: 300
-    // };
-    //
-    // let tmp = this;
-    //
-    // this.connection.processSdp = function(sdp) {
-    //     sdp = BandwidthHandler.setApplicationSpecificBandwidth(sdp, tmp.connection.bandwidth, !!tmp.connection.session.screen);
-    //     sdp = BandwidthHandler.setVideoBitrates(sdp, {
-    //         min: tmp.connection.bandwidth.video,
-    //         max: tmp.connection.bandwidth.video
-    //     });
-    //
-    //     sdp = BandwidthHandler.setOpusAttributes(sdp);
-    //
-    //     sdp = BandwidthHandler.setOpusAttributes(sdp, {
-    //         'stereo': 1,
-    //         //'sprop-stereo': 1,
-    //         'maxaveragebitrate': tmp.connection.bandwidth.audio * 1000 * 8,
-    //         'maxplaybackrate': tmp.connection.bandwidth.audio * 1000 * 8,
-    //         //'cbr': 1,
-    //         //'useinbandfec': 1,
-    //         // 'usedtx': 1,
-    //         'maxptime': 3
-    //     });
-    //
-    //     return sdp;
-    // };
+    this.connection.bandwidth = {
+      audio: 2,
+      video: 2,
+    };
+
+    let thisGuestVC = this.getInstance();
+
+    this.connection.processSdp = function(sdp) {
+      sdp = thisGuestVC.connection.BandwidthHandler.setApplicationSpecificBandwidth(sdp, thisGuestVC.connection.bandwidth, !!thisGuestVC.connection.session.screen);
+
+      sdp = thisGuestVC.connection.BandwidthHandler.setOpusAttributes(sdp);
+
+      return sdp;
+    }
+
+    this.connection.codecs.video = 'H264';
 
     this.connection.sdpConstraints.mandatory = {
       OfferToReceiveAudio: true, // offer for receiving data from remote microphone
@@ -342,7 +321,7 @@ class GuestVC {
       };
     }
 
-    let thisGuestVC = this.getInstance();
+    // let thisGuestVC = this.getInstance();
     thisGuestVC.connection.extra.guest = this.user;
 
     // join to room
@@ -723,20 +702,7 @@ class GuestVC {
         case "remote": {
 
           if (event.extra.user2 == undefined) {
-            if (!thisGuestVC.guestAudibility) {
-              event.mediaElement.muted = true;
-            }
-
-            delete event.mediaElement;
-
-            let video = document.createElement("video");
-
-            if (!thisGuestVC.guestAudibility) {
-              video.muted = true;
-            }
-            try {
-              video.src = URL.createObjectURL(event.stream);
-            } catch (err) {}
+            thisGuestVC.connection.deletePeer(event.userid);
 
             break;
           }
@@ -1522,6 +1488,25 @@ class AdminVC {
 
   // create room
   connect() {
+
+    this.connection.codecs.video = 'H264';
+
+    this.connection.bandwidth = {
+      audio: 2,
+      video: 2,
+      screen: 2
+    };
+
+    let thisAdminVC = this.getInstance();
+
+    this.connection.processSdp = function(sdp) {
+      sdp = thisAdminVC.connection.BandwidthHandler.setApplicationSpecificBandwidth(sdp, thisAdminVC.connection.bandwidth, !!thisAdminVC.connection.session.screen);
+
+      sdp = thisAdminVC.connection.BandwidthHandler.setOpusAttributes(sdp);
+
+      return sdp;
+    }
+
     this.connection.mediaConstraints = {
       audio: {
         mandatory: {},
