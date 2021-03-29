@@ -269,43 +269,6 @@ class GuestVC {
 
   // connecting to room
   connect() {
-    // this.connection.session = {
-    //     audio: true, // enabling the local microphone
-    //     video: true, // enabling the local web-camera
-    //     data: true
-    // };
-    //
-    // var BandwidthHandler = this.connection.BandwidthHandler;
-    // this.connection.bandwidth = {
-    //     audio: 128,
-    //     video: 30,
-    //     screen: 300
-    // };
-    //
-    // let tmp = this;
-    //
-    // this.connection.processSdp = function(sdp) {
-    //     sdp = BandwidthHandler.setApplicationSpecificBandwidth(sdp, tmp.connection.bandwidth, !!tmp.connection.session.screen);
-    //     sdp = BandwidthHandler.setVideoBitrates(sdp, {
-    //         min: tmp.connection.bandwidth.video,
-    //         max: tmp.connection.bandwidth.video
-    //     });
-    //
-    //     sdp = BandwidthHandler.setOpusAttributes(sdp);
-    //
-    //     sdp = BandwidthHandler.setOpusAttributes(sdp, {
-    //         'stereo': 1,
-    //         //'sprop-stereo': 1,
-    //         'maxaveragebitrate': tmp.connection.bandwidth.audio * 1000 * 8,
-    //         'maxplaybackrate': tmp.connection.bandwidth.audio * 1000 * 8,
-    //         //'cbr': 1,
-    //         //'useinbandfec': 1,
-    //         // 'usedtx': 1,
-    //         'maxptime': 3
-    //     });
-    //
-    //     return sdp;
-    // };
 
     this.connection.sdpConstraints.mandatory = {
       OfferToReceiveAudio: true, // offer for receiving data from remote microphone
@@ -359,12 +322,6 @@ class GuestVC {
           return;
         }
 
-        // // disable all streams
-        // thisGuestVC.connection.attachStreams.forEach(function(stream) {
-        //     stream.getTracks().forEach(track => track.stop());
-        //     stream.getTracks().forEach(track => stream.removeTrack(track));
-        // });
-
         // output error
         alert(error);
         return;
@@ -393,11 +350,6 @@ class GuestVC {
       this.videoContainerRemote.screen.elementHTML.innerHTML = "";
     }
 
-    // check and clear contaner of HTML elem for local web-camera
-    // if(this.videoContainerLocal.elementHTML.children.length > 0) {
-    //     this.videoContainerLocal.elementHTML.innerHTML = "";
-    // }
-
     for (let i = 0; i < this.connection.getAllParticipants().length; i++) {
       this.connection.disconnectWith(this.connection.getAllParticipants()[i]);
     }
@@ -411,17 +363,6 @@ class GuestVC {
         streams[streamsID[i]].stream.stop();
       }
     }
-
-    // stop all local cameras
-    // this.connection.attachStreams.forEach(function(localStream) {
-    //     localStream.stop();
-    // });
-
-    // // disable all streamsq
-    // this.connection.attachStreams.forEach(function(stream) {
-    //     stream.getTracks().forEach(track => track.stop());
-    //     stream.getTracks().forEach(track => stream.removeTrack(track));
-    // });
 
     // close socket.io connection
     this.connection.closeSocket();
@@ -1298,12 +1239,20 @@ class AdminVC {
 
   // set HTML elems for display remote video streams
   setElementsHTMLVideoContainerRemote() {
-    console.log(arguments);
-    for (let i = 0; i < arguments[0].length; i++) {
-      this.videoContainerRemote.push({
-        elementHTML: arguments[0][i],
-        isEmpty: true,
-      });
+    if (arguments.length == 1) {
+      for (let i = 0; i < arguments[0].length; i++) {
+        this.videoContainerRemote.push({
+          elementHTML: arguments[0][i],
+          isEmpty: true,
+        });
+      }
+    } else {
+      for (let i = 0; i < arguments.length; i++) {
+        this.videoContainerRemote.push({
+          elementHTML: arguments[i],
+          isEmpty: true,
+        });
+      }
     }
   }
 
