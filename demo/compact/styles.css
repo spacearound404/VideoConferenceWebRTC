@@ -168,8 +168,7 @@ body {
     display: none;
 }
 
-.micro > svg:nth-child(2),
- {
+.micro > svg:nth-child(2) {
     display: none;
 }
 

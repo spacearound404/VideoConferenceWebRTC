@@ -365,11 +365,6 @@ class GuestVC {
       this.videoContainerRemote.screen.elementHTML.innerHTML = "";
     }
 
-    // check and clear contaner of HTML elem for local web-camera
-    // if(this.videoContainerLocal.elementHTML.children.length > 0) {
-    //     this.videoContainerLocal.elementHTML.innerHTML = "";
-    // }
-
     for (let i = 0; i < this.connection.getAllParticipants().length; i++) {
       this.connection.disconnectWith(this.connection.getAllParticipants()[i]);
     }
@@ -383,17 +378,6 @@ class GuestVC {
         streams[streamsID[i]].stream.stop();
       }
     }
-
-    // stop all local cameras
-    // this.connection.attachStreams.forEach(function(localStream) {
-    //     localStream.stop();
-    // });
-
-    // // disable all streamsq
-    // this.connection.attachStreams.forEach(function(stream) {
-    //     stream.getTracks().forEach(track => track.stop());
-    //     stream.getTracks().forEach(track => stream.removeTrack(track));
-    // });
 
     // close socket.io connection
     this.connection.closeSocket();
@@ -840,16 +824,6 @@ class GuestVC {
                                     `;
               thisGuestVC.chat.elementHTML.innerHTML = tmpHTML + msgHTML;
             } else {
-              // let tmpHTML = thisGuestVC.chat.elementHTML.innerHTML,
-              //     msgHTML = `
-              //         <div class='` + thisGuestVC.chat.classStyle.roomOwner + `'>
-              //             <div>
-              //                 <span>` + event.data.userFrom + `</span>
-              //             </div>
-              //             <span>` + event.data.content + `</span>
-              //         </div>
-              //     `;
-              // thisGuestVC.chat.elementHTML.innerHTML = tmpHTML + msgHTML;
             }
           }
 
@@ -1270,12 +1244,20 @@ class AdminVC {
 
   // set HTML elems for display remote video streams
   setElementsHTMLVideoContainerRemote() {
-    console.log(arguments);
-    for (let i = 0; i < arguments[0].length; i++) {
-      this.videoContainerRemote.push({
-        elementHTML: arguments[0][i],
-        isEmpty: true,
-      });
+    if (arguments.length == 1) {
+      for (let i = 0; i < arguments[0].length; i++) {
+        this.videoContainerRemote.push({
+          elementHTML: arguments[0][i],
+          isEmpty: true,
+        });
+      }
+    } else {
+      for (let i = 0; i < arguments.length; i++) {
+        this.videoContainerRemote.push({
+          elementHTML: arguments[i],
+          isEmpty: true,
+        });
+      }
     }
   }
 
@@ -1474,11 +1456,7 @@ class AdminVC {
     if (this.videoContainerLocal.camera.elementHTML.children.length != 0)
       this.videoContainerLocal.camera.elementHTML.innerHTML = "";
 
-<<<<<<< HEAD
-    // clear own local screen HTML elem    
-=======
     // clear own local screen HTML elem
->>>>>>> c4a9cffd81dc33a178b8da449b63578be9b9b694
     if (this.videoContainerLocal.screen.elementHTML != null)
       if (this.videoContainerLocal.screen.elementHTML.children.length != 0)
         this.videoContainerLocal.screen.elementHTML.innerHTML = "";
