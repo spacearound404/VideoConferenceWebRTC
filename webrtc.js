@@ -282,8 +282,6 @@ class GuestVC {
 
   // connecting to room
   connect() {
-<<<<<<< HEAD
-=======
     this.connection.bandwidth = {
       audio: 2,
       video: 2,
@@ -301,7 +299,6 @@ class GuestVC {
 
     this.connection.codecs.video = 'H264';
 
->>>>>>> optimization
     this.connection.sdpConstraints.mandatory = {
       OfferToReceiveAudio: true, // offer for receiving data from remote microphone
       OfferToReceiveVideo: true, // offer for receiving data from remote web-camera or screen
@@ -703,24 +700,7 @@ class GuestVC {
         case "remote": {
 
           if (event.extra.user2 == undefined) {
-<<<<<<< HEAD
-            if (!thisGuestVC.guestAudibility) {
-              event.mediaElement.muted = true;
-            }
-
-            delete event.mediaElement;
-
-            let video = document.createElement("video");
-
-            if (!thisGuestVC.guestAudibility) {
-              video.muted = true;
-            }
-            try {
-              video.src = URL.createObjectURL(event.stream);
-            } catch (err) { }
-=======
             thisGuestVC.connection.deletePeer(event.userid);
->>>>>>> optimization
 
             break;
           }
