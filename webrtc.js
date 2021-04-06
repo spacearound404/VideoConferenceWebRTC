@@ -77,10 +77,14 @@ class GuestVC {
       isTestingActive: false,
     };
     this.localVideoConstrains = {
-      width: 1240,
-      height: 720,
-      frameRate: 30,
+      width: 10,
+      height: 10,
+      frameRate: 5,
     };
+
+    this.connection.applyConstraints({
+      video: this.localVideoConstrains,
+    });
 
     let tmp = this;
 
@@ -955,10 +959,18 @@ class AdminVC {
     };
 
     this.remoteVideoConstrains = {
-      width: 1280,
-      height: 720,
-      frameRate: 30,
+      width: 10,
+      height: 10,
+      frameRate: 5,
     };
+
+    this.connection.applyConstraints({
+      video: {
+        width: 10,
+        height: 10,
+        frameRate: 5,
+      },
+    });
 
     let tmp = this;
 
