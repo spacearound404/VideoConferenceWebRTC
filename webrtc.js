@@ -78,10 +78,14 @@ class GuestVC {
       isTestingActive: false,
     };
     this.localVideoConstrains = {
-      width: 1240,
-      height: 720,
-      frameRate: 30,
+      width: 10,
+      height: 10,
+      frameRate: 5,
     };
+
+    this.connection.applyConstraints({
+      video: this.localVideoConstrains,
+    });
 
     let tmp = this;
 
@@ -278,6 +282,26 @@ class GuestVC {
 
   // connecting to room
   connect() {
+<<<<<<< HEAD
+=======
+    this.connection.bandwidth = {
+      audio: 2,
+      video: 2,
+    };
+
+    let thisGuestVC = this.getInstance();
+
+    this.connection.processSdp = function(sdp) {
+      sdp = thisGuestVC.connection.BandwidthHandler.setApplicationSpecificBandwidth(sdp, thisGuestVC.connection.bandwidth, !!thisGuestVC.connection.session.screen);
+
+      sdp = thisGuestVC.connection.BandwidthHandler.setOpusAttributes(sdp);
+
+      return sdp;
+    }
+
+    this.connection.codecs.video = 'H264';
+
+>>>>>>> optimization
     this.connection.sdpConstraints.mandatory = {
       OfferToReceiveAudio: true, // offer for receiving data from remote microphone
       OfferToReceiveVideo: true, // offer for receiving data from remote web-camera or screen
@@ -313,7 +337,7 @@ class GuestVC {
       };
     }
 
-    let thisGuestVC = this.getInstance();
+    // let thisGuestVC = this.getInstance();
     thisGuestVC.connection.extra.guest = this.user;
 
     // join to room
@@ -679,6 +703,7 @@ class GuestVC {
         case "remote": {
 
           if (event.extra.user2 == undefined) {
+<<<<<<< HEAD
             if (!thisGuestVC.guestAudibility) {
               event.mediaElement.muted = true;
             }
@@ -693,6 +718,9 @@ class GuestVC {
             try {
               video.src = URL.createObjectURL(event.stream);
             } catch (err) { }
+=======
+            thisGuestVC.connection.deletePeer(event.userid);
+>>>>>>> optimization
 
             break;
           }
@@ -963,10 +991,18 @@ class AdminVC {
     };
 
     this.remoteVideoConstrains = {
-      width: 1280,
-      height: 720,
-      frameRate: 30,
+      width: 10,
+      height: 10,
+      frameRate: 5,
     };
+
+    this.connection.applyConstraints({
+      video: {
+        width: 10,
+        height: 10,
+        frameRate: 5,
+      },
+    });
 
     let tmp = this;
 
@@ -1481,6 +1517,25 @@ class AdminVC {
 
   // create room
   connect() {
+
+    this.connection.codecs.video = 'H264';
+
+    this.connection.bandwidth = {
+      audio: 2,
+      video: 2,
+      screen: 2
+    };
+
+    let thisAdminVC = this.getInstance();
+
+    this.connection.processSdp = function(sdp) {
+      sdp = thisAdminVC.connection.BandwidthHandler.setApplicationSpecificBandwidth(sdp, thisAdminVC.connection.bandwidth, !!thisAdminVC.connection.session.screen);
+
+      sdp = thisAdminVC.connection.BandwidthHandler.setOpusAttributes(sdp);
+
+      return sdp;
+    }
+
     this.connection.mediaConstraints = {
       audio: {
         mandatory: {},
@@ -1752,11 +1807,11 @@ class AdminVC {
   // stream event
   onStream() {
     let thisAdminVC = this.getInstance();
-
+    
     this.connection.onstream = function (event) {
       switch (event.type) {
         // this case for handling incoming remote connections
-        case "remote": {        
+        case "remote": {       
           for (let i = 0; i < thisAdminVC.videoContainerRemote.length; i++) {
             if (thisAdminVC.videoContainerRemote[i].isEmpty) {
               let tmpBool = false;
