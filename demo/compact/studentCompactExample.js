@@ -382,7 +382,7 @@ window.onload = function () {
           let roomID = 0;
           if (config.room.input != undefined)
             roomID = config.room.input.value;
-          else 
+          else
             roomID = config.room.ID;
           student.setRoomID(roomID);
           student.connect();
